@@ -1,0 +1,9 @@
+.user-onboarding {
+  padding: 20px 0px;
+}
+
+.user-onboarding > div {
+  margin: 10px 0px;
+  padding: 30px;
+  background-color: whitesmoke;
+}

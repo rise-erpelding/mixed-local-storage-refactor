@@ -1,0 +1,23 @@
+.landing {
+  background-color: gainsboro;
+  padding: 30px;
+  height: calc(100vh - 80px);
+}
+
+.landing > h1 {
+  padding: 20px;
+  position: relative;
+  top: 30vh;
+}
+
+.landing > h2 {
+  padding: 10px;
+  position: relative;
+  top: 30vh;
+}
+
+.landing__buttons {
+  padding: 20px;
+  position: relative;
+  top: 30vh;
+}
