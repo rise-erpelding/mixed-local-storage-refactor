@@ -1,3 +1,6 @@
+// TODO: algorithm needs tweaking, we should sort the array of student objects
+// so that the students belonging to the most common categories appear first
+
 function createDifferentGroups(arr, groupSize, primaryCatKey, secondaryCatKey) {
   let pool = arr;
   let groups = [];
@@ -71,6 +74,20 @@ function createDifferentGroups(arr, groupSize, primaryCatKey, secondaryCatKey) {
       pool.splice(0, 1);
     }
   } // while loop ends here
+    // check the length of the last group to see if it is the appropriate size
+    if (groups[groups.length - 1].length !== groupSize) {
+      // if it is not, we will loop backwards over our groups, starting with the second to last
+      for (let i = groups.length - 2; i >= 0 && !!groups[groups.length - 1].length; i--) {
+        // then push the first element from the last group to the second to last group, third to last group, etc.
+        // so on until we've pushed each person from the last group to a different group
+        groups[i].push(groups[groups.length - 1][0]);
+        // delete the student we just pushed from the last group since we've added them elsewhere
+        groups[groups.length - 1].splice(0, 1);
+      }
+      // delete the empty array
+      groups.pop();
+    }
+
   return groups;
 }
 

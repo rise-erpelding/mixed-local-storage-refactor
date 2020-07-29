@@ -5,6 +5,7 @@ import ValidationError from '../../components/ValidationError/ValidationError';
 import './MakeGroupsPage.css';
 
 import createDifferentGroups from '../../services/groupingAlgorithms/differentGroups';
+import MakeGroupsService from '../../services/make-groups-service';
 import store from '../../services/store';
 
 class MakeGroupsPage extends Component {
@@ -38,82 +39,33 @@ class MakeGroupsPage extends Component {
       cat2Vals,
     } = this.state;
 
-    // handle numerical data: sort into # of categories matching groupSize
+    // create arrays with category values, trimming whitespace
     let cat1ValsArray = cat1Vals.split(`\n`).filter((val) => !!val.trim().length);
     let cat2ValsArray = cat2Vals.split(`\n`).filter((val) => !!val.trim().length);
-    // convert numerical categories to numbers
+    // convert any numerical categories to numbers
     if (cat1Type === 'quantitative') {
       cat1ValsArray = cat1ValsArray.map((val) => Number(val));
     }
     if (cat2Type === 'quantitative') {
       cat2ValsArray = cat2ValsArray.map((val) => Number(val));
     }
-      // create the array
-      const mixedStudentArray = [];
-      const aliasesArray = aliases.split(`\n`).filter((val) => !!val.trim().length);
-      aliasesArray.forEach((alias) => mixedStudentArray.push({ alias: alias }));
-      function addEachToObj(objArr, arr, keyName) {
-        for (let i = 0; i < objArr.length; i++) {
-          objArr[i][keyName] = arr[i];
-        }
-        return objArr;
-      }
-      addEachToObj(mixedStudentArray, cat1ValsArray, cat1Name);
-      addEachToObj(mixedStudentArray, cat2ValsArray, cat2Name);
-      console.log(mixedStudentArray);
-      console.log(cat2ValsArray);
+    // create an arr of objs where each student with their data is an obj, add students and values
+    const mixedStudentArray = [];
+    const aliasesArray = aliases.split(`\n`).filter((val) => !!val.trim().length);
+    aliasesArray.forEach((alias) => mixedStudentArray.push({ alias: alias }));
+    MakeGroupsService.addEachToObj(mixedStudentArray, cat1ValsArray, cat1Name);
+    MakeGroupsService.addEachToObj(mixedStudentArray, cat2ValsArray, cat2Name);
 
-    
-
-
-      function getLevel(numArr, groupSize) {
-        const sortedArr = [...numArr]
-        sortedArr.sort((a, b) => a - b);
-        const cutoffIndex = Math.ceil(sortedArr.length / groupSize);
-        const cutoffScores = [sortedArr[0]];
-        const studentScoreLevel = [];
-        let cutoff = cutoffIndex;
-        let groupNum = 1;
-        while ((cutoff * groupNum) < sortedArr.length) {
-          cutoffScores.push(sortedArr[cutoff * groupNum]);
-          groupNum++;
-        }
-        cutoffScores.push(sortedArr[sortedArr.length - 1] + 1);
-        for (let i = 0; i < numArr.length; i++) {
-          for (let j = cutoffScores.length - 1; j >= 0; j--) {
-            if (numArr[i] < cutoffScores[j] && numArr[i] >= cutoffScores[j - 1]) {
-              studentScoreLevel.push(j)
-            } 
-          }
-        }
-        return studentScoreLevel;
-      }
-
-
+    // if dealing with quantitative data, also separate into categorizable levels
+    // (number of levels determined by group size)
+    // and then add the level to the student object for any quantitative category
+    if (cat1Type === 'quantitative') {
+      const studentScoreLevel = MakeGroupsService.getLevel(cat1ValsArray, groupSize);
+      MakeGroupsService.addEachToObj(mixedStudentArray, studentScoreLevel, cat1Name + ' Level')
+    }
     if (cat2Type === 'quantitative') {
-      const studentScoreLevel = getLevel(cat2ValsArray, groupSize);
-      console.log(studentScoreLevel);
-      // const cat2Sorted = [...cat2ValsArray].sort((a, b) => a - b);
-      // const cutoffIndex = Math.ceil(cat2Sorted.length / groupSize);
-
-      // let cutoffScores = [cat2Sorted[0]];
-      // let cutoff = cutoffIndex;
-      // let groupNum = 1
-      // while ((cutoff * groupNum) < cat2Sorted.length) {
-      //   cutoffScores.push(cat2Sorted[cutoff * groupNum]);
-      //   groupNum++;
-      // }
-      // cutoffScores.push(cat2Sorted[cat2Sorted.length - 1] + 1);
-
-      // const studentScoreLevel = [];
-      // for (let i = 0; i < cat2ValsArray.length; i++) {
-      //   for (let j = cutoffScores.length - 1; j >= 0; j--) {
-      //     if (cat2ValsArray[i] < cutoffScores[j] && cat2ValsArray[i] >= cutoffScores[j - 1]) {
-      //       studentScoreLevel.push(j)
-      //     } 
-      //   }
-      // }
-      // console.log(studentScoreLevel);
+      const studentScoreLevel = MakeGroupsService.getLevel(cat2ValsArray, groupSize);
+      MakeGroupsService.addEachToObj(mixedStudentArray, studentScoreLevel, cat2Name + ' Level')
     }
 
     // sort original array into numeric order, saving to new variable
@@ -124,9 +76,10 @@ class MakeGroupsPage extends Component {
     // push a numbered category corresponding to numeric category into student object
 
       // createDifferentGroups(mixedStudentArray, groupSize, cat1Name, cat2Name);
-    // if (groupingType === 'mixed) {
-
-    // }
+    if (groupingType === 'mixed') {
+      const groups = createDifferentGroups(mixedStudentArray, groupSize, cat1Name, cat2Name);
+      console.log(groups);
+    }
     // if (groupingType === 'similar') {
 
     // }
