@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import './UserOnboarding.css';
 
 class UserOnboarding extends Component {
@@ -40,11 +41,14 @@ class UserOnboarding extends Component {
           <p>You can save your groups to an existing class or create a new class for the grouping to belong to, then view your groupings organized by class.</p>
         </div>
         <div className="user-onboarding__buttons">
-          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
             Back to top
           </button>
-          <button>
-            Make some groups
+          <button type="button">
+          <Link to={`/make-groups`}>Make some groups</Link>
           </button>
         </div>
       </section>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import LandingPage from '../../routes/LandingPage/LandingPage';
+import MakeGroupsPage from '../../routes/MakeGroupsPage/MakeGroupsPage';
 import NavBar from '../NavBar/NavBar';
 
 import './App.css';
@@ -17,7 +18,10 @@ class App extends Component {
             path="/"
             component={LandingPage}
           />
-          {/* <Route /> */}
+          <Route 
+            path="/make-groups"
+            component={MakeGroupsPage}
+          />
         </Switch>
       </div>
     );

@@ -23,4 +23,13 @@ h2 {
 
 button {
   margin: 5px;
+  cursor: pointer;
+}
+
+button > a:hover {
+  text-decoration: none;
+}
+
+textarea {
+  font-family: inherit;
 }
