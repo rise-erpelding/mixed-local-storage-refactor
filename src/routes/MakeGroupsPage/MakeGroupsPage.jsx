@@ -4,6 +4,9 @@ import ValidationError from '../../components/ValidationError/ValidationError';
 
 import './MakeGroupsPage.css';
 
+import createDifferentGroups from '../../services/groupingAlgorithms/differentGroups';
+import store from '../../services/store';
+
 class MakeGroupsPage extends Component {
   constructor(props) {
     super(props);
@@ -13,7 +16,9 @@ class MakeGroupsPage extends Component {
       cat1Type: '',
       cat2Type: '',
       aliases: '',
+      cat1Name: '',
       cat1Vals: '',
+      cat2Name: '',
       cat2Vals: '',
     }
   }
@@ -21,6 +26,47 @@ class MakeGroupsPage extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     console.log('pretending to submit form');
+    const { 
+      groupSize,
+      groupingType,
+      cat1Type,
+      cat2Type,
+      aliases,
+      cat1Name,
+      cat1Vals,
+      cat2Name,
+      cat2Vals,
+    } = this.state;
+    // handle numerical data: sort into # of categories matching groupSize
+    let cat1ValsArray = cat1Vals.split(`\n`).filter((val) => !!val.trim().length);
+    let cat2ValsArray = cat2Vals.split(`\n`).filter((val) => !!val.trim().length);
+    // convert numerical categories to numbers
+    if (cat1Type === 'quantitative') {
+      cat1ValsArray = cat1ValsArray.map((val) => Number(val));
+    }
+    if (cat2Type === 'quantitative') {
+      cat2ValsArray = cat2ValsArray.map((val) => Number(val));
+    }
+      // create the array
+      const mixedStudentArray = [];
+      const aliasesArray = aliases.split(`\n`).filter((val) => !!val.trim().length);
+      aliasesArray.forEach((alias) => mixedStudentArray.push({ alias: alias }));
+      function addEachToObj(objArr, arr, keyName) {
+        for (let i = 0; i < objArr.length; i++) {
+          objArr[i][keyName] = arr[i];
+        }
+        return objArr;
+      }
+      addEachToObj(mixedStudentArray, cat1ValsArray, cat1Name);
+      addEachToObj(mixedStudentArray, cat2ValsArray, cat2Name);
+      console.log(mixedStudentArray);
+      // createDifferentGroups(mixedStudentArray, groupSize, cat1Name, cat2Name);
+    // if (groupingType === 'mixed) {
+
+    // }
+    // if (groupingType === 'similar') {
+
+    // }
   }
 
   updateGroupSize = (e) => {
@@ -43,8 +89,16 @@ class MakeGroupsPage extends Component {
     this.setState({ aliases: e.target.value });
   }
 
+  updateCat1Name = (e) => {
+    this.setState({ cat1Name: e.target.value });
+  }
+
   updateCat1Vals = (e) => {
     this.setState({ cat1Vals: e.target.value });
+  }
+
+  updateCat2Name = (e) => {
+    this.setState({ cat2Name: e.target.value });
   }
 
   updateCat2Vals = (e) => {
@@ -82,6 +136,7 @@ class MakeGroupsPage extends Component {
     }
   }
 
+  // the required attribute in the radio input takes care of this, but a message on submit would be nice
   // validateGroupingType = () => {
   //   // Check that grouping type has been selected (RADIO)
   //   const { groupingType } = this.state;
@@ -140,10 +195,14 @@ class MakeGroupsPage extends Component {
     }
   }
 
+  useSampleData = () => {
+    this.setState(store.sampleData);
+  }
+
   render() {
     return (
       <main className="make-groups-page">
-        <form onSubmit={this.handleSubmit}>
+        <form className="make-groups-page__form" onSubmit={this.handleSubmit}>
         <h1>Group Generator</h1>
         <fieldset>
           <legend>Grouping characteristics:</legend>
@@ -202,10 +261,12 @@ class MakeGroupsPage extends Component {
         <fieldset>
           <legend>Primary category:</legend>
           <div>
-            <div>
               {/* <ValidationError message={this.validateDataTypeCat()} /> */}
               <ValidationError message={this.validateNumbersCat1()} />
             </div>
+          <div>
+
+
             <input
               name="cat1-type"
               id="cat1-quantitative"
@@ -227,6 +288,16 @@ class MakeGroupsPage extends Component {
             <label htmlFor="cat1-qualitative">Qualitative (words)</label>
           </div>
           <div>
+              <label htmlFor="cat1-name">Category name:</label>{' '}
+              <input
+                name="cat1-name"
+                id="cat1-name"
+                type="text"
+                value={this.state.cat1Name}
+                onChange={this.updateCat1Name}
+              />
+            </div>
+          <div>
             <textarea
               id="cat1-vals"
               name="cat1-vals"
@@ -241,11 +312,12 @@ class MakeGroupsPage extends Component {
         <fieldset>
           <legend>Secondary category:</legend>
           <div>
-            <div>
               {/* <ValidationError message={this.validateDataTypeCat()} /> */}
               <ValidationError message={this.validateNumbersCat2()} />
               <ValidationError message={this.validateCat2Vals()} />
             </div>
+          <div>
+
             <input
               name="cat2-type"
               id="cat2-quantitative"
@@ -265,6 +337,16 @@ class MakeGroupsPage extends Component {
             />
             <label htmlFor="cat2-qualitative">Qualitative (words)</label>
           </div>
+          <div>
+              <label htmlFor="cat2-name">Category name:</label>{' '}
+              <input
+                name="cat2-name"
+                id="cat2-name"
+                type="text"
+                value={this.state.cat2Name}
+                onChange={this.updateCat2Name}
+              />
+            </div>
           <div>
           <textarea
               id="cat2-vals"
@@ -287,6 +369,7 @@ class MakeGroupsPage extends Component {
           </button>
           <button
             type="button"
+            onClick={this.useSampleData}
           >
             Use sample data
           </button>
