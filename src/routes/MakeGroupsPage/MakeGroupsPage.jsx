@@ -37,6 +37,7 @@ class MakeGroupsPage extends Component {
       cat2Name,
       cat2Vals,
     } = this.state;
+
     // handle numerical data: sort into # of categories matching groupSize
     let cat1ValsArray = cat1Vals.split(`\n`).filter((val) => !!val.trim().length);
     let cat2ValsArray = cat2Vals.split(`\n`).filter((val) => !!val.trim().length);
@@ -60,6 +61,68 @@ class MakeGroupsPage extends Component {
       addEachToObj(mixedStudentArray, cat1ValsArray, cat1Name);
       addEachToObj(mixedStudentArray, cat2ValsArray, cat2Name);
       console.log(mixedStudentArray);
+      console.log(cat2ValsArray);
+
+    
+
+
+      function getLevel(numArr, groupSize) {
+        const sortedArr = [...numArr]
+        sortedArr.sort((a, b) => a - b);
+        const cutoffIndex = Math.ceil(sortedArr.length / groupSize);
+        const cutoffScores = [sortedArr[0]];
+        const studentScoreLevel = [];
+        let cutoff = cutoffIndex;
+        let groupNum = 1;
+        while ((cutoff * groupNum) < sortedArr.length) {
+          cutoffScores.push(sortedArr[cutoff * groupNum]);
+          groupNum++;
+        }
+        cutoffScores.push(sortedArr[sortedArr.length - 1] + 1);
+        for (let i = 0; i < numArr.length; i++) {
+          for (let j = cutoffScores.length - 1; j >= 0; j--) {
+            if (numArr[i] < cutoffScores[j] && numArr[i] >= cutoffScores[j - 1]) {
+              studentScoreLevel.push(j)
+            } 
+          }
+        }
+        return studentScoreLevel;
+      }
+
+
+    if (cat2Type === 'quantitative') {
+      const studentScoreLevel = getLevel(cat2ValsArray, groupSize);
+      console.log(studentScoreLevel);
+      // const cat2Sorted = [...cat2ValsArray].sort((a, b) => a - b);
+      // const cutoffIndex = Math.ceil(cat2Sorted.length / groupSize);
+
+      // let cutoffScores = [cat2Sorted[0]];
+      // let cutoff = cutoffIndex;
+      // let groupNum = 1
+      // while ((cutoff * groupNum) < cat2Sorted.length) {
+      //   cutoffScores.push(cat2Sorted[cutoff * groupNum]);
+      //   groupNum++;
+      // }
+      // cutoffScores.push(cat2Sorted[cat2Sorted.length - 1] + 1);
+
+      // const studentScoreLevel = [];
+      // for (let i = 0; i < cat2ValsArray.length; i++) {
+      //   for (let j = cutoffScores.length - 1; j >= 0; j--) {
+      //     if (cat2ValsArray[i] < cutoffScores[j] && cat2ValsArray[i] >= cutoffScores[j - 1]) {
+      //       studentScoreLevel.push(j)
+      //     } 
+      //   }
+      // }
+      // console.log(studentScoreLevel);
+    }
+
+    // sort original array into numeric order, saving to new variable
+    // split numeric ordered array into groupSize# of groups
+    // determine cutoff points based on these groups, establish numeric levels for each
+    // transform original array (in original order) to numeric levels
+    // use addEachToObj to add level
+    // push a numbered category corresponding to numeric category into student object
+
       // createDifferentGroups(mixedStudentArray, groupSize, cat1Name, cat2Name);
     // if (groupingType === 'mixed) {
 
@@ -67,6 +130,8 @@ class MakeGroupsPage extends Component {
     // if (groupingType === 'similar') {
 
     // }
+
+
   }
 
   updateGroupSize = (e) => {
