@@ -23,6 +23,7 @@ class App extends Component {
 
   addData = (data) => {
     this.setState({ data: data });
+    ls.set('data', data);
   }
 
   addGroupings = (groupings) => {

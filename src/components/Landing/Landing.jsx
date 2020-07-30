@@ -11,7 +11,10 @@ const Landing = (props) => {
           <button type="button" onClick={props.handleOnboarding}>
             See how it works
           </button>
-          <button type="button">
+          <button
+            type="button"
+            onClick={props.handleMakeGroupsButton}
+          >
             <Link to={`/make-groups`}>Make some groups</Link>
           </button>
         </div>

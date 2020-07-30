@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Landing from '../../components/Landing/Landing';
 import UserOnboarding from '../../components/UserOnboarding/UserOnboarding';
 
+import ls from 'local-storage';
+
 class LandingPage extends Component {
   constructor(props) {
     super(props);
@@ -15,10 +17,19 @@ class LandingPage extends Component {
       behavior: 'smooth'})
   }
 
+  clearPreviousGroups = () => {
+    console.log('clearing previous groups')
+    ls.remove('groupings');
+    ls.remove('data');
+  }
+
   render() {
     return (
       <main>
-        <Landing handleOnboarding={this.scrollToRef} />
+        <Landing 
+          handleOnboarding={this.scrollToRef}
+          handleMakeGroupsButton={this.clearPreviousGroups}
+        />
         <UserOnboarding passRef={this.scrollRef} />
       </main>
     );

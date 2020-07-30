@@ -11,6 +11,8 @@ import createSimilarGroups from '../../services/groupingAlgorithms/similarGroups
 import MakeGroupsService from '../../services/make-groups-service';
 import store from '../../services/store';
 
+import ls from 'local-storage';
+
 
 class MakeGroupsPage extends Component {
   constructor(props) {
@@ -25,6 +27,13 @@ class MakeGroupsPage extends Component {
       cat1Vals: '',
       cat2Name: '',
       cat2Vals: '',
+    }
+  }
+
+  componentDidMount() {
+    const savedData = ls.get('data');
+    if (!!savedData) {
+      this.setState(savedData);
     }
   }
 
@@ -227,6 +236,11 @@ class MakeGroupsPage extends Component {
     this.setState(store.sampleData);
   }
 
+  handleClickCancel = () => {
+    const { history } = this.props;
+    history.goBack();
+  }
+
   render() {
     return (
       <main className="make-groups-page">
@@ -393,6 +407,7 @@ class MakeGroupsPage extends Component {
           <div>
             <button
               type="button"
+              onClick={this.handleClickCancel}
             >
               Cancel
           </button>

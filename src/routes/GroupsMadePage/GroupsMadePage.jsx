@@ -24,20 +24,29 @@ class GroupsMadePage extends Component {
     console.log('pretending to save')
   }
 
+  handleClickCancel = () => {
+    const { history } = this.props;
+    history.push('/');
+  }
+
+  handleClickBack = () => {
+    const { history } = this.props;
+    history.goBack();
+  }
+
   render() {
     const { groupings } = this.state;
     const showGroupings = groupings.map((group, idx) => (
-      <fieldset class="groups-made-page__group">
+      <fieldset key={idx + 1} className="groups-made-page__group">
         <legend>Group {idx + 1}</legend>
           {group.map((stu, i) => (
-            <>
+            <div key={(idx + 1) + '-' + (i + 1)}>
             <input 
-              name={'group' + idx + '-' + i}
-              id={'group' + idx + '-' + i}
+              name={'group' + (idx + 1) + '-' + (i + 1)}
+              id={'group' + (idx + 1) + '-' + (i + 1)}
               value={stu.alias}
             />
-            <br />
-            </>
+            </div>
           ))}
           
       </fieldset>
@@ -52,11 +61,13 @@ class GroupsMadePage extends Component {
           <div>
             <button
               type="button"
+              onClick={this.handleClickCancel}
             >
               Cancel
             </button>
             <button
               type="button"
+              onClick={this.handleClickBack}
             >
               Back
             </button>
