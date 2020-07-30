@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Landing from './Landing';
+import { BrowserRouter } from 'react-router-dom';
 
 it('renders without crashing', () => {
   const section = document.createElement('section');
-  ReactDOM.render(<Landing />, section);
+  ReactDOM.render(<BrowserRouter><Landing /></BrowserRouter>, section);
   ReactDOM.unmountComponentAtNode(section);
 });
