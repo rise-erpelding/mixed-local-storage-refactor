@@ -5,6 +5,7 @@ import ValidationError from '../../components/ValidationError/ValidationError';
 import './MakeGroupsPage.css';
 
 import createDifferentGroups from '../../services/groupingAlgorithms/differentGroups';
+import createSimilarGroups from '../../services/groupingAlgorithms/similarGroups'; 
 import MakeGroupsService from '../../services/make-groups-service';
 import store from '../../services/store';
 
@@ -56,33 +57,35 @@ class MakeGroupsPage extends Component {
     MakeGroupsService.addEachToObj(mixedStudentArray, cat1ValsArray, cat1Name);
     MakeGroupsService.addEachToObj(mixedStudentArray, cat2ValsArray, cat2Name);
 
+    
     // if dealing with quantitative data, also separate into categorizable levels
     // (number of levels determined by group size)
     // and then add the level to the student object for any quantitative category
+    // let createGroupsWith = [];
     if (cat1Type === 'quantitative') {
       const studentScoreLevel = MakeGroupsService.getLevel(cat1ValsArray, groupSize);
-      MakeGroupsService.addEachToObj(mixedStudentArray, studentScoreLevel, cat1Name + ' Level')
+      MakeGroupsService.addEachToObj(mixedStudentArray, studentScoreLevel, cat1Name + ' Level');
+      // createGroupsWith = [...mixedStudentArray]
     }
+    // if (cat1Type === 'qualitative') {
+    //   // reorder values
+    //   createGroupsWith = MakeGroupsService.mostFrequentFirst(mixedStudentArray, cat1Name);
+    // }
     if (cat2Type === 'quantitative') {
       const studentScoreLevel = MakeGroupsService.getLevel(cat2ValsArray, groupSize);
       MakeGroupsService.addEachToObj(mixedStudentArray, studentScoreLevel, cat2Name + ' Level')
     }
 
-    // sort original array into numeric order, saving to new variable
-    // split numeric ordered array into groupSize# of groups
-    // determine cutoff points based on these groups, establish numeric levels for each
-    // transform original array (in original order) to numeric levels
-    // use addEachToObj to add level
-    // push a numbered category corresponding to numeric category into student object
 
-      // createDifferentGroups(mixedStudentArray, groupSize, cat1Name, cat2Name);
     if (groupingType === 'mixed') {
+      // TODO: reorder the array so that most frequent groups appear first
       const groups = createDifferentGroups(mixedStudentArray, groupSize, cat1Name, cat2Name);
       console.log(groups);
     }
-    // if (groupingType === 'similar') {
-
-    // }
+    if (groupingType === 'similar') {
+      const groups = createSimilarGroups(mixedStudentArray, groupSize, cat1Name, cat2Name);
+      console.log(groups);
+    }
 
 
   }
