@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import MixEdContext from '../../context/MixEdContext';
+
 import ValidationError from '../../components/ValidationError/ValidationError';
 
 import './MakeGroupsPage.css';
@@ -27,6 +29,7 @@ class MakeGroupsPage extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    const { addData, addGroupings } = this.context;
     console.log('pretending to submit form');
     const { 
       groupSize,
@@ -39,6 +42,7 @@ class MakeGroupsPage extends Component {
       cat2Name,
       cat2Vals,
     } = this.state;
+    addData(this.state);
 
     // create arrays with category values, trimming whitespace
     let cat1ValsArray = cat1Vals.split(`\n`).filter((val) => !!val.trim().length);
@@ -80,10 +84,12 @@ class MakeGroupsPage extends Component {
     if (groupingType === 'mixed') {
       // TODO: reorder the array so that most frequent groups appear first
       const groups = createDifferentGroups(mixedStudentArray, groupSize, cat1Name, cat2Name);
+      addGroupings(groups);
       console.log(groups);
     }
     if (groupingType === 'similar') {
       const groups = createSimilarGroups(mixedStudentArray, groupSize, cat1Name, cat2Name);
+      addGroupings(groups);
       console.log(groups);
     }
 
@@ -406,3 +412,5 @@ class MakeGroupsPage extends Component {
 }
 
 export default MakeGroupsPage;
+
+MakeGroupsPage.contextType = MixEdContext;
