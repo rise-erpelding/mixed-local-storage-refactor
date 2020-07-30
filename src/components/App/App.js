@@ -5,7 +5,10 @@ import MixEdContext from '../../context/MixEdContext';
 
 import LandingPage from '../../routes/LandingPage/LandingPage';
 import MakeGroupsPage from '../../routes/MakeGroupsPage/MakeGroupsPage';
+import GroupsMadePage from '../../routes/GroupsMadePage/GroupsMadePage';
 import NavBar from '../NavBar/NavBar';
+
+import ls from 'local-storage';
 
 import './App.css';
 
@@ -23,6 +26,11 @@ class App extends Component {
   }
 
   addGroupings = (groupings) => {
+    this.setState({ groupings: groupings });
+    ls.set('groupings', groupings)
+  }
+
+  updateGroupings = (groupings) => {
     this.setState({ groupings: groupings });
   }
 
@@ -49,6 +57,10 @@ class App extends Component {
           <Route 
             path="/make-groups"
             component={MakeGroupsPage}
+          />
+          <Route
+            path="/groups-made"
+            component={GroupsMadePage}
           />
         </Switch>
         </MixEdContext.Provider>

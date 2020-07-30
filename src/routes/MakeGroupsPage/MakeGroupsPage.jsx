@@ -11,6 +11,7 @@ import createSimilarGroups from '../../services/groupingAlgorithms/similarGroups
 import MakeGroupsService from '../../services/make-groups-service';
 import store from '../../services/store';
 
+
 class MakeGroupsPage extends Component {
   constructor(props) {
     super(props);
@@ -30,7 +31,8 @@ class MakeGroupsPage extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const { addData, addGroupings } = this.context;
-    console.log('pretending to submit form');
+    const { history } = this.props;
+    // console.log('pretending to submit form');
     const { 
       groupSize,
       groupingType,
@@ -85,15 +87,14 @@ class MakeGroupsPage extends Component {
       // TODO: reorder the array so that most frequent groups appear first
       const groups = createDifferentGroups(mixedStudentArray, groupSize, cat1Name, cat2Name);
       addGroupings(groups);
-      console.log(groups);
+      // console.log(groups);
     }
     if (groupingType === 'similar') {
       const groups = createSimilarGroups(mixedStudentArray, groupSize, cat1Name, cat2Name);
       addGroupings(groups);
-      console.log(groups);
+      // console.log(groups);
     }
-
-
+    history.push('/groups-made')
   }
 
   updateGroupSize = (e) => {
@@ -389,22 +390,24 @@ class MakeGroupsPage extends Component {
           <div>
             <ValidationError message={this.validateTextareaLines()} />
           </div>
-          <button 
-          type="button"
-          >
-            Cancel
+          <div>
+            <button
+              type="button"
+            >
+              Cancel
           </button>
-          <button
-            type="button"
-            onClick={this.useSampleData}
-          >
-            Use sample data
+            <button
+              type="button"
+              onClick={this.useSampleData}
+            >
+              Use sample data
           </button>
-          <button
-            type="submit"
-          >
-            Generate Groups
+            <button
+              type="submit"
+            >
+              Generate Groups
           </button>
+          </div>
       </form>
       </main>
     );
