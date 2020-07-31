@@ -5,6 +5,7 @@ const MixEdContext = React.createContext({
   groupings: [],
   addData: () => {},
   addGroupings: () => {},
+  addStudentArr: () => {},
 });
 
 export default MixEdContext;

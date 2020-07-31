@@ -39,7 +39,7 @@ class MakeGroupsPage extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { addData, addGroupings } = this.context;
+    const { addData, addStudentArr, addGroupings } = this.context;
     const { history } = this.props;
     // console.log('pretending to submit form');
     const { 
@@ -94,11 +94,14 @@ class MakeGroupsPage extends Component {
 
     if (groupingType === 'mixed') {
       // TODO: reorder the array so that most frequent groups appear first
+      addStudentArr(mixedStudentArray);
       const groups = createDifferentGroups(mixedStudentArray, groupSize, cat1Name, cat2Name);
       addGroupings(groups);
       // console.log(groups);
     }
     if (groupingType === 'similar') {
+
+      addStudentArr(mixedStudentArray);
       const groups = createSimilarGroups(mixedStudentArray, groupSize, cat1Name, cat2Name);
       addGroupings(groups);
       // console.log(groups);

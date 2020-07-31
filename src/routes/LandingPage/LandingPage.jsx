@@ -21,6 +21,7 @@ class LandingPage extends Component {
     console.log('clearing previous groups')
     ls.remove('groupings');
     ls.remove('data');
+    ls.remove('studentArr');
   }
 
   render() {

@@ -18,6 +18,7 @@ class App extends Component {
     this.state = {
       data: {},
       groupings: [],
+      studentArr: [],
     }
   }
 
@@ -26,13 +27,19 @@ class App extends Component {
     ls.set('data', data);
   }
 
+  addStudentArr = (studentArr) => {
+    this.setState({ studentArr: studentArr });
+    ls.set('studentArr', studentArr);
+  }
+
   addGroupings = (groupings) => {
     this.setState({ groupings: groupings });
-    ls.set('groupings', groupings)
+    ls.set('groupings', groupings);
   }
 
   updateGroupings = (groupings) => {
     this.setState({ groupings: groupings });
+    ls.set('groupings', groupings);
   }
 
   render() {
@@ -43,6 +50,7 @@ class App extends Component {
       groupings,
       addData: this.addData,
       addGroupings: this.addGroupings,
+      addStudentArr: this.addStudentArr,
     };
 
     return (
