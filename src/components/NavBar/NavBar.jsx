@@ -19,7 +19,7 @@ const NavBar = () => {
       </NavLink>
       <NavLink 
         activeClassName="selected"
-        to="/"
+        to="/make-groups"
       >
         My Classes
       </NavLink>
