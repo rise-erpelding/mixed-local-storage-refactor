@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import SaveGroups from '../../components/SaveGroups/SaveGroups';
 import MixEdContext from '../../context/MixEdContext';
 import ls from 'local-storage';
 import './GroupsMadePage.css';
@@ -9,6 +9,9 @@ class GroupsMadePage extends Component {
     super(props);
     this.state = {
       groupings: [],
+      show: false,
+      groupingName: '',
+      className: '',
     }
   }
 
@@ -21,8 +24,8 @@ class GroupsMadePage extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log('pretending to save')
     this.matchExistingAlias();
+    this.showSaveModal();
   }
 
   matchExistingAlias = () => {
@@ -64,9 +67,24 @@ class GroupsMadePage extends Component {
     groupings[groupIndex].splice(studentIndex, 1, e.target.value);
     this.setState({ groupings: groupings });
   }
+  
+  showSaveModal = () => {
+    this.setState({ show: true });
+  }
+
+  hideSaveModal = () => {
+    this.setState({ show: false });
+  }
+
+  saveGroups = (groupName, groupClass) => {
+    const { groupings } = this.state;
+    this.setState({ groupingName: groupName, className: groupClass })
+    console.log(`saving groups to database under name ${groupName} and class ${groupClass}:`);
+    console.log(groupings);
+  }
 
   render() {
-    const { groupings } = this.state;
+    const { groupings, show } = this.state;
     const showGroupings = groupings.map((group, idx) => (
       <fieldset key={idx + 1} className="groups-made-page__group">
         <legend>Group {idx + 1}</legend>
@@ -112,6 +130,11 @@ class GroupsMadePage extends Component {
             </button>
           </div>
         </form>
+        <SaveGroups
+          show={show}
+          handleClose={this.hideSaveModal}
+          handleSave={this.saveGroups}
+        />
       </main>
     )
   }
