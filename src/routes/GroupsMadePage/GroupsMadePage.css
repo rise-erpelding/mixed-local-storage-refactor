@@ -1,3 +1,21 @@
 .groups-made-page {
   background-color: gainsboro;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.groups-made-page__group {
+  margin: 10px;
+  padding: 10px;
+}
+
+@media screen and (min-width: 700px) {
+  .groups-made-page__groupings {
+    margin: 0px 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }

@@ -89,7 +89,9 @@ class GroupsMadePage extends Component {
         <h1>Groupings</h1>
         <p>Click on a student to edit the group</p>
         <form className="groups-made-page__form" onSubmit={this.handleSubmit}>
+          <div className="groups-made-page__groupings">
           {showGroupings}
+          </div>
           <div>
             <button
               type="button"
