@@ -1,3 +1,15 @@
 .make-groups-page {
   background-color: gainsboro;
 }
+
+
+.make-groups-page__form > fieldset {
+  margin: 10px;
+  padding: 10px;
+}
+
+@media screen and (min-width: 800px) {
+  .make-groups-page__form--student-data {
+    display: flex;
+  }
+}

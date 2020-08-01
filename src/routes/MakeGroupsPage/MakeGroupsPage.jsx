@@ -247,8 +247,8 @@ class MakeGroupsPage extends Component {
   render() {
     return (
       <main className="make-groups-page">
+        <h1>Group Generator</h1>  
         <form className="make-groups-page__form" onSubmit={this.handleSubmit}>
-        <h1>Group Generator</h1>
         <fieldset>
           <legend>Grouping characteristics:</legend>
           <label htmlFor="group-size">Group size (minimum):</label>
@@ -287,6 +287,7 @@ class MakeGroupsPage extends Component {
             <label htmlFor="grouping-mixed">Group members are diverse</label>
           </div>
         </fieldset>
+        <div className="make-groups-page__form--student-data">
         <fieldset>
           <legend>Alias (list of names or other identifier):</legend>
           <div>
@@ -310,8 +311,6 @@ class MakeGroupsPage extends Component {
               <ValidationError message={this.validateNumbersCat1()} />
             </div>
           <div>
-
-
             <input
               name="cat1-type"
               id="cat1-quantitative"
@@ -404,6 +403,7 @@ class MakeGroupsPage extends Component {
             />
           </div>
         </fieldset>
+        </div>
           <div>
             <ValidationError message={this.validateTextareaLines()} />
           </div>
