@@ -78,7 +78,7 @@ class GroupsMadePage extends Component {
 
   saveGroups = (groupName, groupClass) => {
     const { groupings } = this.state;
-    this.setState({ groupingName: groupName, className: groupClass })
+    // this.setState({ groupingName: groupName, className: groupClass })
     console.log(`saving groups to database under name ${groupName} and class ${groupClass}:`);
     console.log(groupings);
   }
