@@ -56,8 +56,8 @@ class MakeGroupsPage extends Component {
     addData(this.state);
 
     // create arrays with category values, trimming whitespace
-    let cat1ValsArray = cat1Vals.split(`\n`).filter((val) => !!val.trim().length);
-    let cat2ValsArray = cat2Vals.split(`\n`).filter((val) => !!val.trim().length);
+    let cat1ValsArray = this.createTrimmedArr(cat1Vals);
+    let cat2ValsArray = this.createTrimmedArr(cat2Vals);
     // convert any numerical categories to numbers
     if (cat1Type === 'quantitative') {
       cat1ValsArray = cat1ValsArray.map((val) => Number(val));
@@ -67,7 +67,7 @@ class MakeGroupsPage extends Component {
     }
     // create an arr of objs where each student with their data is an obj, add students and values
     const mixedStudentArray = [];
-    const aliasesArray = aliases.split(`\n`).filter((val) => !!val.trim().length);
+    const aliasesArray = this.createTrimmedArr(aliases);
     aliasesArray.forEach((alias) => mixedStudentArray.push({ alias: alias }));
     MakeGroupsService.addEachToObj(mixedStudentArray, cat1ValsArray, cat1Name);
     MakeGroupsService.addEachToObj(mixedStudentArray, cat2ValsArray, cat2Name);
@@ -108,6 +108,8 @@ class MakeGroupsPage extends Component {
     }
     history.push('/groups-made')
   }
+
+  createTrimmedArr = (vals) => vals.split(`\n`).filter((val) => !!val.trim().length);
 
   updateGroupSize = (e) => {
     this.setState({ groupSize: e.target.value });
@@ -176,27 +178,10 @@ class MakeGroupsPage extends Component {
     }
   }
 
-  // the required attribute in the radio input takes care of this, but a message on submit would be nice
-  // validateGroupingType = () => {
-  //   // Check that grouping type has been selected (RADIO)
-  //   const { groupingType } = this.state;
-  //   if (groupingType !== ('similar' || 'mixed')) {
-  //     return 'Grouping type is required'
-  //   }
-  // }
-
-  // validateDataTypeCat = () => {
-  //   // Check that data type has been selected for each (RADIO) as long as there is also data in the textarea
-  //   const { cat1Type } = this.state;
-  //   if (cat1Type !== ('quantitative' || 'qualitative')) {
-  //     return 'Data type is required'
-  //   }
-  // }
-
   validateNumbersCat1 = () => {
     const { cat1Vals } = this.state;
     const { cat1Type } = this.state;
-    const cat1ValsArray = cat1Vals.split(`\n`).filter((val) => !!val.trim().length);
+    const cat1ValsArray = this.createTrimmedArr(cat1Vals);
     if (cat1Type === 'quantitative') {
       const cat1NumbersArray = cat1ValsArray.map((val) => Number(val));
       if (cat1NumbersArray.includes(NaN)) {
@@ -208,7 +193,7 @@ class MakeGroupsPage extends Component {
   validateNumbersCat2 = () => {
     const { cat2Vals } = this.state;
     const { cat2Type } = this.state;
-    const cat2ValsArray = cat2Vals.split(`\n`).filter((val) => !!val.trim().length);
+    const cat2ValsArray = this.createTrimmedArr(cat2Vals);
     if (cat2Type === 'quantitative') {
       const cat2NumbersArray = cat2ValsArray.map((val) => Number(val));
       if (cat2NumbersArray.includes(NaN)) {
@@ -263,9 +248,6 @@ class MakeGroupsPage extends Component {
             onChange={this.updateGroupSize}
           />
           <div>
-            {/* <div>
-              <ValidationError message={this.validateGroupingType()} />
-            </div> */}
             <input 
               name="grouping-type"
               id="grouping-similar"
@@ -307,7 +289,6 @@ class MakeGroupsPage extends Component {
         <fieldset>
           <legend>Primary category:</legend>
           <div>
-              {/* <ValidationError message={this.validateDataTypeCat()} /> */}
               <ValidationError message={this.validateNumbersCat1()} />
             </div>
           <div>
@@ -356,7 +337,6 @@ class MakeGroupsPage extends Component {
         <fieldset>
           <legend>Secondary category:</legend>
           <div>
-              {/* <ValidationError message={this.validateDataTypeCat()} /> */}
               <ValidationError message={this.validateNumbersCat2()} />
               <ValidationError message={this.validateCat2Vals()} />
             </div>
