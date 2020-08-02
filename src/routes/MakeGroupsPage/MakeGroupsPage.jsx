@@ -93,23 +93,34 @@ class MakeGroupsPage extends Component {
 
 
     if (groupingType === 'mixed') {
-      // TODO: reorder the array so that most frequent groups appear first
-      addStudentArr(mixedStudentArray);
       const groups = createDifferentGroups(mixedStudentArray, groupSize, cat1Name, cat2Name);
-      addGroupings(groups);
-      // console.log(groups);
+      this.addGroupNum(groups, mixedStudentArray);
+      addStudentArr(mixedStudentArray);
     }
     if (groupingType === 'similar') {
-
-      addStudentArr(mixedStudentArray);
       const groups = createSimilarGroups(mixedStudentArray, groupSize, cat1Name, cat2Name);
-      addGroupings(groups);
-      // console.log(groups);
+      this.addGroupNum(groups, mixedStudentArray);
+      addStudentArr(mixedStudentArray);
     }
     history.push('/groups-made')
   }
 
   createTrimmedArr = (vals) => vals.split(`\n`).filter((val) => !!val.trim().length);
+
+  addGroupNum = (groupArr, studentArr) => {
+    // goes through the array elements of groups
+    // within each innermost array, finds the student in the mixedStudentArray
+    // adds their groupNumber (index of the outer array + 1) as a property
+    groupArr.forEach((group, index) => {
+      group.forEach((groupMem) => {
+        studentArr.forEach((student) => {
+          if (student.alias === groupMem.alias) {
+            student.groupNum = (index + 1);
+          }
+        })
+      })
+    });
+  }
 
   updateGroupSize = (e) => {
     this.setState({ groupSize: e.target.value });
@@ -244,7 +255,6 @@ class MakeGroupsPage extends Component {
             min="2"
             max="20"
             defaultValue="2"
-            // TODO: ensure this is appropriately bound, if not this.updateGroupSize.bind(this) may work better
             onChange={this.updateGroupSize}
           />
           <div>

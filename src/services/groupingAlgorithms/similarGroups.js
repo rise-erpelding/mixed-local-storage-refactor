@@ -1,5 +1,5 @@
 function createSimilarGroups(arr, groupSize, primaryCatKey, secondaryCatKey) {
-  let pool = arr;
+  let pool = [...arr];
   let groups = [];
   let lastGroupPrimaryCats = [];
   let lastGroupSecondaryCats = [];

@@ -18,7 +18,7 @@ class App extends Component {
     super(props);
     this.state = {
       data: {},
-      groupings: [],
+      // groupings: [],
       studentArr: [],
     }
   }
@@ -33,15 +33,15 @@ class App extends Component {
     ls.set('studentArr', studentArr);
   }
 
-  addGroupings = (groupings) => {
-    this.setState({ groupings: groupings });
-    ls.set('groupings', groupings);
-  }
+  // addGroupings = (groupings) => {
+  //   this.setState({ groupings: groupings });
+  //   ls.set('groupings', groupings);
+  // }
 
-  updateGroupings = (groupings) => {
-    this.setState({ groupings: groupings });
-    ls.set('groupings', groupings);
-  }
+  // updateGroupings = (groupings) => {
+  //   this.setState({ groupings: groupings });
+  //   ls.set('groupings', groupings);
+  // }
 
   render() {
     const { data, groupings } = this.state;
