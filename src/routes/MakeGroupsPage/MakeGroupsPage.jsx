@@ -265,225 +265,124 @@ class MakeGroupsPage extends Component {
   }
 
   render() {
+    const category1 = (
+      <div
+        className="make-groups-page__category--one"
+        onDragStart={(event) => this.onDragStart(event, "category1")}
+        draggable
+      >
+        <div>
+          <ValidationError message={this.validateNumbersCat1()} />
+        </div>
+        <div>
+          <input
+            name="cat1-type"
+            id="cat1-quantitative"
+            value="quantitative"
+            type="radio"
+            checked={this.state.cat1Type === 'quantitative'}
+            onChange={this.updateCat1Type}
+            required
+          />
+          <label htmlFor="cat1-quantitative">Quantitative (numbers)</label>
+          <input
+            name="cat1-type"
+            id="cat1-qualitative"
+            value="qualitative"
+            type="radio"
+            checked={this.state.cat1Type === 'qualitative'}
+            onChange={this.updateCat1Type}
+            required
+          />
+          <label htmlFor="cat1-qualitative">Qualitative (words)</label>
+        </div>
+        <div>
+          <label htmlFor="cat1-name">Category name:</label>{' '}
+          <input
+            name="cat1-name"
+            id="cat1-name"
+            type="text"
+            value={this.state.cat1Name}
+            onChange={this.updateCat1Name}
+          />
+        </div>
+        <div>
+          <textarea
+            id="cat1-vals"
+            name="cat1-vals"
+            rows="26"
+            columns="20"
+            placeholder="Enter values here, one on each line."
+            value={this.state.cat1Vals}
+            onChange={this.updateCat1Vals}
+          />
+        </div>
+      </div>
+    );
+    const category2 = (
+      <div
+        className="make-groups-page__category--two"
+        onDragStart={(event) => this.onDragStart(event, "category2")}
+        draggable
+      >
+        <div>
+          <ValidationError message={this.validateNumbersCat2()} />
+          {/* <ValidationError message={this.validateCat2Vals()} /> */}
+        </div>
+        <div>
+          <input
+            name="cat2-type"
+            id="cat2-quantitative"
+            value="quantitative"
+            type="radio"
+            checked={this.state.cat2Type === 'quantitative'}
+            onChange={this.updateCat2Type}
+            required
+          />
+          <label htmlFor="cat2-quantitative">Quantitative (numbers)</label>
+          <input
+            name="cat2-type"
+            id="cat2-qualitative"
+            value="qualitative"
+            type="radio"
+            checked={this.state.cat2Type === 'qualitative'}
+            onChange={this.updateCat2Type}
+            required
+          />
+          <label htmlFor="cat2-qualitative">Qualitative (words)</label>
+        </div>
+        <div>
+          <label htmlFor="cat2-name">Category name:</label>{' '}
+          <input
+            name="cat2-name"
+            id="cat2-name"
+            type="text"
+            value={this.state.cat2Name}
+            onChange={this.updateCat2Name}
+          />
+        </div>
+        <div>
+          <textarea
+            id="cat2-vals"
+            name="cat2-vals"
+            rows="26"
+            columns="20"
+            placeholder="Enter values here, one on each line."
+            value={this.state.cat2Vals}
+            onChange={this.updateCat2Vals}
+          />
+        </div>
+      </div>
+    );
     let primaryCategory;
     let secondaryCategory;
     const { primaryCat } = this.state;
     if (primaryCat === 'cat1') {
-      primaryCategory = (
-        <div
-          className="category1"
-          onDragStart={(event) => this.onDragStart(event, "category1")}
-          draggable
-        >
-          <div>
-            <ValidationError message={this.validateNumbersCat1()} />
-          </div>
-          <div>
-            <input
-              name="cat1-type"
-              id="cat1-quantitative"
-              value="quantitative"
-              type="radio"
-              checked={this.state.cat1Type === 'quantitative'}
-              onChange={this.updateCat1Type}
-              required
-            />
-            <label htmlFor="cat1-quantitative">Quantitative (numbers)</label>
-            <input
-              name="cat1-type"
-              id="cat1-qualitative"
-              value="qualitative"
-              type="radio"
-              checked={this.state.cat1Type === 'qualitative'}
-              onChange={this.updateCat1Type}
-            />
-            <label htmlFor="cat1-qualitative">Qualitative (words)</label>
-          </div>
-          <div>
-            <label htmlFor="cat1-name">Category name:</label>{' '}
-            <input
-              name="cat1-name"
-              id="cat1-name"
-              type="text"
-              value={this.state.cat1Name}
-              onChange={this.updateCat1Name}
-            />
-          </div>
-          <div>
-            <textarea
-              id="cat1-vals"
-              name="cat1-vals"
-              rows="26"
-              columns="20"
-              placeholder="Enter values here, one on each line."
-              value={this.state.cat1Vals}
-              onChange={this.updateCat1Vals}
-            />
-          </div>
-        </div>
-      );
-      secondaryCategory = (
-        <div
-          className="category2"
-          onDragStart={(event) => this.onDragStart(event, "category1")}
-          draggable
-        >
-          <div>
-            <ValidationError message={this.validateNumbersCat2()} />
-            <ValidationError message={this.validateCat2Vals()} />
-          </div>
-          <div>
-  
-            <input
-              name="cat2-type"
-              id="cat2-quantitative"
-              value="quantitative"
-              type="radio"
-              checked={this.state.cat2Type === 'quantitative'}
-              onChange={this.updateCat2Type}
-            />
-            <label htmlFor="cat2-quantitative">Quantitative (numbers)</label>
-            <input
-              name="cat2-type"
-              id="cat2-qualitative"
-              value="qualitative"
-              type="radio"
-              checked={this.state.cat2Type === 'qualitative'}
-              onChange={this.updateCat2Type}
-            />
-            <label htmlFor="cat2-qualitative">Qualitative (words)</label>
-          </div>
-          <div>
-            <label htmlFor="cat2-name">Category name:</label>{' '}
-            <input
-              name="cat2-name"
-              id="cat2-name"
-              type="text"
-              value={this.state.cat2Name}
-              onChange={this.updateCat2Name}
-            />
-          </div>
-          <div>
-            <textarea
-              id="cat2-vals"
-              name="cat2-vals"
-              rows="26"
-              columns="20"
-              placeholder="Enter values here, one on each line."
-              value={this.state.cat2Vals}
-              onChange={this.updateCat2Vals}
-            />
-          </div>
-        </div>
-      );
+      primaryCategory = category1;
+      secondaryCategory = category2;
     } else {
-      secondaryCategory = (
-        <div
-          className="category1"
-          onDragStart={(event) => this.onDragStart(event, "category1")}
-          draggable
-        >
-          <div>
-            <ValidationError message={this.validateNumbersCat1()} />
-          </div>
-          <div>
-            <input
-              name="cat1-type"
-              id="cat1-quantitative"
-              value="quantitative"
-              type="radio"
-              checked={this.state.cat1Type === 'quantitative'}
-              onChange={this.updateCat1Type}
-              required
-            />
-            <label htmlFor="cat1-quantitative">Quantitative (numbers)</label>
-            <input
-              name="cat1-type"
-              id="cat1-qualitative"
-              value="qualitative"
-              type="radio"
-              checked={this.state.cat1Type === 'qualitative'}
-              onChange={this.updateCat1Type}
-            />
-            <label htmlFor="cat1-qualitative">Qualitative (words)</label>
-          </div>
-          <div>
-            <label htmlFor="cat1-name">Category name:</label>{' '}
-            <input
-              name="cat1-name"
-              id="cat1-name"
-              type="text"
-              value={this.state.cat1Name}
-              onChange={this.updateCat1Name}
-            />
-          </div>
-          <div>
-            <textarea
-              id="cat1-vals"
-              name="cat1-vals"
-              rows="26"
-              columns="20"
-              placeholder="Enter values here, one on each line."
-              value={this.state.cat1Vals}
-              onChange={this.updateCat1Vals}
-            />
-          </div>
-        </div>
-      );
-      primaryCategory = (
-        <div
-          className="category2"
-          onDragStart={(event) => this.onDragStart(event, "category1")}
-          draggable
-        >
-          <div>
-            <ValidationError message={this.validateNumbersCat2()} />
-            <ValidationError message={this.validateCat2Vals()} />
-          </div>
-          <div>
-  
-            <input
-              name="cat2-type"
-              id="cat2-quantitative"
-              value="quantitative"
-              type="radio"
-              checked={this.state.cat2Type === 'quantitative'}
-              onChange={this.updateCat2Type}
-            />
-            <label htmlFor="cat2-quantitative">Quantitative (numbers)</label>
-            <input
-              name="cat2-type"
-              id="cat2-qualitative"
-              value="qualitative"
-              type="radio"
-              checked={this.state.cat2Type === 'qualitative'}
-              onChange={this.updateCat2Type}
-            />
-            <label htmlFor="cat2-qualitative">Qualitative (words)</label>
-          </div>
-          <div>
-            <label htmlFor="cat2-name">Category name:</label>{' '}
-            <input
-              name="cat2-name"
-              id="cat2-name"
-              type="text"
-              value={this.state.cat2Name}
-              onChange={this.updateCat2Name}
-            />
-          </div>
-          <div>
-            <textarea
-              id="cat2-vals"
-              name="cat2-vals"
-              rows="26"
-              columns="20"
-              placeholder="Enter values here, one on each line."
-              value={this.state.cat2Vals}
-              onChange={this.updateCat2Vals}
-            />
-          </div>
-        </div>
-      );
+      secondaryCategory = category1;
+      primaryCategory = category2;
     }
 
     return (
@@ -525,23 +424,25 @@ class MakeGroupsPage extends Component {
             </div>
           </fieldset>
           <div className="make-groups-page__form--student-data">
-            <fieldset>
+            <fieldset className="make-groups-page__alias-section">
               <legend>Alias (list of names or other identifier):</legend>
               <div>
                 <ValidationError message={this.validateAliases()} />
                 <ValidationError message={this.validateDataSize()} />
               </div>
-              <textarea
-                id="aliases"
-                name="aliases"
-                rows="26"
-                columns="20"
-                placeholder="Enter aliases here, one on each line."
-                value={this.state.aliases}
-                onChange={this.updateAliases}
-              />
+              <div className="make-groups-page__aliases">
+                <textarea
+                  id="aliases"
+                  name="aliases"
+                  rows="26"
+                  columns="20"
+                  placeholder="Enter aliases here, one on each line."
+                  value={this.state.aliases}
+                  onChange={this.updateAliases}
+                />
+              </div>
             </fieldset>
-            <fieldset>
+            <fieldset className="make-groups-page__primary-section">
               <legend>Primary category:</legend>
               <div
                 onDragOver={(event) => this.onDragOver(event)}
@@ -551,7 +452,7 @@ class MakeGroupsPage extends Component {
                 {primaryCategory}
               </div>
             </fieldset>
-            <fieldset>
+            <fieldset className="make-groups-page__secondary-section">
               <legend>Secondary category:</legend>
               <div
                 onDragOver={(event) => this.onDragOver(event)}
