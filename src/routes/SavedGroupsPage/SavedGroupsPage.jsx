@@ -40,6 +40,8 @@ class SavedGroupsPage extends Component {
       Done: [],
     }
 
+    console.log(tasks);
+
     this.state.tasks.forEach((task) => {
       tasks[task.type].push(
         <div 

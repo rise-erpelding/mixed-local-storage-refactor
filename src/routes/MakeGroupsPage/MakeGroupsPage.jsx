@@ -7,7 +7,7 @@ import ValidationError from '../../components/ValidationError/ValidationError';
 import './MakeGroupsPage.css';
 
 import createDifferentGroups from '../../services/groupingAlgorithms/differentGroups';
-import createSimilarGroups from '../../services/groupingAlgorithms/similarGroups'; 
+import createSimilarGroups from '../../services/groupingAlgorithms/similarGroups';
 import MakeGroupsService from '../../services/make-groups-service';
 import store from '../../services/store';
 
@@ -27,6 +27,8 @@ class MakeGroupsPage extends Component {
       cat1Vals: '',
       cat2Name: '',
       cat2Vals: '',
+      primaryCat: 'cat1',
+
     }
   }
 
@@ -39,10 +41,9 @@ class MakeGroupsPage extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { addData, addStudentArr, addGroupings } = this.context;
+    const { addData, addStudentArr } = this.context;
     const { history } = this.props;
-    // console.log('pretending to submit form');
-    const { 
+    const {
       groupSize,
       groupingType,
       cat1Type,
@@ -52,53 +53,58 @@ class MakeGroupsPage extends Component {
       cat1Vals,
       cat2Name,
       cat2Vals,
+      primaryCat,
     } = this.state;
     addData(this.state);
 
-    // create arrays with category values, trimming whitespace
-    let cat1ValsArray = this.createTrimmedArr(cat1Vals);
-    let cat2ValsArray = this.createTrimmedArr(cat2Vals);
+    let primaryValsArr = primaryCat === 'cat1' ? this.createTrimmedArr(cat1Vals) : this.createTrimmedArr(cat2Vals);
+    let secondaryValsArr = primaryCat === 'cat1' ? this.createTrimmedArr(cat2Vals) : this.createTrimmedArr(cat1Vals);
+    const primaryCatName = primaryCat === 'cat1' ? cat1Name : cat2Name;
+    const secondaryCatName = primaryCat === 'cat1' ? cat2Name : cat1Name;
+    const primaryCatType = primaryCat === 'cat1' ? cat1Type : cat2Type;
+    const secondaryCatType = primaryCat === 'cat1' ? cat2Type: cat1Type;
+
     // convert any numerical categories to numbers
     if (cat1Type === 'quantitative') {
-      cat1ValsArray = cat1ValsArray.map((val) => Number(val));
+      primaryValsArr = primaryValsArr.map((val) => Number(val));
     }
     if (cat2Type === 'quantitative') {
-      cat2ValsArray = cat2ValsArray.map((val) => Number(val));
+      secondaryValsArr = secondaryValsArr.map((val) => Number(val));
     }
     // create an arr of objs where each student with their data is an obj, add students and values
     const mixedStudentArray = [];
     const aliasesArray = this.createTrimmedArr(aliases);
     aliasesArray.forEach((alias) => mixedStudentArray.push({ alias: alias }));
-    MakeGroupsService.addEachToObj(mixedStudentArray, cat1ValsArray, cat1Name);
-    MakeGroupsService.addEachToObj(mixedStudentArray, cat2ValsArray, cat2Name);
+    MakeGroupsService.addEachToObj(mixedStudentArray, primaryValsArr, primaryCatName);
+    MakeGroupsService.addEachToObj(mixedStudentArray, secondaryValsArr, secondaryCatName);
 
-    
+
     // if dealing with quantitative data, also separate into categorizable levels
     // (number of levels determined by group size)
     // and then add the level to the student object for any quantitative category
     // let createGroupsWith = [];
-    if (cat1Type === 'quantitative') {
-      const studentScoreLevel = MakeGroupsService.getLevel(cat1ValsArray, groupSize);
-      MakeGroupsService.addEachToObj(mixedStudentArray, studentScoreLevel, cat1Name + ' Level');
+    if (primaryCatType === 'quantitative') {
+      const studentScoreLevel = MakeGroupsService.getLevel(primaryValsArr, groupSize);
+      MakeGroupsService.addEachToObj(mixedStudentArray, studentScoreLevel, primaryCat + ' Level');
       // createGroupsWith = [...mixedStudentArray]
     }
     // if (cat1Type === 'qualitative') {
     //   // reorder values
     //   createGroupsWith = MakeGroupsService.mostFrequentFirst(mixedStudentArray, cat1Name);
     // }
-    if (cat2Type === 'quantitative') {
-      const studentScoreLevel = MakeGroupsService.getLevel(cat2ValsArray, groupSize);
-      MakeGroupsService.addEachToObj(mixedStudentArray, studentScoreLevel, cat2Name + ' Level')
+    if (secondaryCatType === 'quantitative') {
+      const studentScoreLevel = MakeGroupsService.getLevel(secondaryValsArr, groupSize);
+      MakeGroupsService.addEachToObj(mixedStudentArray, studentScoreLevel, secondaryCatName + ' Level')
     }
 
 
     if (groupingType === 'mixed') {
-      const groups = createDifferentGroups(mixedStudentArray, groupSize, cat1Name, cat2Name);
+      const groups = createDifferentGroups(mixedStudentArray, groupSize, primaryCatName, secondaryCatName);
       this.addGroupNum(groups, mixedStudentArray);
       addStudentArr(mixedStudentArray);
     }
     if (groupingType === 'similar') {
-      const groups = createSimilarGroups(mixedStudentArray, groupSize, cat1Name, cat2Name);
+      const groups = createSimilarGroups(mixedStudentArray, groupSize, primaryCatName, secondaryCatName);
       this.addGroupNum(groups, mixedStudentArray);
       addStudentArr(mixedStudentArray);
     }
@@ -177,11 +183,11 @@ class MakeGroupsPage extends Component {
     const cat2ValsArray = cat2Vals.split(`\n`).filter((val) => !!val.trim().length);
 
     // checks for 3 valid conditions:
-      // 1. if there are only aliases in the form (then will just make random groups)
-      // 2. if there are aliases & category 1 values, and each has the same number of lines (then will only work with one category)
-      // 3. if aliases and both categories are filled in, and each has the same number of lines (then will take into consideration both categories)
+    // 1. if there are only aliases in the form (then will just make random groups)
+    // 2. if there are aliases & category 1 values, and each has the same number of lines (then will only work with one category)
+    // 3. if aliases and both categories are filled in, and each has the same number of lines (then will take into consideration both categories)
     const aliasesOnlyCondition = !cat1ValsArray[0] && !cat2ValsArray[0]; // stays true as long as nothing is in categories
-    const aliasesAndCat1Vals = !cat2ValsArray[0] && (aliasesArray.length === cat1ValsArray.length); 
+    const aliasesAndCat1Vals = !cat2ValsArray[0] && (aliasesArray.length === cat1ValsArray.length);
     const aliasesAndAllCats = aliasesArray.length === cat1ValsArray.length && cat1ValsArray.length === cat2ValsArray.length;
     // as long as one of the conditions is true, no validation message
     if (!(aliasesOnlyCondition || aliasesAndCat1Vals || aliasesAndAllCats)) {
@@ -226,7 +232,7 @@ class MakeGroupsPage extends Component {
     const { aliases } = this.state;
     const { groupSize } = this.state;
     const aliasesArray = aliases.split(`\n`).filter((val) => !!val.trim().length);
-    if (aliasesArray.length/groupSize < 2) {
+    if (aliasesArray.length / groupSize < 2) {
       return `More aliases required in order to make groups of size ${groupSize}`;
     }
   }
@@ -240,67 +246,38 @@ class MakeGroupsPage extends Component {
     history.goBack();
   }
 
+  onDragStart = (event, catName) => {
+    event.dataTransfer.setData("catName", catName);
+  }
+
+  onDragOver = (event) => {
+    event.preventDefault();
+  }
+
+  onDrop = () => {
+    console.log('dropping')
+    const { primaryCat } = this.state;
+    if (primaryCat === 'cat1') {
+      this.setState({ primaryCat: 'cat2' })
+    } else {
+      this.setState({ primaryCat: 'cat1' })
+    }
+  }
+
   render() {
-    return (
-      <main className="make-groups-page">
-        <h1>Group Generator</h1>  
-        <form className="make-groups-page__form" onSubmit={this.handleSubmit}>
-        <fieldset>
-          <legend>Grouping characteristics:</legend>
-          <label htmlFor="group-size">Group size (minimum):</label>
-          <input
-            name="group-size"
-            id="group-size"
-            type="number"
-            min="2"
-            max="20"
-            defaultValue="2"
-            onChange={this.updateGroupSize}
-          />
+    let primaryCategory;
+    let secondaryCategory;
+    const { primaryCat } = this.state;
+    if (primaryCat === 'cat1') {
+      primaryCategory = (
+        <div
+          className="category1"
+          onDragStart={(event) => this.onDragStart(event, "category1")}
+          draggable
+        >
           <div>
-            <input 
-              name="grouping-type"
-              id="grouping-similar"
-              value="similar"
-              type="radio"
-              checked={this.state.groupingType === 'similar'}
-              onChange={this.updateGroupingType}
-              required
-            />
-            <label htmlFor="grouping-similar">Group members are similar</label>
-            <input
-              name="grouping-type"
-              id="grouping-mixed"
-              value="mixed"
-              type="radio"
-              checked={this.state.groupingType === 'mixed'}
-              onChange={this.updateGroupingType}
-            />
-            <label htmlFor="grouping-mixed">Group members are diverse</label>
+            <ValidationError message={this.validateNumbersCat1()} />
           </div>
-        </fieldset>
-        <div className="make-groups-page__form--student-data">
-        <fieldset>
-          <legend>Alias (list of names or other identifier):</legend>
-          <div>
-            <ValidationError message={this.validateAliases()} />
-            <ValidationError message={this.validateDataSize()} />
-          </div>
-          <textarea
-              id="aliases"
-              name="aliases"
-              rows="26"
-              columns="20"
-              placeholder="Enter aliases here, one on each line."
-              value={this.state.aliases}
-              onChange={this.updateAliases}
-            />
-        </fieldset>
-        <fieldset>
-          <legend>Primary category:</legend>
-          <div>
-              <ValidationError message={this.validateNumbersCat1()} />
-            </div>
           <div>
             <input
               name="cat1-type"
@@ -323,15 +300,15 @@ class MakeGroupsPage extends Component {
             <label htmlFor="cat1-qualitative">Qualitative (words)</label>
           </div>
           <div>
-              <label htmlFor="cat1-name">Category name:</label>{' '}
-              <input
-                name="cat1-name"
-                id="cat1-name"
-                type="text"
-                value={this.state.cat1Name}
-                onChange={this.updateCat1Name}
-              />
-            </div>
+            <label htmlFor="cat1-name">Category name:</label>{' '}
+            <input
+              name="cat1-name"
+              id="cat1-name"
+              type="text"
+              value={this.state.cat1Name}
+              onChange={this.updateCat1Name}
+            />
+          </div>
           <div>
             <textarea
               id="cat1-vals"
@@ -343,15 +320,20 @@ class MakeGroupsPage extends Component {
               onChange={this.updateCat1Vals}
             />
           </div>
-        </fieldset>
-        <fieldset>
-          <legend>Secondary category:</legend>
+        </div>
+      );
+      secondaryCategory = (
+        <div
+          className="category2"
+          onDragStart={(event) => this.onDragStart(event, "category1")}
+          draggable
+        >
           <div>
-              <ValidationError message={this.validateNumbersCat2()} />
-              <ValidationError message={this.validateCat2Vals()} />
-            </div>
+            <ValidationError message={this.validateNumbersCat2()} />
+            <ValidationError message={this.validateCat2Vals()} />
+          </div>
           <div>
-
+  
             <input
               name="cat2-type"
               id="cat2-quantitative"
@@ -359,7 +341,7 @@ class MakeGroupsPage extends Component {
               type="radio"
               checked={this.state.cat2Type === 'quantitative'}
               onChange={this.updateCat2Type}
-              />
+            />
             <label htmlFor="cat2-quantitative">Quantitative (numbers)</label>
             <input
               name="cat2-type"
@@ -372,17 +354,17 @@ class MakeGroupsPage extends Component {
             <label htmlFor="cat2-qualitative">Qualitative (words)</label>
           </div>
           <div>
-              <label htmlFor="cat2-name">Category name:</label>{' '}
-              <input
-                name="cat2-name"
-                id="cat2-name"
-                type="text"
-                value={this.state.cat2Name}
-                onChange={this.updateCat2Name}
-              />
-            </div>
+            <label htmlFor="cat2-name">Category name:</label>{' '}
+            <input
+              name="cat2-name"
+              id="cat2-name"
+              type="text"
+              value={this.state.cat2Name}
+              onChange={this.updateCat2Name}
+            />
+          </div>
           <div>
-          <textarea
+            <textarea
               id="cat2-vals"
               name="cat2-vals"
               rows="26"
@@ -392,8 +374,194 @@ class MakeGroupsPage extends Component {
               onChange={this.updateCat2Vals}
             />
           </div>
-        </fieldset>
         </div>
+      );
+    } else {
+      secondaryCategory = (
+        <div
+          className="category1"
+          onDragStart={(event) => this.onDragStart(event, "category1")}
+          draggable
+        >
+          <div>
+            <ValidationError message={this.validateNumbersCat1()} />
+          </div>
+          <div>
+            <input
+              name="cat1-type"
+              id="cat1-quantitative"
+              value="quantitative"
+              type="radio"
+              checked={this.state.cat1Type === 'quantitative'}
+              onChange={this.updateCat1Type}
+              required
+            />
+            <label htmlFor="cat1-quantitative">Quantitative (numbers)</label>
+            <input
+              name="cat1-type"
+              id="cat1-qualitative"
+              value="qualitative"
+              type="radio"
+              checked={this.state.cat1Type === 'qualitative'}
+              onChange={this.updateCat1Type}
+            />
+            <label htmlFor="cat1-qualitative">Qualitative (words)</label>
+          </div>
+          <div>
+            <label htmlFor="cat1-name">Category name:</label>{' '}
+            <input
+              name="cat1-name"
+              id="cat1-name"
+              type="text"
+              value={this.state.cat1Name}
+              onChange={this.updateCat1Name}
+            />
+          </div>
+          <div>
+            <textarea
+              id="cat1-vals"
+              name="cat1-vals"
+              rows="26"
+              columns="20"
+              placeholder="Enter values here, one on each line."
+              value={this.state.cat1Vals}
+              onChange={this.updateCat1Vals}
+            />
+          </div>
+        </div>
+      );
+      primaryCategory = (
+        <div
+          className="category2"
+          onDragStart={(event) => this.onDragStart(event, "category1")}
+          draggable
+        >
+          <div>
+            <ValidationError message={this.validateNumbersCat2()} />
+            <ValidationError message={this.validateCat2Vals()} />
+          </div>
+          <div>
+  
+            <input
+              name="cat2-type"
+              id="cat2-quantitative"
+              value="quantitative"
+              type="radio"
+              checked={this.state.cat2Type === 'quantitative'}
+              onChange={this.updateCat2Type}
+            />
+            <label htmlFor="cat2-quantitative">Quantitative (numbers)</label>
+            <input
+              name="cat2-type"
+              id="cat2-qualitative"
+              value="qualitative"
+              type="radio"
+              checked={this.state.cat2Type === 'qualitative'}
+              onChange={this.updateCat2Type}
+            />
+            <label htmlFor="cat2-qualitative">Qualitative (words)</label>
+          </div>
+          <div>
+            <label htmlFor="cat2-name">Category name:</label>{' '}
+            <input
+              name="cat2-name"
+              id="cat2-name"
+              type="text"
+              value={this.state.cat2Name}
+              onChange={this.updateCat2Name}
+            />
+          </div>
+          <div>
+            <textarea
+              id="cat2-vals"
+              name="cat2-vals"
+              rows="26"
+              columns="20"
+              placeholder="Enter values here, one on each line."
+              value={this.state.cat2Vals}
+              onChange={this.updateCat2Vals}
+            />
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <main className="make-groups-page">
+        <h1>Group Generator</h1>
+        <form className="make-groups-page__form" onSubmit={this.handleSubmit}>
+          <fieldset>
+            <legend>Grouping characteristics:</legend>
+            <label htmlFor="group-size">Group size (minimum):</label>
+            <input
+              name="group-size"
+              id="group-size"
+              type="number"
+              min="2"
+              max="20"
+              defaultValue="2"
+              onChange={this.updateGroupSize}
+            />
+            <div>
+              <input
+                name="grouping-type"
+                id="grouping-similar"
+                value="similar"
+                type="radio"
+                checked={this.state.groupingType === 'similar'}
+                onChange={this.updateGroupingType}
+                required
+              />
+              <label htmlFor="grouping-similar">Group members are similar</label>
+              <input
+                name="grouping-type"
+                id="grouping-mixed"
+                value="mixed"
+                type="radio"
+                checked={this.state.groupingType === 'mixed'}
+                onChange={this.updateGroupingType}
+              />
+              <label htmlFor="grouping-mixed">Group members are diverse</label>
+            </div>
+          </fieldset>
+          <div className="make-groups-page__form--student-data">
+            <fieldset>
+              <legend>Alias (list of names or other identifier):</legend>
+              <div>
+                <ValidationError message={this.validateAliases()} />
+                <ValidationError message={this.validateDataSize()} />
+              </div>
+              <textarea
+                id="aliases"
+                name="aliases"
+                rows="26"
+                columns="20"
+                placeholder="Enter aliases here, one on each line."
+                value={this.state.aliases}
+                onChange={this.updateAliases}
+              />
+            </fieldset>
+            <fieldset>
+              <legend>Primary category:</legend>
+              <div
+                onDragOver={(event) => this.onDragOver(event)}
+                onDrop={this.onDrop}
+              >
+                Click and drag to switch primary and secondary category.
+                {primaryCategory}
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Secondary category:</legend>
+              <div
+                onDragOver={(event) => this.onDragOver(event)}
+                onDrop={this.onDrop}
+              >
+                Click and drag to switch primary and secondary category.
+                {secondaryCategory}
+              </div>
+            </fieldset>
+          </div>
           <div>
             <ValidationError message={this.validateTextareaLines()} />
           </div>
@@ -416,7 +584,7 @@ class MakeGroupsPage extends Component {
               Generate Groups
           </button>
           </div>
-      </form>
+        </form>
       </main>
     );
   }
