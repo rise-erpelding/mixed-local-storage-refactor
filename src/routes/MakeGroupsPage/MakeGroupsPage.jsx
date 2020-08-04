@@ -41,7 +41,7 @@ class MakeGroupsPage extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { addData, addStudentArr } = this.context;
+    const { addData, addStudentArr, addCatNames } = this.context;
     const { history } = this.props;
     const {
       groupSize,
@@ -101,11 +101,13 @@ class MakeGroupsPage extends Component {
     if (groupingType === 'mixed') {
       const groups = createDifferentGroups(mixedStudentArray, groupSize, primaryCatName, secondaryCatName);
       this.addGroupNum(groups, mixedStudentArray);
+      addCatNames(primaryCatName, secondaryCatName);
       addStudentArr(mixedStudentArray);
     }
     if (groupingType === 'similar') {
       const groups = createSimilarGroups(mixedStudentArray, groupSize, primaryCatName, secondaryCatName);
       this.addGroupNum(groups, mixedStudentArray);
+      addCatNames(primaryCatName, secondaryCatName);
       addStudentArr(mixedStudentArray);
     }
     history.push('/groups-made')
