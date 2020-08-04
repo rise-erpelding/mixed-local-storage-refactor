@@ -8,48 +8,38 @@ class GroupsMadePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      groupings: [],
       show: false,
+      students: [],
+      groups: [],
       groupingName: '',
       className: '',
     }
   }
 
   componentDidMount() {
-    // const { groupings } = this.context;
-    const groupings = ls.get('groupings');
-    console.log(groupings);
-    this.setState({ groupings: groupings });
+    const students = ls.get('studentArr');
+    console.log(students);
+    this.setState({ students: students });
+    this.getGroups(students);
+  }
+
+
+  getGroups = (studentsArr) => {
+    const groupNums = [];
+    // get all the group numbers for all the students and push into arr
+    studentsArr.forEach((student) => {
+      groupNums.push(student.groupNum);
+    })
+    // create array with a set containing only unique items
+    const groups = Array.from(new Set(groupNums));
+    groups.sort((a, b) => a - b);
+    this.setState({ groups: groups });
+    console.log(groups);
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.matchExistingAlias();
     this.showSaveModal();
-  }
-
-  matchExistingAlias = () => {
-    const studentArr = ls.get('studentArr');
-    const { groupings } = this.state;
-    const indexesToCheck = [];
-    groupings.forEach((arr, idx) => {
-      arr.forEach((el, i) => {
-        if (typeof el !== 'object') {
-          indexesToCheck.push([idx, i]);
-        }
-      })
-    })
-    // console.log(indexesToCheck);
-    indexesToCheck.forEach((indexes) => {
-      const str = groupings[indexes[0]][indexes[1]];
-      studentArr.forEach((stuObj) => {
-        if (stuObj.alias === str) {
-          groupings[indexes[0]].splice(indexes[1], 1, stuObj);
-        }
-      })
-    })
-    this.setState({ groupings: groupings});
-    console.log('matchExistingAlias ran');
   }
 
   handleClickCancel = () => {
@@ -61,12 +51,6 @@ class GroupsMadePage extends Component {
     const { history } = this.props;
     history.goBack();
   }
-
-  updateStudent = (groupIndex, studentIndex, e) => {
-    const { groupings } = this.state;
-    groupings[groupIndex].splice(studentIndex, 1, e.target.value);
-    this.setState({ groupings: groupings });
-  }
   
   showSaveModal = () => {
     this.setState({ show: true });
@@ -76,36 +60,76 @@ class GroupsMadePage extends Component {
     this.setState({ show: false });
   }
 
-  saveGroups = (groupName, groupClass) => {
-    const { groupings } = this.state;
-    this.setState({ groupingName: groupName, className: groupClass })
-    console.log(`saving groups to database under name ${groupName} and class ${groupClass}:`);
-    console.log(groupings);
+  saveGroups = (groupingName, className) => {
+    // currently this isn't really functional but we do update the students in local storage at this point
+    this.setState({ groupingName, className });
+    const { students } = this.state;
+    const { addStudentArr } = this.context;
+    addStudentArr(students);
+    console.log(`saving groups to database under name ${groupingName} and class ${className}`);
+  }
+
+  handleDragStart = (event, student) => {
+    event.dataTransfer.setData("student", student);
+  }
+
+  onDragOver = (event) => {
+    event.preventDefault();
+  }
+
+  handleDrop = (event, newGroup) => {
+    const { students } = this.state;
+    const draggedStudent = event.dataTransfer.getData("student");
+    // then set state for students
+    let updatedStudent = students.filter((student) => {
+      if (draggedStudent === student.alias) {
+        student.groupNum = newGroup;
+      }
+      return student;
+    })
+    this.setState({ ...this.state, updatedStudent });
   }
 
   render() {
-    const { groupings, show } = this.state;
-    const showGroupings = groupings.map((group, idx) => (
-      <fieldset key={idx + 1} className="groups-made-page__group">
-        <legend>Group {idx + 1}</legend>
-          {group.map((stu, i) => (
-            <div key={(idx + 1) + '-' + (i + 1)}>
-            <input 
-              name={'group' + (idx + 1) + '-' + (i + 1)}
-              id={'group' + (idx + 1) + '-' + (i + 1)}
-              defaultValue={stu.alias}
-              onChange={(e) => this.updateStudent(idx, i, e)}
-            />
-            </div>
-          ))}
-          
-      </fieldset>
-    ))
+    const { show, groups, students } = this.state;
+    const primaryCat = ls.get('primaryCat');
+    const secondaryCat = ls.get('secondaryCat');
+    const showGroupings = (
+      groups.map((group) => (
+        <div
+          key={group}
+          className="groups-made-page__group"
+          onDragOver={(event) => this.onDragOver(event)}
+          onDrop={(event) => {this.handleDrop(event, group)}}
+        >
+          Group {group}
+          {students.map((student, idx) => {
+            if (student.groupNum === group) {
+              return (
+                <div 
+                  key={idx + 1}
+                  className="groups-made-page__student"
+                  onDragStart={(event) => {this.handleDragStart(event, student.alias)}}
+                  draggable
+                >
+                  {student.alias}
+                <div className="groups-made-page__tooltip">
+                  <p>{`${primaryCat}: ${student[primaryCat]}`}</p>
+                  <p>{`${secondaryCat}: ${student[secondaryCat]}`}</p>
+                </div>
+                </div>
+              )
+            }
+            return '';
+          })}
+        </div>
+      )
+    ));
 
     return (
       <main className="groups-made-page">
         <h1>Groupings</h1>
-        <p>Click on a student to edit the group</p>
+        <p>Drag and drop students to rearrange groups.</p>
         <form className="groups-made-page__form" onSubmit={this.handleSubmit}>
           <div className="groups-made-page__groupings">
           {showGroupings}

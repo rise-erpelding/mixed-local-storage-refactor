@@ -6,6 +6,7 @@ import MixEdContext from '../../context/MixEdContext';
 import LandingPage from '../../routes/LandingPage/LandingPage';
 import MakeGroupsPage from '../../routes/MakeGroupsPage/MakeGroupsPage';
 import GroupsMadePage from '../../routes/GroupsMadePage/GroupsMadePage';
+import SavedGroupsPage from '../../routes/SavedGroupsPage/SavedGroupsPage';
 import NavBar from '../NavBar/NavBar';
 
 import ls from 'local-storage';
@@ -17,7 +18,6 @@ class App extends Component {
     super(props);
     this.state = {
       data: {},
-      groupings: [],
       studentArr: [],
     }
   }
@@ -32,14 +32,9 @@ class App extends Component {
     ls.set('studentArr', studentArr);
   }
 
-  addGroupings = (groupings) => {
-    this.setState({ groupings: groupings });
-    ls.set('groupings', groupings);
-  }
-
-  updateGroupings = (groupings) => {
-    this.setState({ groupings: groupings });
-    ls.set('groupings', groupings);
+  addCatNames = (primaryCatName, secondaryCatName) => {
+    ls.set('primaryCat', primaryCatName);
+    ls.set('secondaryCat', secondaryCatName);
   }
 
   render() {
@@ -49,8 +44,8 @@ class App extends Component {
       data,
       groupings,
       addData: this.addData,
-      addGroupings: this.addGroupings,
       addStudentArr: this.addStudentArr,
+      addCatNames: this.addCatNames,
     };
 
     return (
@@ -70,6 +65,10 @@ class App extends Component {
           <Route
             path="/groups-made"
             component={GroupsMadePage}
+          />
+          <Route
+            path="/my-groups"
+            component={SavedGroupsPage}
           />
         </Switch>
         </MixEdContext.Provider>

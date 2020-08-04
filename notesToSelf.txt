@@ -1,0 +1,19 @@
+How drag and drop works in SavedGroupsPage:
+
+1. Initializes state with tasks, an array that contains all the draggable things
+2. Render return:
+  a. Drag container as the root
+  b. A div for each of the sections, in progress and done
+    -These sections each have an event listener for onDragOver and onDrop, which correspond to the methods, onDragover and onDrop
+  c. The children for each section correspond to some javascript above in the render method:
+3. Also in the render method: tasks, an object that contains an array for each section, in progress and done
+4. We will use state to create a div for each of the tasks in state and then push it into one of the arrays in the render method so that it will be rendered in the correct section
+
+
+
+How we make drag and drop work in MakeGroupsPage:
+Switch to category A and category b
+or
+add to state a marker that will tell us which is the primary category, 1 or 2. we'll use this when we process the data to make groups later on. Initially category 1 is the primary but if we end up dropping anything it would switch.
+
+onDragStart = 

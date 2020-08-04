@@ -2,7 +2,7 @@
 // so that the students belonging to the most common categories appear first
 
 function createDifferentGroups(arr, groupSize, primaryCatKey, secondaryCatKey) {
-  let pool = arr;
+  let pool = [...arr];
   let groups = [];
   let lastGroupPrimaryCats = [];
   let lastGroupSecondaryCats = [];
