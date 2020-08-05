@@ -1,43 +1,96 @@
-.saved-groups-page {
-  height: 100vh;
-  margin: 0 auto;
+.class-tab {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  margin: 0;
 }
 
-.drag-container {
-  text-align: center;
+.class-tab > li {
+  border: 1px solid black;
+  border-radius: 10px 10px 0px 0px;
+  padding: 8px;
+  margin: 0px 5px;
 }
 
-.head {
-  display: inline-block;
+.class__selected {
+  background-color: gray;
+}
+
+.class__new {
+  background-color: silver;
+}
+
+.class-groupings {
+  border: 1px solid
+}
+
+.class-groupings {
+ display: flex;
+ flex-direction: row;
+}
+
+.groupings-list {
+   border: 1px solid black;
+   background-color: gainsboro;
+   flex-grow: 1;
+}
+
+.groupings {
+  border: 1px solid black;
+  flex-grow: 5;
+}
+
+.groupings-list__ul {
   margin: 0;
   padding: 0;
+  list-style: none;
+}
+
+.groupings-list__ul > li {
+  margin: 5px;
+}
+
+.groupings-list__ul > li > button {
+  width: 70%;
+}
+
+.grouping__selected {
   background-color: gray;
-  width: 100%;
 }
 
-.droppable {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  right: 0;
-  top: 10;
-  background-color: #9E9E9E;
-  border-left: 2px dotted red;
+.grouping__new {
+  background-color: silver;
 }
 
-.draggable {
-  width: 100px;
-  height: 100px;
-  background-color: yellow;
-  margin: 10px auto;
+.groupings {
+  padding: 20px 0px;
+  background-color: gainsboro;
 }
 
-.inProgress {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  left: 0;
-  top: 10;
-  background-color: #EEEEEE;
-  border-right: 2px dotted red;
+.groupings__groups {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+.groupings__groups > div {
+  border: 1px solid black;
+  min-width: 130px;
+}
+
+.groupings__groups > div > ul {
+  text-align: left;
+}
+
+.group {
+  background-color: white;
+  padding: 10px;
+}
+
+.group > input {
+  border: 1px solid white;
+}
+
+.group > input:hover {
+  border: 1px solid black;
 }

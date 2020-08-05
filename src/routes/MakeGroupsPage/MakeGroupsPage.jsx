@@ -85,8 +85,8 @@ class MakeGroupsPage extends Component {
     // let createGroupsWith = [];
     if (primaryCatType === 'quantitative') {
       const studentScoreLevel = MakeGroupsService.getLevel(primaryValsArr, groupSize);
-      primaryCatName = studentScoreLevel;
-      MakeGroupsService.addEachToObj(mixedStudentArray, studentScoreLevel, primaryCat + ' Level');
+      MakeGroupsService.addEachToObj(mixedStudentArray, studentScoreLevel, primaryCatName + ' Level');
+      // primaryCatName = studentScoreLevel;
       // createGroupsWith = [...mixedStudentArray]
     }
     // if (cat1Type === 'qualitative') {
@@ -95,7 +95,7 @@ class MakeGroupsPage extends Component {
     // }
     if (secondaryCatType === 'quantitative') {
       const studentScoreLevel = MakeGroupsService.getLevel(secondaryValsArr, groupSize);
-      secondaryCatName = studentScoreLevel;
+      // secondaryCatName = studentScoreLevel;
       MakeGroupsService.addEachToObj(mixedStudentArray, studentScoreLevel, secondaryCatName + ' Level')
     }
 
@@ -244,7 +244,7 @@ class MakeGroupsPage extends Component {
   }
 
   useSampleData = () => {
-    this.setState(store.sampleData);
+    this.setState(store.sampleData1);
   }
 
   handleClickCancel = () => {
