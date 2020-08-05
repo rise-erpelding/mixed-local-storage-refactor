@@ -1,90 +1,116 @@
-function createSimilarGroups(arr, groupSize, primaryCatKey, secondaryCatKey) {
+/* takes an array of student objects,
+groupSize as number,
+priorities which is an array of the categories taken into consideration when grouping */
+function createSimilarGroups(arr, groupSize, priorities) {
   let pool = [...arr];
   let groups = [];
-  let lastGroupPrimaryCats = [];
-  let lastGroupSecondaryCats = [];
   
-
   while (pool.length > 0) {
-    let sameStudentAdded = false;
-    let sameDiffStudentAdded = false;
+    // the first student in a new group can be whatever student is first in the pool
     if ((!groups.length) || (groups[groups.length - 1].length === groupSize)) {
-      // add the first element from pool within a new array to groups
-      groups.push([pool[0]]);
-      // keep track of the house that we added to the group as well as the learning style in arrays
-      lastGroupPrimaryCats.push(pool[0][primaryCatKey]);
-      lastGroupSecondaryCats.push(pool[0][secondaryCatKey]);
-
-      // then delete the first element from the pool so we don't add it again
-      pool.splice(0, 1);
-      sameStudentAdded = true;
+      addFirstToGroup(pool, groups);
     }
-    // otherwise if the last group size is not 3
     else {
-      //
-      for (let i = 0; i < pool.length; i++) {
-        let iPrimaryCat = pool[i][primaryCatKey];
-        let iSecondaryCat = pool[i][secondaryCatKey];
-        // if there is an index in lastGroupPrimaryCats that matches iPrimaryCat and same for secondary cats
-        // basically if we find iPrimaryCat or iSecondaryCat in lastGroupPrimaryCats or lastGroupSecondaryCats
-        if ((lastGroupPrimaryCats.indexOf(iPrimaryCat) !== -1) && (lastGroupSecondaryCats.indexOf(iSecondaryCat) !== -1)) {
-          // then we can add the categories to the arrays
-          lastGroupPrimaryCats.push(iPrimaryCat);
-          lastGroupSecondaryCats.push(iSecondaryCat);
-          groups[groups.length - 1].push(pool[i]);
-          pool.splice(i, 1);
-          sameStudentAdded = true;
-          // check groupSize, if it's 3 then clear out the cats arrays so we can start over with the next group
-          if (groups[groups.length - 1].length === groupSize) {
-            lastGroupPrimaryCats.splice(0, groupSize);
-            lastGroupSecondaryCats.splice(0, groupSize);
-          }
-          // break out of the i loop because we've found a student to add
-          break;
-        }
-      } // i loop ends here
-    } // else statement ends here
-    // if we get to this point without having added any students, we've looped through the pool and not found anything that fits
-    // we should not be going through the pool again because it will not find anything new
-    // let's go through the pool again but lower our standards
-    if (sameStudentAdded === false) {
-      for (let i = 0; i < pool.length; i++) {
-        
-        let iPrimaryCat = pool[i][primaryCatKey];
-        if (lastGroupPrimaryCats.indexOf(iPrimaryCat) !== -1) {
-          lastGroupPrimaryCats.push(iPrimaryCat);
-          groups[groups.length - 1].push(pool[i]);
-          pool.splice(i, 1);
-          sameDiffStudentAdded = true;
-          if (groups[groups.length - 1].length === groupSize) {
-            lastGroupPrimaryCats.splice(0, groupSize);
-          }
-          break;
-        }
-      } // end of i loop
-    } // end of if block
+      let currGroup = groups[groups.length - 1];
+      /* create an array of priorities to keep track of the properties for each priority
+      in the current group */
+      let groupPriorities = [];
+      priorities.forEach((priority) => {
+        groupPriorities.push({ [priority]: [] })
+      })
+      currGroup.forEach((student) => {
+        groupPriorities.forEach((priority, index) => {
+          const priorityName = Object.keys(priority)[0];
+          groupPriorities[index][priorityName].push(student[priorityName]);
+        })
+      });
+      // then find the next student to add to the last group
+      
+      addNextToGroup(pool, groups, groupPriorities);
+    } 
 
-    // if we get to this point without having added any students
-    // lower the standards again (allow anything in) and just add the next student to the group
-    if (sameStudentAdded === false && sameDiffStudentAdded === false) {
-      groups[groups.length - 1].push(pool[0]);
-      pool.splice(0, 1);
+  }
+
+  /* if number of students doesn't fit into groups of groupSize evenly
+  then we will make slightly larger groups, this takes the smaller group at the end
+  and redistributes it to the previous groups
+  ideally it would be better to anticipate that students will not fit evenly and 
+  adjust groupSize before the end though */
+  if (groups[groups.length - 1].length !== groupSize) {
+    for (let i = groups.length - 2; i >= 0 && !!groups[groups.length - 1].length; i--) {
+      groups[i].push(groups[groups.length - 1][0]);
+      groups[groups.length - 1].splice(0, 1);
     }
-  } // while loop ends here
-    // check the length of the last group to see if it is the appropriate size
-    if (groups[groups.length - 1].length !== groupSize) {
-      // if it is not, we will loop backwards over our groups, starting with the second to last
-      for (let i = groups.length - 2; i >= 0 && !!groups[groups.length - 1].length; i--) {
-        // then push the first element from the last group to the second to last group, third to last group, etc.
-        // so on until we've pushed each person from the last group to a different group
-        groups[i].push(groups[groups.length - 1][0]);
-        // delete the student we just pushed from the last group since we've added them elsewhere
-        groups[groups.length - 1].splice(0, 1);
-      }
-      // delete the empty array
-      groups.pop();
-    }
+    groups.pop();
+  }
+  console.log(pool.length);
   return groups;
 }
 
+function addFirstToGroup(pool, groups) {
+  // adds the first student from the pool to a new group
+  // deletes that first student from the pool
+  groups.push([pool[0]]);
+  pool.splice(0, 1);
+  return groups;
+}
+
+function addNextToGroup(pool, groups, groupPriorities) {
+  // this function finds the most suitable member to add to the group
+  // it will loop through the pool and find a student whose priorities do not match
+  let currGroup = groups[groups.length - 1];
+  let sameCatFound = [];
+  for (let i = 0; i < pool.length; i++) {
+    for (let j = 0; j < groupPriorities.length; j++) {
+      const priorityName = Object.keys(groupPriorities[j])[0];
+      const categoryArr = groupPriorities[j][priorityName];
+      const studentCat = pool[i][priorityName];
+      if (categoryArr.indexOf(studentCat) === -1) {
+        sameCatFound.push(false);
+      } else {
+        sameCatFound.push(true);
+      }
+    }
+    if ((sameCatFound.every((el) => el === true)) || !sameCatFound.length) {
+      currGroup.push(pool[i]);
+      pool.splice(i, 1);
+      return groups;
+    }
+    sameCatFound.splice(0, sameCatFound.length);
+  }
+    groupPriorities.pop();
+    addNextToGroup(pool, groups, groupPriorities);
+
+}
+
 export default createSimilarGroups;
+
+// const studentArr = 
+// [{ "alias": "Blaise", "Hogwarts House": "Slytherin", "History of Magic Grade": 81, "History of Magic Grade Level": 2, "groupNum": 1 },
+// { "alias": "Draco", "Hogwarts House": "Slytherin", "History of Magic Grade": 82, "History of Magic Grade Level": 2, "groupNum": 3 },
+// { "alias": "Cho", "Hogwarts House": "Ravenclaw", "History of Magic Grade": 89, "History of Magic Grade Level": 3, "groupNum": 1 },
+// { "alias": "Colin", "Hogwarts House": "Gryffindor", "History of Magic Grade": 79, "History of Magic Grade Level": 2, "groupNum": 1 },
+// { "alias": "Cormac", "Hogwarts House": "Gryffindor", "History of Magic Grade": 81, "History of Magic Grade Level": 2, "groupNum": 2 },
+// { "alias": "Crabbe", "Hogwarts House": "Slytherin", "History of Magic Grade": 52, "History of Magic Grade Level": 1, "groupNum": 2 },
+// { "alias": "Dean", "Hogwarts House": "Gryffindor", "History of Magic Grade": 75, "History of Magic Grade Level": 1, "groupNum": 3 },
+// { "alias": "Ernie", "Hogwarts House": "Hufflepuff", "History of Magic Grade": 83, "History of Magic Grade Level": 2, "groupNum": 2 },
+// { "alias": "Ginny", "Hogwarts House": "Gryffindor", "History of Magic Grade": 81, "History of Magic Grade Level": 2, "groupNum": 4 },
+// { "alias": "Goyle", "Hogwarts House": "Slytherin", "History of Magic Grade": 55, "History of Magic Grade Level": 1, "groupNum": 4 },
+// { "alias": "Hannah", "Hogwarts House": "Hufflepuff", "History of Magic Grade": 65, "History of Magic Grade Level": 1, "groupNum": 3 },
+// { "alias": "Harry", "Hogwarts House": "Gryffindor", "History of Magic Grade": 78, "History of Magic Grade Level": 2, "groupNum": 5 },
+// { "alias": "Hermione", "Hogwarts House": "Gryffindor", "History of Magic Grade": 100, "History of Magic Grade Level": 3, "groupNum": 6 },
+// { "alias": "Justin", "Hogwarts House": "Hufflepuff", "History of Magic Grade": 77, "History of Magic Grade Level": 2, "groupNum": 4 },
+// { "alias": "Katie", "Hogwarts House": "Gryffindor", "History of Magic Grade": 75, "History of Magic Grade Level": 1, "groupNum": 7 },
+// { "alias": "Lavender", "Hogwarts House": "Gryffindor", "History of Magic Grade": 84, "History of Magic Grade Level": 3, "groupNum": 8 },
+// { "alias": "Luna", "Hogwarts House": "Ravenclaw", "History of Magic Grade": 92, "History of Magic Grade Level": 3, "groupNum": 5 },
+// { "alias": "Michael", "Hogwarts House": "Ravenclaw", "History of Magic Grade": 68, "History of Magic Grade Level": 1, "groupNum": 6 },
+// { "alias": "Neville", "Hogwarts House": "Gryffindor", "History of Magic Grade": 65, "History of Magic Grade Level": 1, "groupNum": 8 },
+// { "alias": "Pansy", "Hogwarts House": "Slytherin", "History of Magic Grade": 84, "History of Magic Grade Level": 3, "groupNum": 5 },
+// { "alias": "Padma", "Hogwarts House": "Ravenclaw", "History of Magic Grade": 88, "History of Magic Grade Level": 3, "groupNum": 7 },
+// { "alias": "Parvati", "Hogwarts House": "Gryffindor", "History of Magic Grade": 90, "History of Magic Grade Level": 3, "groupNum": 8 },
+// { "alias": "Ron", "Hogwarts House": "Gryffindor", "History of Magic Grade": 68, "History of Magic Grade Level": 1, "groupNum": 8 },
+// { "alias": "Seamus", "Hogwarts House": "Gryffindor", "History of Magic Grade": 74, "History of Magic Grade Level": 1, "groupNum": 7 },
+// { "alias": "Theodore", "Hogwarts House": "Slytherin", "History of Magic Grade": 86, "History of Magic Grade Level": 3, "groupNum": 6 },
+// { "alias": "Zacharias", "Hogwarts House": "Hufflepuff", "History of Magic Grade": 95, "History of Magic Grade Level": 3, "groupNum": 7 }];
+
+// console.log(createSimilarGroups(studentArr, 3, ["Hogwarts House", "History of Magic Grade Level"]));

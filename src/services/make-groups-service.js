@@ -49,7 +49,7 @@ const MakeGroupsService = {
         .push(arr
           .filter((student) => student[primaryCatKey] === cat[primaryCatKey])));
 
-    return reorderedData.flat()
+    return reorderedData.flat();
   },
 }
 

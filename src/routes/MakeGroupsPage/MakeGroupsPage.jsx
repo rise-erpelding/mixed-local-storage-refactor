@@ -59,8 +59,8 @@ class MakeGroupsPage extends Component {
 
     let primaryValsArr = primaryCat === 'cat1' ? this.createTrimmedArr(cat1Vals) : this.createTrimmedArr(cat2Vals);
     let secondaryValsArr = primaryCat === 'cat1' ? this.createTrimmedArr(cat2Vals) : this.createTrimmedArr(cat1Vals);
-    const primaryCatName = primaryCat === 'cat1' ? cat1Name : cat2Name;
-    const secondaryCatName = primaryCat === 'cat1' ? cat2Name : cat1Name;
+    let primaryCatName = primaryCat === 'cat1' ? cat1Name : cat2Name;
+    let secondaryCatName = primaryCat === 'cat1' ? cat2Name : cat1Name;
     const primaryCatType = primaryCat === 'cat1' ? cat1Type : cat2Type;
     const secondaryCatType = primaryCat === 'cat1' ? cat2Type: cat1Type;
 
@@ -85,6 +85,7 @@ class MakeGroupsPage extends Component {
     // let createGroupsWith = [];
     if (primaryCatType === 'quantitative') {
       const studentScoreLevel = MakeGroupsService.getLevel(primaryValsArr, groupSize);
+      primaryCatName = studentScoreLevel;
       MakeGroupsService.addEachToObj(mixedStudentArray, studentScoreLevel, primaryCat + ' Level');
       // createGroupsWith = [...mixedStudentArray]
     }
@@ -94,18 +95,21 @@ class MakeGroupsPage extends Component {
     // }
     if (secondaryCatType === 'quantitative') {
       const studentScoreLevel = MakeGroupsService.getLevel(secondaryValsArr, groupSize);
+      secondaryCatName = studentScoreLevel;
       MakeGroupsService.addEachToObj(mixedStudentArray, studentScoreLevel, secondaryCatName + ' Level')
     }
 
 
     if (groupingType === 'mixed') {
-      const groups = createDifferentGroups(mixedStudentArray, groupSize, primaryCatName, secondaryCatName);
+      const groups = createDifferentGroups(mixedStudentArray, groupSize, [primaryCatName, secondaryCatName]);
+      console.log(groups);
       this.addGroupNum(groups, mixedStudentArray);
       addCatNames(primaryCatName, secondaryCatName);
       addStudentArr(mixedStudentArray);
     }
     if (groupingType === 'similar') {
-      const groups = createSimilarGroups(mixedStudentArray, groupSize, primaryCatName, secondaryCatName);
+      const groups = createSimilarGroups(mixedStudentArray, groupSize, [primaryCatName, secondaryCatName]);
+      console.log(groups);
       this.addGroupNum(groups, mixedStudentArray);
       addCatNames(primaryCatName, secondaryCatName);
       addStudentArr(mixedStudentArray);
@@ -400,7 +404,7 @@ class MakeGroupsPage extends Component {
               type="number"
               min="2"
               max="20"
-              defaultValue="2"
+              value={this.state.groupSize}
               onChange={this.updateGroupSize}
             />
             <div>
