@@ -2,15 +2,50 @@
   background-color: gainsboro;
 }
 
+.make-groups-page__form--fieldset {
+  padding: 10px 20px;
+  text-align: left;
+  width: 220px;
+  margin: 0 auto;
+}
 
-.make-groups-page__form > fieldset {
-  margin: 10px;
-  padding: 10px;
+.make-groups-page__form--grouping-characteristics {
+  width: 260px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.make-groups-page__form--category-name {
+  margin: 10px 0px;
+}
+
+.make-groups-page__form--textarea {
+  width: 214px;
+}
+
+.make-groups-page__form--before-textarea {
+  height: 100px;
+}
+
+.make-groups-page__form--category-buttons {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+}
+
+.make-groups-page__form--category-buttons > button {
+  width: 80px;
 }
 
 @media screen and (min-width: 800px) {
   .make-groups-page__form--student-data {
     display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .make-groups-page__form--fieldset {
+    margin: 20px;
   }
 }
 
