@@ -166,40 +166,6 @@ class MakeGroupsPage extends Component {
     // console.log('validating textarea lines');
   }
 
-  // DRAG AND DROP METHODS
-
-  handleDragStart = (event, categoryIndex) => {
-    event.dataTransfer.setData("category", categoryIndex);
-    console.log(`dragging ${categoryIndex}`);
-  }
-
-  handleDragOver = (event) => {
-    event.preventDefault();
-  }
-
-  handleDrop = (event, dropAreaIndex) => {
-    
-    let indexToMove = Number(event.dataTransfer.getData("category"));
-    console.log(`dropping index ${indexToMove} in index ${dropAreaIndex}`)
-    const { categoryTypes, categoryNames, categoryVals } = this.state;
-    const catTypeArr = [...categoryTypes];
-    const catNameArr = [...categoryNames];
-    const catValArr = [...categoryVals];
-    const typeToMove = catTypeArr[indexToMove];
-    catTypeArr.splice(dropAreaIndex, 0, typeToMove);
-    catTypeArr.splice((indexToMove + 1), 1);
-    const nameToMove = catNameArr[indexToMove];
-    catNameArr.splice(dropAreaIndex, 0, nameToMove);
-    catNameArr.splice((indexToMove + 1), 1);
-    const valsToMove = catValArr[indexToMove];
-    catValArr.splice(dropAreaIndex, 0, valsToMove);
-    catValArr.splice((indexToMove + 1), 1);
-    this.setState({ 
-      categoryTypes: catTypeArr,
-      categoryNames: catNameArr, 
-      categoryVals: catValArr });
-  }
-
   // HELPER METHODS
 
   // creates array, trimming excess whitespace
@@ -210,23 +176,12 @@ class MakeGroupsPage extends Component {
     let categories = [];
     for (let i = 0; i < categoriesLength; i++) {
       categories.push(
-        // <div
-        //   className="make-groups-page__form--dropzone"
-        //   // onDragOver={this.handleDragOver}
-        //   // onDrop={(event) => this.handleDrop(event, i)}
-        //   // key={`category-index${i}`}
-        // >
           <fieldset
             className="make-groups-page__form--fieldset"
             key={`category-index${i}`}
           >
             <legend>{`Category ${i + 1}:`}</legend>
             {/* TODO: add validateCatNumbers here */}
-            {/* <div
-              className="make-groups-page__form--draggable"
-              onDragStart={(event) => this.handleDragStart(event, i)}
-              draggable
-            > */}
               <div className="make-groups-page__form--before-textarea">
                 <div className="make-groups-page__form--radio-buttons">
                   <div>
@@ -280,7 +235,6 @@ class MakeGroupsPage extends Component {
                   onChange={(event) => { this.updateCategoryVals(event, i) }}
                 />
               </div>
-            {/* </div> */}
             <div>
             {i === 0 ? '' : (
               <button
@@ -300,8 +254,6 @@ class MakeGroupsPage extends Component {
             )}
           </div>
           </fieldset>
-
-        // </div>
       )
     }
     return (
@@ -376,7 +328,6 @@ class MakeGroupsPage extends Component {
                 />
               </div>
             </fieldset>
-            {/* TODO: ADD CATEGORIES and button to add categories here */}
             {categories}
             <div className="make-groups-page__form--category-buttons">
                 <button
