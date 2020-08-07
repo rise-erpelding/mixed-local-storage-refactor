@@ -32,7 +32,7 @@ class SaveGroups extends Component {
   render() {
     const { handleClose, show } = this.props;
     const modalClassName = show ? 'save-groups display-block' : 'save-groups display-none';
-    const classOptions = store.classes.map((el, idx) => (
+    const classOptions = store.myGroups.classes.map((el, idx) => (
       <option
         key={idx + 1}
         value={el}

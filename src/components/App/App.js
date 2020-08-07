@@ -31,10 +31,9 @@ class App extends Component {
     this.setState({ studentArr: studentArr });
     ls.set('studentArr', studentArr);
   }
-
-  addCatNames = (primaryCatName, secondaryCatName) => {
-    ls.set('primaryCat', primaryCatName);
-    ls.set('secondaryCat', secondaryCatName);
+  
+  addCatNames = (catNamesArr) => {
+    ls.set('categoryNames', catNamesArr);
   }
 
   render() {
