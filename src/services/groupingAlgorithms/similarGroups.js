@@ -43,7 +43,6 @@ function createSimilarGroups(arr, groupSize, priorities) {
     }
     groups.pop();
   }
-  console.log(pool.length);
   return groups;
 }
 

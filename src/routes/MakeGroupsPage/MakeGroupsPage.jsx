@@ -25,7 +25,6 @@ class MakeGroupsPage extends Component {
 
   componentDidMount() {
     const savedData = ls.get('data');
-    console.log(savedData);
     if (!!savedData) {
       this.setState(savedData);
     }
@@ -95,18 +94,25 @@ class MakeGroupsPage extends Component {
     }
 
     if (groupingType === 'mixed') {
+      console.log(studentArr);
+      console.log(groupSize);
+      console.log(categoryNamesLevels);
       const groups = createDifferentGroups(studentArr, groupSize, categoryNamesLevels);
+      console.log(groups);
       this.addGroupNum(groups, studentArr);
+      console.log(studentArr);
       addCatNames(categoryNames);
       addStudentArr(studentArr);
     }
     if (groupingType === 'similar') {
       const groups = createSimilarGroups(studentArr, groupSize, categoryNamesLevels);
+      console.log(groups);
       this.addGroupNum(groups, studentArr);
+      console.log(studentArr);
       addCatNames(categoryNames);
       addStudentArr(studentArr);
     }
-    history.push('/groups-made');
+    // history.push('/groups-made');
   }
 
   useSampleData = (datasetNum) => {

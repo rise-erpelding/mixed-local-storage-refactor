@@ -18,7 +18,6 @@ class GroupsMadePage extends Component {
 
   componentDidMount() {
     const students = ls.get('studentArr');
-    console.log(students);
     this.setState({ students: students });
     this.getGroups(students);
   }
@@ -34,8 +33,9 @@ class GroupsMadePage extends Component {
     const groups = Array.from(new Set(groupNums));
     groups.sort((a, b) => a - b);
     this.setState({ groups: groups });
-    console.log(groups);
   }
+
+  // METHODS FOR BUTTONS
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -51,6 +51,8 @@ class GroupsMadePage extends Component {
     const { history } = this.props;
     history.goBack();
   }
+
+  // METHODS FOR SAVE MODAL
   
   showSaveModal = () => {
     this.setState({ show: true });
@@ -60,20 +62,25 @@ class GroupsMadePage extends Component {
     this.setState({ show: false });
   }
 
+  //
   saveGroups = (groupingName, className) => {
     // currently this isn't really functional but we do update the students in local storage at this point
     this.setState({ groupingName, className });
     const { students } = this.state;
     const { addStudentArr } = this.context;
+    const { history } = this.props;
     addStudentArr(students);
     console.log(`saving groups to database under name ${groupingName} and class ${className}`);
+    history.push('/my-groups');
   }
+
+  // METHODS FOR DRAG AND DROP NAMES
 
   handleDragStart = (event, student) => {
     event.dataTransfer.setData("student", student);
   }
 
-  onDragOver = (event) => {
+  handleDragOver = (event) => {
     event.preventDefault();
   }
 
@@ -99,7 +106,7 @@ class GroupsMadePage extends Component {
         <div
           key={group}
           className="groups-made-page__group"
-          onDragOver={(event) => this.onDragOver(event)}
+          onDragOver={(event) => this.handleDragOver(event)}
           onDrop={(event) => {this.handleDrop(event, group)}}
         >
           Group {group}
@@ -165,9 +172,7 @@ class GroupsMadePage extends Component {
       </main>
     )
   }
-
 }
-
 
 export default GroupsMadePage;
 
