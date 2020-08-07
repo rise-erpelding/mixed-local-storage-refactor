@@ -92,8 +92,8 @@ class GroupsMadePage extends Component {
 
   render() {
     const { show, groups, students } = this.state;
-    const primaryCat = ls.get('primaryCat');
-    const secondaryCat = ls.get('secondaryCat');
+    const categoryNames = ls.get('categoryNames')
+
     const showGroupings = (
       groups.map((group) => (
         <div
@@ -114,8 +114,11 @@ class GroupsMadePage extends Component {
                 >
                   {student.alias}
                 <div className="groups-made-page__tooltip">
-                  <p>{`${primaryCat}: ${student[primaryCat]}`}</p>
-                  <p>{`${secondaryCat}: ${student[secondaryCat]}`}</p>
+                  {categoryNames.map((category, index) => (
+                    <p key={`category-${index}`}>
+                      {`${category}: ${student[category]}`}
+                    </p>
+                  ))}
                 </div>
                 </div>
               )
