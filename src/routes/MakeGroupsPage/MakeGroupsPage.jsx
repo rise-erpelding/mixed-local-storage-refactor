@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import ValidationError from '../../components/ValidationError/ValidationError';
 import MixEdContext from '../../context/MixEdContext';
-// import { createDifferentGroups, addFirstToGroup, addNextToGroup } from '../../services/groupingAlgorithms/differentGroups';
+import createDifferentGroups from '../../services/groupingAlgorithms/differentGroups';
 import createSimilarGroups from '../../services/groupingAlgorithms/similarGroups';
 import MakeGroupsService from '../../services/make-groups-service';
 import store from '../../services/store';
 import './MakeGroupsPage.css';
 import ls from 'local-storage';
+// import _ from "lodash";
 
 class MakeGroupsPage extends Component {
   constructor(props) {
@@ -89,19 +90,18 @@ class MakeGroupsPage extends Component {
       categoryValsArr[quantitativeIndexes[i]] = MakeGroupsService.getLevel(categoryValsArr[quantitativeIndexes[i]], groupSize);
       // adds the levels into the array of student objects
       MakeGroupsService.addEachToObj(studentArr, categoryValsArr[quantitativeIndexes[i]], `${categoryNames[quantitativeIndexes[i]]} Level`);
+      console.log(studentArr);
       // replaces the category name as '... Level' because this is what we want to use in our grouping algorithm
       categoryNamesLevels[quantitativeIndexes[i]] = `${categoryNames[quantitativeIndexes[i]]} Level`;
     }
 
     if (groupingType === 'mixed') {
       console.log(studentArr);
-      console.log(aliasesArr);
-      // const pool = JSON.parse(JSON.stringify(studentArr));
-      // console.log(pool);
+      // console.log(aliasesArr);
       const groups = createDifferentGroups(studentArr, groupSize, categoryNamesLevels);
       console.log(groups);
       // this.addGroupNum(groups, studentArr);
-      console.log(studentArr);
+      // console.log(studentArr);
       addCatNames(categoryNames);
       addStudentArr(studentArr);
     }
@@ -507,105 +507,3 @@ export default MakeGroupsPage;
 
 MakeGroupsPage.contextType = MixEdContext;
 
-function createDifferentGroups(arr, groupSize, priorities) {
-  const groups = [];
-  const pool = [];
-  let currGroupIndex = 0;
-
-  for (let i = 0; i < arr.length; i++) {
-    pool.push(i);
-  }
-  shuffle(pool);
-  // arr.findIndex((el) => el.alias === pool[i])
-  
-  addFirstToGroup(pool, arr, groups, currGroupIndex);
-  
-  
-  while (pool.length > 0) {
-    if (groups[currGroupIndex].length === groupSize) {
-      currGroupIndex++;
-      addFirstToGroup(pool, arr, groups, currGroupIndex);
-    }
-    else {
-      let groupPriorities = [];
-      priorities.forEach((priority) => {
-        groupPriorities.push({ [priority]: [] })
-      })
-      groups[currGroupIndex].forEach((student) => {
-        groupPriorities.forEach((priority, index) => {
-          const priorityName = Object.keys(priority)[0];
-          groupPriorities[index][priorityName].push(student[priorityName]);
-        })
-      });
-      // then find the next student to add to the last group
-      
-      addNextToGroup(pool, arr, groups, groupPriorities, currGroupIndex);
-    } 
-  }
-
-  // if (groups[`group${groupNumber}`].length !== groupSize) {
-  //   for (let i = groups.length - 2; i >= 0 && !!groups[groups.length - 1].length; i--) {
-  //     groups[i].push(groups[groups.length - 1][0]);
-  //     groups[groups.length - 1].splice(0, 1);
-  //   }
-  //   groups.pop();
-  // }
-  console.log(groups);
-  addGroupNum(groups, arr);
-  console.log(arr);
-  return arr;
-  // return groups;
-}
-
-function shuffle(arr) { // Fisher-Yates shuffle
-  for (let i = arr.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-function addFirstToGroup(pool, arr, groups, currGroupIndex) {
-  let indexToAdd = pool[0];
-  groups[currGroupIndex]= [arr[indexToAdd]];
-  pool.splice(0, 1);
-  return groups;
-}
-
-function addNextToGroup(pool, arr, groups, groupPriorities, currGroupIndex) {
-  let diffCatFound = [];
-  for (let i = 0; i < pool.length; i++) {
-    let indexToCheck = pool[i];
-    for (let j = 0; j < groupPriorities.length; j++) {
-      const priorityName = Object.keys(groupPriorities[j])[0];
-      const categoryArr = groupPriorities[j][priorityName];
-      const studentCat = arr[indexToCheck][priorityName];
-      if (categoryArr.indexOf(studentCat) === -1) {
-        diffCatFound.push(true);
-      } else {
-        diffCatFound.push(false);
-      }
-    }
-    if ((diffCatFound.every((el) => el === true)) || !diffCatFound.length) {
-      groups[currGroupIndex].push(arr[indexToCheck]);
-      pool.splice(i, 1);
-      return groups;
-    }
-    diffCatFound.splice(0, diffCatFound.length);
-  }
-    groupPriorities.pop();
-    addNextToGroup(pool, arr, groups, groupPriorities, currGroupIndex);
-}
-
-function addGroupNum(groups, arr) {
-  groups.forEach((group, index) => {
-    group.forEach((groupMember) => {
-      arr.forEach((student) => {
-        if (student.alias === groupMember.alias) {
-          student.groupNumber = (index + 1);
-        }
-      })
-    })
-  })
-  return arr;
-}
