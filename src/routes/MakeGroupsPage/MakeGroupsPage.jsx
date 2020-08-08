@@ -90,7 +90,7 @@ class MakeGroupsPage extends Component {
       categoryValsArr[quantitativeIndexes[i]] = MakeGroupsService.getLevel(categoryValsArr[quantitativeIndexes[i]], groupSize);
       // adds the levels into the array of student objects
       MakeGroupsService.addEachToObj(studentArr, categoryValsArr[quantitativeIndexes[i]], `${categoryNames[quantitativeIndexes[i]]} Level`);
-      console.log(studentArr);
+      // console.log(studentArr);
       // replaces the category name as '... Level' because this is what we want to use in our grouping algorithm
       categoryNamesLevels[quantitativeIndexes[i]] = `${categoryNames[quantitativeIndexes[i]]} Level`;
     }
@@ -100,7 +100,7 @@ class MakeGroupsPage extends Component {
       // console.log(aliasesArr);
       const groups = createDifferentGroups(studentArr, groupSize, categoryNamesLevels);
       console.log(groups);
-      // this.addGroupNum(groups, studentArr);
+      this.addGroupNum(groups, studentArr);
       // console.log(studentArr);
       addCatNames(categoryNames);
       addStudentArr(studentArr);
