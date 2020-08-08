@@ -101,7 +101,7 @@ class MakeGroupsPage extends Component {
       const groups = createDifferentGroups(studentArr, groupSize, categoryNamesLevels);
       console.log(groups);
       this.addGroupNum(groups, studentArr);
-      // console.log(studentArr);
+      console.log(studentArr);
       addCatNames(categoryNames);
       addStudentArr(studentArr);
     }
@@ -109,6 +109,7 @@ class MakeGroupsPage extends Component {
       const groups = createSimilarGroups(studentArr, groupSize, categoryNamesLevels);
       console.log(groups);
       this.addGroupNum(groups, studentArr);
+      console.log()
       console.log(studentArr);
       addCatNames(categoryNames);
       addStudentArr(studentArr);
