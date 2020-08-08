@@ -16,7 +16,6 @@ function createDifferentGroups(arr, groupSize, priorities) {
     }
     else {
       let currGroup = groups[`group${groupNumber}`];
-      console.log(currGroup);
       /* create an array of priorities to keep track of the properties for each priority
       in the current group */
       let groupPriorities = [];
@@ -54,14 +53,8 @@ function createDifferentGroups(arr, groupSize, priorities) {
 function addFirstToGroup(pool, groups, groupNumber) {
   // adds the first student from the pool to a new group
   // deletes that first student from the pool
-  // console.log(pool[0]);
-  // groups.push([pool[0]]);
-  // pool.splice(0, 1);
-  // console.log(groups[0]); 
-  // console.log(pool);
   groups[`group${groupNumber}`]= [pool[0]];
   pool.splice(0, 1);
-  console.log(groups);
   return groups;
 }
 
@@ -69,7 +62,6 @@ function addNextToGroup(pool, groups, groupPriorities, groupNumber) {
   // this function finds the most suitable member to add to the group
   // it will loop through the pool and find a student whose priorities do not match
   let currGroup = groups[`group${groupNumber}`];
-  console.log(currGroup);
   let diffCatFound = [];
   for (let i = 0; i < pool.length; i++) {
     for (let j = 0; j < groupPriorities.length; j++) {
@@ -85,16 +77,17 @@ function addNextToGroup(pool, groups, groupPriorities, groupNumber) {
     if ((diffCatFound.every((el) => el === true)) || !diffCatFound.length) {
       currGroup.push(pool[i]);
       pool.splice(i, 1);
+      console.log(groups);
       return groups;
     }
     diffCatFound.splice(0, diffCatFound.length);
   }
     groupPriorities.pop();
-    addNextToGroup(pool, groups, groupPriorities);
+    addNextToGroup(pool, groups, groupPriorities, groupNumber);
 
 }
 
-export { createDifferentGroups, addFirstToGroup, addNextToGroup};
+export { createDifferentGroups, addFirstToGroup, addNextToGroup };
 // export addFirstToGroup;
 // export addNextToGroup;
 
