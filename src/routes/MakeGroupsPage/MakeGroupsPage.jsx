@@ -100,7 +100,7 @@ class MakeGroupsPage extends Component {
       // console.log(aliasesArr);
       const groups = createDifferentGroups(studentArr, groupSize, categoryNamesLevels);
       console.log(groups);
-      this.addGroupNum(groups, studentArr);
+      // this.addGroupNum(groups, studentArr);
       console.log(studentArr);
       addCatNames(categoryNames);
       addStudentArr(studentArr);
@@ -108,8 +108,7 @@ class MakeGroupsPage extends Component {
     if (groupingType === 'similar') {
       const groups = createSimilarGroups(studentArr, groupSize, categoryNamesLevels);
       console.log(groups);
-      this.addGroupNum(groups, studentArr);
-      console.log()
+      // this.addGroupNum(groups, studentArr);
       console.log(studentArr);
       addCatNames(categoryNames);
       addStudentArr(studentArr);
@@ -194,7 +193,11 @@ class MakeGroupsPage extends Component {
 
   // METHODS FOR UPDATING FORM VALUES
   updateGroupSize = (e) => {
-    this.setState({ groupSize: e.target.value });
+    let groupSize = parseInt(e.target.value);
+    if (isNaN(groupSize)) {
+      groupSize = '';
+    }
+    this.setState({ groupSize });
   }
 
   updateGroupingType = (e) => {
