@@ -2,18 +2,21 @@
 groupSize as number,
 priorities which is an array of the categories taken into consideration when grouping */
 function createDifferentGroups(arr, groupSize, priorities) {
-
   let pool = JSON.parse(JSON.stringify(arr));
-  console.log(pool);
   let groups = [];
+  let groupNumber = 1;
+
+  addFirstToGroup(pool, groups, groupNumber);
   
   while (pool.length > 0) {
     // the first student in a new group can be whatever student is first in the pool
-    if ((!groups.length) || (groups[groups.length - 1].length === groupSize)) {
-      addFirstToGroup(pool, groups);
+    if (groups[`group${groupNumber}`].length === groupSize) {
+      groupNumber++;
+      addFirstToGroup(pool, groups, groupNumber);
     }
     else {
-      let currGroup = groups[groups.length - 1];
+      let currGroup = groups[`group${groupNumber}`];
+      console.log(currGroup);
       /* create an array of priorities to keep track of the properties for each priority
       in the current group */
       let groupPriorities = [];
@@ -28,9 +31,8 @@ function createDifferentGroups(arr, groupSize, priorities) {
       });
       // then find the next student to add to the last group
       
-      addNextToGroup(pool, groups, groupPriorities);
+      addNextToGroup(pool, groups, groupPriorities, groupNumber);
     } 
-
   }
 
   /* if number of students doesn't fit into groups of groupSize evenly
@@ -38,28 +40,36 @@ function createDifferentGroups(arr, groupSize, priorities) {
   and redistributes it to the previous groups
   ideally it would be better to anticipate that students will not fit evenly and 
   adjust groupSize before the end though */
-  if (groups[groups.length - 1].length !== groupSize) {
-    for (let i = groups.length - 2; i >= 0 && !!groups[groups.length - 1].length; i--) {
-      groups[i].push(groups[groups.length - 1][0]);
-      groups[groups.length - 1].splice(0, 1);
-    }
-    groups.pop();
-  }
+  // if (groups[`group${groupNumber}`].length !== groupSize) {
+  //   for (let i = groups.length - 2; i >= 0 && !!groups[groups.length - 1].length; i--) {
+  //     groups[i].push(groups[groups.length - 1][0]);
+  //     groups[groups.length - 1].splice(0, 1);
+  //   }
+  //   groups.pop();
+  // }
+  console.log(groups);
   return groups;
 }
 
-function addFirstToGroup(pool, groups) {
+function addFirstToGroup(pool, groups, groupNumber) {
   // adds the first student from the pool to a new group
   // deletes that first student from the pool
-  groups.push([pool[0]]);
+  // console.log(pool[0]);
+  // groups.push([pool[0]]);
+  // pool.splice(0, 1);
+  // console.log(groups[0]); 
+  // console.log(pool);
+  groups[`group${groupNumber}`]= [pool[0]];
   pool.splice(0, 1);
+  console.log(groups);
   return groups;
 }
 
-function addNextToGroup(pool, groups, groupPriorities) {
+function addNextToGroup(pool, groups, groupPriorities, groupNumber) {
   // this function finds the most suitable member to add to the group
   // it will loop through the pool and find a student whose priorities do not match
-  let currGroup = groups[groups.length - 1];
+  let currGroup = groups[`group${groupNumber}`];
+  console.log(currGroup);
   let diffCatFound = [];
   for (let i = 0; i < pool.length; i++) {
     for (let j = 0; j < groupPriorities.length; j++) {
@@ -84,7 +94,9 @@ function addNextToGroup(pool, groups, groupPriorities) {
 
 }
 
-export default createDifferentGroups;
+export { createDifferentGroups, addFirstToGroup, addNextToGroup};
+// export addFirstToGroup;
+// export addNextToGroup;
 
 // const studentArr = 
 // [{ "alias": "Blaise", "Hogwarts House": "Slytherin", "History of Magic Grade": 81, "History of Magic Grade Level": 2, "groupNum": 1 },

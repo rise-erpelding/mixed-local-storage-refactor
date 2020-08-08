@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ValidationError from '../../components/ValidationError/ValidationError';
 import MixEdContext from '../../context/MixEdContext';
-import createDifferentGroups from '../../services/groupingAlgorithms/differentGroups';
+import { createDifferentGroups, addFirstToGroup, addNextToGroup } from '../../services/groupingAlgorithms/differentGroups';
 import createSimilarGroups from '../../services/groupingAlgorithms/similarGroups';
 import MakeGroupsService from '../../services/make-groups-service';
 import store from '../../services/store';
@@ -95,8 +95,8 @@ class MakeGroupsPage extends Component {
 
     if (groupingType === 'mixed') {
       console.log(studentArr);
-      console.log(groupSize);
-      console.log(categoryNamesLevels);
+      // const pool = JSON.parse(JSON.stringify(studentArr));
+      // console.log(pool);
       const groups = createDifferentGroups(studentArr, groupSize, categoryNamesLevels);
       console.log(groups);
       this.addGroupNum(groups, studentArr);
