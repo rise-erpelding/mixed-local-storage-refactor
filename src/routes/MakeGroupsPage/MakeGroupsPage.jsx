@@ -96,7 +96,7 @@ class MakeGroupsPage extends Component {
     }
 
     if (groupingType === 'mixed') {
-      console.log(studentArr);
+      // console.log(studentArr);
       // console.log(aliasesArr);
       const groups = createDifferentGroups(studentArr, groupSize, categoryNamesLevels);
       console.log(groups);
