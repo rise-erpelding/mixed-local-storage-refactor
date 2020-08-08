@@ -113,7 +113,7 @@ class MakeGroupsPage extends Component {
       addCatNames(categoryNames);
       addStudentArr(studentArr);
     }
-    // history.push('/groups-made');
+    history.push('/groups-made');
   }
 
   useSampleData = (datasetNum) => {
