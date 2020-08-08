@@ -1,28 +1,39 @@
 /* takes an array of student objects,
 groupSize as number,
 priorities which is an array of the categories taken into consideration when grouping */
-function createDifferentGroups(arr, groupSize, priorities) {
-  let pool = JSON.parse(JSON.stringify(arr));
-  let groups = [];
-  let groupNumber = 1;
+  /* if number of students doesn't fit into groups of groupSize evenly
+  then we will make slightly larger groups, this takes the smaller group at the end
+  and redistributes it to the previous groups
+  ideally it would be better to anticipate that students will not fit evenly and 
+  adjust groupSize before the end though */
+  /* create an array of priorities to keep track of the properties for each priority
+      in the current group */
 
-  addFirstToGroup(pool, groups, groupNumber);
+function createDifferentGroups(arr, groupSize, priorities) {
+  const groups = [];
+  const pool = [];
+  let currGroupIndex = 0;
+
+  for (let i = 0; i < arr.length; i++) {
+    pool.push(i);
+  }
+  shuffle(pool);
+  // arr.findIndex((el) => el.alias === pool[i])
+  
+  addFirstToGroup(pool, arr, groups, currGroupIndex);
+  
   
   while (pool.length > 0) {
-    // the first student in a new group can be whatever student is first in the pool
-    if (groups[`group${groupNumber}`].length === groupSize) {
-      groupNumber++;
-      addFirstToGroup(pool, groups, groupNumber);
+    if (groups[currGroupIndex].length === groupSize) {
+      currGroupIndex++;
+      addFirstToGroup(pool, arr, groups, currGroupIndex);
     }
     else {
-      let currGroup = groups[`group${groupNumber}`];
-      /* create an array of priorities to keep track of the properties for each priority
-      in the current group */
       let groupPriorities = [];
       priorities.forEach((priority) => {
         groupPriorities.push({ [priority]: [] })
       })
-      currGroup.forEach((student) => {
+      groups[currGroupIndex].forEach((student) => {
         groupPriorities.forEach((priority, index) => {
           const priorityName = Object.keys(priority)[0];
           groupPriorities[index][priorityName].push(student[priorityName]);
@@ -30,15 +41,10 @@ function createDifferentGroups(arr, groupSize, priorities) {
       });
       // then find the next student to add to the last group
       
-      addNextToGroup(pool, groups, groupPriorities, groupNumber);
+      addNextToGroup(pool, arr, groups, groupPriorities, currGroupIndex);
     } 
   }
 
-  /* if number of students doesn't fit into groups of groupSize evenly
-  then we will make slightly larger groups, this takes the smaller group at the end
-  and redistributes it to the previous groups
-  ideally it would be better to anticipate that students will not fit evenly and 
-  adjust groupSize before the end though */
   // if (groups[`group${groupNumber}`].length !== groupSize) {
   //   for (let i = groups.length - 2; i >= 0 && !!groups[groups.length - 1].length; i--) {
   //     groups[i].push(groups[groups.length - 1][0]);
@@ -47,27 +53,35 @@ function createDifferentGroups(arr, groupSize, priorities) {
   //   groups.pop();
   // }
   console.log(groups);
-  return groups;
+  addGroupNum(groups, arr);
+  console.log(arr);
+  return arr;
+  // return groups;
 }
 
-function addFirstToGroup(pool, groups, groupNumber) {
-  // adds the first student from the pool to a new group
-  // deletes that first student from the pool
-  groups[`group${groupNumber}`]= [pool[0]];
+function shuffle(arr) { // Fisher-Yates shuffle
+  for (let i = arr.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function addFirstToGroup(pool, arr, groups, currGroupIndex) {
+  let indexToAdd = pool[0];
+  groups[currGroupIndex]= [arr[indexToAdd]];
   pool.splice(0, 1);
   return groups;
 }
 
-function addNextToGroup(pool, groups, groupPriorities, groupNumber) {
-  // this function finds the most suitable member to add to the group
-  // it will loop through the pool and find a student whose priorities do not match
-  let currGroup = groups[`group${groupNumber}`];
+function addNextToGroup(pool, arr, groups, groupPriorities, currGroupIndex) {
   let diffCatFound = [];
   for (let i = 0; i < pool.length; i++) {
+    let indexToCheck = pool[i];
     for (let j = 0; j < groupPriorities.length; j++) {
       const priorityName = Object.keys(groupPriorities[j])[0];
       const categoryArr = groupPriorities[j][priorityName];
-      const studentCat = pool[i][priorityName];
+      const studentCat = arr[indexToCheck][priorityName];
       if (categoryArr.indexOf(studentCat) === -1) {
         diffCatFound.push(true);
       } else {
@@ -75,16 +89,27 @@ function addNextToGroup(pool, groups, groupPriorities, groupNumber) {
       }
     }
     if ((diffCatFound.every((el) => el === true)) || !diffCatFound.length) {
-      currGroup.push(pool[i]);
+      groups[currGroupIndex].push(arr[indexToCheck]);
       pool.splice(i, 1);
-      console.log(groups);
       return groups;
     }
     diffCatFound.splice(0, diffCatFound.length);
   }
     groupPriorities.pop();
-    addNextToGroup(pool, groups, groupPriorities, groupNumber);
+    addNextToGroup(pool, arr, groups, groupPriorities, currGroupIndex);
+}
 
+function addGroupNum(groups, arr) {
+  groups.forEach((group, index) => {
+    group.forEach((groupMember) => {
+      arr.forEach((student) => {
+        if (student.alias === groupMember.alias) {
+          student.groupNumber = (index + 1);
+        }
+      })
+    })
+  })
+  return arr;
 }
 
 export { createDifferentGroups, addFirstToGroup, addNextToGroup };
@@ -119,4 +144,4 @@ export { createDifferentGroups, addFirstToGroup, addNextToGroup };
 // { "alias": "Theodore", "Hogwarts House": "Slytherin", "History of Magic Grade": 86, "History of Magic Grade Level": 3, "groupNum": 6 },
 // { "alias": "Zacharias", "Hogwarts House": "Hufflepuff", "History of Magic Grade": 95, "History of Magic Grade Level": 3, "groupNum": 7 }];
 
-// console.log(createDifferentGroups(studentArr, 2, ["Hogwarts House", "History of Magic Grade Level"]));
+// console.log(createDifferentGroups(studentArr, 5, ["Hogwarts House", "History of Magic Grade Level"]));
