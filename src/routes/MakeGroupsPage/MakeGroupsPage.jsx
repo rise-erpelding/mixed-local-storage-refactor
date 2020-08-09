@@ -35,7 +35,7 @@ class MakeGroupsPage extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     // get things from context, props, state
-    const { addData, addStudentArr, addCatNames } = this.context;
+    const { addData } = this.context;
     const { history } = this.props;
     const {
       groupSize,
@@ -95,24 +95,12 @@ class MakeGroupsPage extends Component {
     }
 
     if (groupingType === 'mixed') {
-      // const groups = createDifferentGroups(studentArr, groupSize, categoryNamesLevels);
-      // console.log(groups);
-      // // this.addGroupNum(groups, studentArr);
-      // console.log(studentArr);
-      // addCatNames(categoryNames);
-      // addStudentArr(studentArr);
       this.handleMixedGroups(studentArr, groupSize, categoryNamesLevels, categoryNames);
     }
     if (groupingType === 'similar') {
-      const groups = createSimilarGroups(studentArr, groupSize, categoryNamesLevels);
-      console.log(groups);
-      // this.addGroupNum(groups, studentArr);
-      console.log(studentArr);
-      addCatNames(categoryNames);
-      addStudentArr(studentArr);
-
+      this.handleSimilarGroups(studentArr, groupSize, categoryNamesLevels, categoryNames);
     }
-    // history.push('/groups-made');
+    history.push('/groups-made');
   }
 
   useSampleData = (datasetNum) => {
@@ -129,26 +117,34 @@ class MakeGroupsPage extends Component {
 
   // METHODS RELATED TO HANDLESUBMIT
   handleMixedGroups = (studentArr, groupSize, categoryNamesLevels, categoryNames) => {
+    const { addStudentArr, addCatNames } = this.context;
     const groups = createDifferentGroups(studentArr, groupSize, categoryNamesLevels);
-    console.log(groups);
+    // console.log(groups);
     this.addGroupNumber(groups, studentArr);
-    console.log(studentArr);
+    // console.log(studentArr);
+    addStudentArr(studentArr);
+    addCatNames(categoryNames);
+  }
 
+  handleSimilarGroups = (studentArr, groupSize, categoryNamesLevels, categoryNames) => {
+    const { addStudentArr, addCatNames }= this.context;
+    const groups = createSimilarGroups(studentArr, groupSize, categoryNamesLevels);
+    // console.log(groups);
+    this.addGroupNumber(groups, studentArr);
+    // console.log(studentArr);
+    addStudentArr(studentArr);
+    addCatNames(categoryNames);
   }
 
   addGroupNumber = (groups, students) => {
-    // groups.forEach((group, index) => {
-    //   group.forEach((groupMember) => {
-    //     students.forEach((student) => {
-    //       if (student.alias === groupMember.alias) {
-    //         student.groupNum = index;
-    //       }
-    //     })
-    //   })
-    // })
     groups.forEach((group, index) => {
-      console.log(group);
-      console.log(index);
+      group.forEach((groupMember) => {
+        students.forEach((student) => {
+          if (student.alias === groupMember.alias) {
+            student.groupNum = index + 1;
+          }
+        })
+      })
     })
   }
 

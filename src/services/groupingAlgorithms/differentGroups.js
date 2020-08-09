@@ -49,7 +49,7 @@ function createDifferentGroups(arr, groupSize, priorities) {
   addFirstToGroup(pool, groups, groupNumber);
   
   while (pool.length > 0) {
-    if (groups[`Group ${groupNumber}`].length === groupSize) {
+    if (groups[groups.length - 1].length === groupSize) {
       groupNumber++;
       if (groupNumber === startLargerGroups) {
         groupSize++;
@@ -57,7 +57,7 @@ function createDifferentGroups(arr, groupSize, priorities) {
       addFirstToGroup(pool, groups, groupNumber);
     }
     else {
-      let currGroup = groups[`Group ${groupNumber}`];
+      let currGroup = groups[groups.length - 1];
       let groupPriorities = [];
       priorities.forEach((priority) => {
         groupPriorities.push({ [priority]: [] })
@@ -92,7 +92,7 @@ function shuffle(arr) { // Fisher-Yates shuffle
  * @param {number} groupNumber - current number of group being added to
  */
 function addFirstToGroup(pool, groups, groupNumber) {
-  groups[`Group ${groupNumber}`]= [pool[0]];
+  groups.push([pool[0]]);
   pool.splice(0, 1);
   return groups;
 }
@@ -111,7 +111,7 @@ function addFirstToGroup(pool, groups, groupNumber) {
  * @param {number} groupNumber - see above
  */
 function addNextToGroup(pool, groups, groupPriorities, groupNumber) {
-  let currGroup = groups[`Group ${groupNumber}`];
+  let currGroup = groups[groups.length - 1];
   let diffCatFound = [];
   for (let i = 0; i < pool.length; i++) {
     for (let j = 0; j < groupPriorities.length; j++) {
