@@ -90,20 +90,18 @@ class MakeGroupsPage extends Component {
       categoryValsArr[quantitativeIndexes[i]] = MakeGroupsService.getLevel(categoryValsArr[quantitativeIndexes[i]], groupSize);
       // adds the levels into the array of student objects
       MakeGroupsService.addEachToObj(studentArr, categoryValsArr[quantitativeIndexes[i]], `${categoryNames[quantitativeIndexes[i]]} Level`);
-      // console.log(studentArr);
       // replaces the category name as '... Level' because this is what we want to use in our grouping algorithm
       categoryNamesLevels[quantitativeIndexes[i]] = `${categoryNames[quantitativeIndexes[i]]} Level`;
     }
 
     if (groupingType === 'mixed') {
+      // const groups = createDifferentGroups(studentArr, groupSize, categoryNamesLevels);
+      // console.log(groups);
+      // // this.addGroupNum(groups, studentArr);
       // console.log(studentArr);
-      // console.log(aliasesArr);
-      const groups = createDifferentGroups(studentArr, groupSize, categoryNamesLevels);
-      console.log(groups);
-      // this.addGroupNum(groups, studentArr);
-      console.log(studentArr);
-      addCatNames(categoryNames);
-      addStudentArr(studentArr);
+      // addCatNames(categoryNames);
+      // addStudentArr(studentArr);
+      this.handleMixedGroups(studentArr, groupSize, categoryNamesLevels, categoryNames);
     }
     if (groupingType === 'similar') {
       const groups = createSimilarGroups(studentArr, groupSize, categoryNamesLevels);
@@ -112,6 +110,7 @@ class MakeGroupsPage extends Component {
       console.log(studentArr);
       addCatNames(categoryNames);
       addStudentArr(studentArr);
+
     }
     // history.push('/groups-made');
   }
@@ -126,6 +125,31 @@ class MakeGroupsPage extends Component {
   handleClickCancel = () => {
     const { history } = this.props;
     history.goBack();
+  }
+
+  // METHODS RELATED TO HANDLESUBMIT
+  handleMixedGroups = (studentArr, groupSize, categoryNamesLevels, categoryNames) => {
+    const groups = createDifferentGroups(studentArr, groupSize, categoryNamesLevels);
+    console.log(groups);
+    this.addGroupNumber(groups, studentArr);
+    console.log(studentArr);
+
+  }
+
+  addGroupNumber = (groups, students) => {
+    // groups.forEach((group, index) => {
+    //   group.forEach((groupMember) => {
+    //     students.forEach((student) => {
+    //       if (student.alias === groupMember.alias) {
+    //         student.groupNum = index;
+    //       }
+    //     })
+    //   })
+    // })
+    groups.forEach((group, index) => {
+      console.log(group);
+      console.log(index);
+    })
   }
 
   // METHODS FOR BUTTONS THAT CONTROL CATEGORIES
@@ -281,20 +305,20 @@ class MakeGroupsPage extends Component {
 
   numberizeArr = (arr) => arr.map((val) => Number(val));
 
-  addGroupNum = (groupArr, studentArr) => {
-    // goes through the array elements of groups
-    // within each innermost array, finds the student in the mixedStudentArray
-    // adds their groupNumber (index of the outer array + 1) as a property
-    groupArr.forEach((group, index) => {
-      group.forEach((groupMem) => {
-        studentArr.forEach((student) => {
-          if (student.alias === groupMem.alias) {
-            student.groupNum = (index + 1);
-          }
-        })
-      })
-    });
-  }
+  // addGroupNum = (groupArr, studentArr) => {
+  //   // goes through the array elements of groups
+  //   // within each innermost array, finds the student in the mixedStudentArray
+  //   // adds their groupNumber (index of the outer array + 1) as a property
+  //   groupArr.forEach((group, index) => {
+  //     group.forEach((groupMem) => {
+  //       studentArr.forEach((student) => {
+  //         if (student.alias === groupMem.alias) {
+  //           student.groupNum = (index + 1);
+  //         }
+  //       })
+  //     })
+  //   });
+  // }
 
   render() {
     const { categoriesLength } = this.state;
