@@ -1,23 +1,63 @@
-/* takes an array of student objects,
-groupSize as number,
-priorities which is an array of the categories taken into consideration when grouping */
+/** 
+ * Creates groups, tries to ensure that each member of the group has different properties.
+ * Uses functions shuffle, addFirstToGroup, and addNextToGroup, described below.
+ * 
+ * Returns a nested array in which each inner array is a group of length groupSize, consisting of
+ * the students belonging to that group.
+ * 
+ * Creates a pool of students, as the algorithm finds an appropriate student to add to the group
+ * it adds the student to the group and removes it from the pool.
+ * 
+ * Adds the first student in the pool to the first group and every time there is a new group, 
+ * calling addFirstToGroup.
+ * 
+ * After adding the first student to a group, it will look at the properties (priorities) in the
+ * existing group members, and search the pool for a student whose properties do not match at all.
+ * If it cannot find one, it will remove the lowest priority property (thus why they're called
+ * properties) and look in the pool for a student different from all the priorities except the
+ * removed last one. If it cannot find student that doesn't match, it will again remove the lowest
+ * priority and search again, and so on. If only the first priority remains and still a unique 
+ * student is not found to put into the group, then it eliminates the priorities completely and 
+ * adds the next student in the pool.
+ * 
+ * If number of students % groupSize !== 0, then the remaining students are added to the last
+ * groups to make them slightly larger, as this is generally more favorable than making the
+ * last groups smaller. To do this, groupSize is incremented only for these last groups.
+ * 
+ */
+
+/**
+ * Core function that creates the groups
+ * @param {array} arr - array of objects, each object representing a student
+ * @param {number} groupSize - number specifying the ideal groupSize, which may be exceeded if
+ * number of students doesn't fit into group evenly
+ * @param {array} priorities - array of the names of the categories taken into account when
+ * sorting into groups
+ * @return {array} array containing arrays (each representing a group) of objects (each 
+ * representing a student)
+ */
 function createDifferentGroups(arr, groupSize, priorities) {
   let pool = JSON.parse(JSON.stringify(arr));
   let groups = [];
   let groupNumber = 1;
+  const finalNumberOfGroups = Math.floor(pool.length / groupSize);
+  const extraStudents = pool.length % groupSize;
+  const startLargerGroups = finalNumberOfGroups - extraStudents + 1;
+
+  shuffle(pool); // shuffles students to eliminate some bias
 
   addFirstToGroup(pool, groups, groupNumber);
   
   while (pool.length > 0) {
-    // the first student in a new group can be whatever student is first in the pool
-    if (groups[`group${groupNumber}`].length === groupSize) {
+    if (groups[`Group ${groupNumber}`].length === groupSize) {
       groupNumber++;
+      if (groupNumber === startLargerGroups) {
+        groupSize++;
+      }
       addFirstToGroup(pool, groups, groupNumber);
     }
     else {
-      let currGroup = groups[`group${groupNumber}`];
-      /* create an array of priorities to keep track of the properties for each priority
-      in the current group */
+      let currGroup = groups[`Group ${groupNumber}`];
       let groupPriorities = [];
       priorities.forEach((priority) => {
         groupPriorities.push({ [priority]: [] })
@@ -28,39 +68,50 @@ function createDifferentGroups(arr, groupSize, priorities) {
           groupPriorities[index][priorityName].push(student[priorityName]);
         })
       });
-      // then find the next student to add to the last group
-      
       addNextToGroup(pool, groups, groupPriorities, groupNumber);
     } 
-  }
-
-  /* if number of students doesn't fit into groups of groupSize evenly
-  then we will make slightly larger groups, this takes the smaller group at the end
-  and redistributes it to the previous groups
-  ideally it would be better to anticipate that students will not fit evenly and 
-  adjust groupSize before the end though */
-  if (groups[`group${groupNumber}`].length !== groupSize) {
-    for (let i = groups.length - 2; i >= 0 && !!groups[groups.length - 1].length; i--) {
-      groups[i].push(groups[groups.length - 1][0]);
-      groups[groups.length - 1].splice(0, 1);
-    }
-    groups.pop();
   }
   return groups;
 }
 
+function shuffle(arr) { // Fisher-Yates shuffle
+  for (let i = arr.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+/**
+ * The first student in a group can be anyone (since the group is empty), so this picks a random
+ * student by choosing the first student in the pool (which has been shuffled randomly). Adds the
+ * student and exits.
+ * 
+ * @param {array} pool - pool of remaining students who have not been sorted into groups yet
+ * @param {array} groups - nested arrays of students who have already been put into groups
+ * @param {number} groupNumber - current number of group being added to
+ */
 function addFirstToGroup(pool, groups, groupNumber) {
-  // adds the first student from the pool to a new group
-  // deletes that first student from the pool
-  groups[`group${groupNumber}`]= [pool[0]];
+  groups[`Group ${groupNumber}`]= [pool[0]];
   pool.splice(0, 1);
   return groups;
 }
 
+/**
+ * 
+ * Finds the next student to add to an existing group. Compares each student in the pool's
+ * categories to the groupPriorities (to check to see what categories are already in the group)
+ * and tries to find a student in the pool who doesn't match on any of the categories. If there
+ * is none, then it removes the last priority (the lowest priority), and tries again, if there is
+ * a point where all priorities have been removed it adds the next student from the pool and exits.
+ * 
+ * @param {array} pool -see above
+ * @param {array} groups - see above
+ * @param {array} groupPriorities - array of existing categories already in the current group
+ * @param {number} groupNumber - see above
+ */
 function addNextToGroup(pool, groups, groupPriorities, groupNumber) {
-  // this function finds the most suitable member to add to the group
-  // it will loop through the pool and find a student whose priorities do not match
-  let currGroup = groups[`group${groupNumber}`];
+  let currGroup = groups[`Group ${groupNumber}`];
   let diffCatFound = [];
   for (let i = 0; i < pool.length; i++) {
     for (let j = 0; j < groupPriorities.length; j++) {
@@ -86,35 +137,3 @@ function addNextToGroup(pool, groups, groupPriorities, groupNumber) {
 }
 
 export default createDifferentGroups;
-// export addFirstToGroup;
-// export addNextToGroup;
-
-// const studentArr = 
-// [{ "alias": "Blaise", "Hogwarts House": "Slytherin", "History of Magic Grade": 81, "History of Magic Grade Level": 2, "groupNum": 1 },
-// { "alias": "Draco", "Hogwarts House": "Slytherin", "History of Magic Grade": 82, "History of Magic Grade Level": 2, "groupNum": 3 },
-// { "alias": "Cho", "Hogwarts House": "Ravenclaw", "History of Magic Grade": 89, "History of Magic Grade Level": 3, "groupNum": 1 },
-// { "alias": "Colin", "Hogwarts House": "Gryffindor", "History of Magic Grade": 79, "History of Magic Grade Level": 2, "groupNum": 1 },
-// { "alias": "Cormac", "Hogwarts House": "Gryffindor", "History of Magic Grade": 81, "History of Magic Grade Level": 2, "groupNum": 2 },
-// { "alias": "Crabbe", "Hogwarts House": "Slytherin", "History of Magic Grade": 52, "History of Magic Grade Level": 1, "groupNum": 2 },
-// { "alias": "Dean", "Hogwarts House": "Gryffindor", "History of Magic Grade": 75, "History of Magic Grade Level": 1, "groupNum": 3 },
-// { "alias": "Ernie", "Hogwarts House": "Hufflepuff", "History of Magic Grade": 83, "History of Magic Grade Level": 2, "groupNum": 2 },
-// { "alias": "Ginny", "Hogwarts House": "Gryffindor", "History of Magic Grade": 81, "History of Magic Grade Level": 2, "groupNum": 4 },
-// { "alias": "Goyle", "Hogwarts House": "Slytherin", "History of Magic Grade": 55, "History of Magic Grade Level": 1, "groupNum": 4 },
-// { "alias": "Hannah", "Hogwarts House": "Hufflepuff", "History of Magic Grade": 65, "History of Magic Grade Level": 1, "groupNum": 3 },
-// { "alias": "Harry", "Hogwarts House": "Gryffindor", "History of Magic Grade": 78, "History of Magic Grade Level": 2, "groupNum": 5 },
-// { "alias": "Hermione", "Hogwarts House": "Gryffindor", "History of Magic Grade": 100, "History of Magic Grade Level": 3, "groupNum": 6 },
-// { "alias": "Justin", "Hogwarts House": "Hufflepuff", "History of Magic Grade": 77, "History of Magic Grade Level": 2, "groupNum": 4 },
-// { "alias": "Katie", "Hogwarts House": "Gryffindor", "History of Magic Grade": 75, "History of Magic Grade Level": 1, "groupNum": 7 },
-// { "alias": "Lavender", "Hogwarts House": "Gryffindor", "History of Magic Grade": 84, "History of Magic Grade Level": 3, "groupNum": 8 },
-// { "alias": "Luna", "Hogwarts House": "Ravenclaw", "History of Magic Grade": 92, "History of Magic Grade Level": 3, "groupNum": 5 },
-// { "alias": "Michael", "Hogwarts House": "Ravenclaw", "History of Magic Grade": 68, "History of Magic Grade Level": 1, "groupNum": 6 },
-// { "alias": "Neville", "Hogwarts House": "Gryffindor", "History of Magic Grade": 65, "History of Magic Grade Level": 1, "groupNum": 8 },
-// { "alias": "Pansy", "Hogwarts House": "Slytherin", "History of Magic Grade": 84, "History of Magic Grade Level": 3, "groupNum": 5 },
-// { "alias": "Padma", "Hogwarts House": "Ravenclaw", "History of Magic Grade": 88, "History of Magic Grade Level": 3, "groupNum": 7 },
-// { "alias": "Parvati", "Hogwarts House": "Gryffindor", "History of Magic Grade": 90, "History of Magic Grade Level": 3, "groupNum": 8 },
-// { "alias": "Ron", "Hogwarts House": "Gryffindor", "History of Magic Grade": 68, "History of Magic Grade Level": 1, "groupNum": 8 },
-// { "alias": "Seamus", "Hogwarts House": "Gryffindor", "History of Magic Grade": 74, "History of Magic Grade Level": 1, "groupNum": 7 },
-// { "alias": "Theodore", "Hogwarts House": "Slytherin", "History of Magic Grade": 86, "History of Magic Grade Level": 3, "groupNum": 6 },
-// { "alias": "Zacharias", "Hogwarts House": "Hufflepuff", "History of Magic Grade": 95, "History of Magic Grade Level": 3, "groupNum": 7 }];
-
-// console.log(createDifferentGroups(studentArr, 4, ["Hogwarts House", "History of Magic Grade Level"]));
