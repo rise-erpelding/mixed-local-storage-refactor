@@ -7,7 +7,6 @@ import MakeGroupsService from '../../services/make-groups-service';
 import store from '../../services/store';
 import './MakeGroupsPage.css';
 import ls from 'local-storage';
-// import _ from "lodash";
 
 class MakeGroupsPage extends Component {
   constructor(props) {
@@ -107,6 +106,15 @@ class MakeGroupsPage extends Component {
     // TODO: update this function
     if (datasetNum === 1) {
       this.setState(store.sampleData1);
+    }
+    else if (datasetNum === 2) {
+      this.setState(store.sampleData2);
+    }
+    else if (datasetNum === 3) {
+      this.setState(store.sampleData3);
+    }
+    else {
+      this.setState(store.sampleData4);
     }
   }
 
@@ -299,22 +307,8 @@ class MakeGroupsPage extends Component {
   // creates array, trimming excess whitespace
   createTrimmedArr = (vals) => vals.split(`\n`).filter((val) => !!val.trim().length);
 
+  // turns quantitative category values to numbers
   numberizeArr = (arr) => arr.map((val) => Number(val));
-
-  // addGroupNum = (groupArr, studentArr) => {
-  //   // goes through the array elements of groups
-  //   // within each innermost array, finds the student in the mixedStudentArray
-  //   // adds their groupNumber (index of the outer array + 1) as a property
-  //   groupArr.forEach((group, index) => {
-  //     group.forEach((groupMem) => {
-  //       studentArr.forEach((student) => {
-  //         if (student.alias === groupMem.alias) {
-  //           student.groupNum = (index + 1);
-  //         }
-  //       })
-  //     })
-  //   });
-  // }
 
   render() {
     const { categoriesLength } = this.state;
@@ -520,6 +514,24 @@ class MakeGroupsPage extends Component {
             onClick={() => this.useSampleData(1)} 
             >
               Use sample dataset 1
+          </button>
+          <button
+              type="button"
+            onClick={() => this.useSampleData(2)} 
+            >
+              Use sample dataset 2
+          </button>
+          <button
+              type="button"
+            onClick={() => this.useSampleData(3)} 
+            >
+              Use sample dataset 3
+          </button>
+          <button
+              type="button"
+            onClick={() => this.useSampleData(4)} 
+            >
+              Use sample dataset 4
           </button>
           </div>
         </form>
