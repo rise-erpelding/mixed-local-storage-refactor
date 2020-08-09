@@ -17,11 +17,13 @@ class LandingPage extends Component {
       behavior: 'smooth'})
   }
 
+  // TODO: possibly move this to App.js so that it can be reused and found more easily?
   clearPreviousGroups = () => {
-    console.log('clearing previous groups')
+    console.log('clearing previous groups');
     ls.remove('groupings');
     ls.remove('data');
     ls.remove('studentArr');
+    ls.remove('categoryNames');
   }
 
   render() {
