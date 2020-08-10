@@ -13,13 +13,13 @@ const NavBar = () => {
       </NavLink>
       <NavLink 
         activeClassName="selected"
-        to="/"
+        to="/make-groups"
       >
         Generate Groups
       </NavLink>
       <NavLink 
         activeClassName="selected"
-        to="/make-groups"
+        to="/my-groups"
       >
         My Classes
       </NavLink>
