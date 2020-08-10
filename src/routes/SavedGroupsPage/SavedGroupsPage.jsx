@@ -58,6 +58,21 @@ class SavedGroupsPage extends Component {
         categories.push(key);
       }
     }
+    /**
+     * Removes any category ending in " Level" if the beginning is the duplicate of another.
+     * For example, if categories contains ["Test Score", "Test Score Level"] this removes
+     * "Test Score Level" from the array.
+     */
+
+    for (let i = 0; i < categories.length; i++) {
+      let current = categories[i];
+      for (let j = 0; j < categories.length; j++) {
+        let currentPlusLevel = `${categories[j]} Level`
+        if (current === currentPlusLevel) {
+          categories.splice(i, 1);
+        }
+      }
+    }
     this.setState({ currentGroupCategoryNames: categories });
   }
 
@@ -121,6 +136,17 @@ class SavedGroupsPage extends Component {
     this.setState({ currentGrouping });
     this.getGroupsForCurrentGroupings(currentGrouping.groupings);
     this.getCategoriesForCurrentGroupings(currentGrouping.groupings);
+  }
+
+  // HANDLING MAIN BUTTONS (View Data, Delete Grouping, Save Changes)
+  viewGroupData = () => {
+    console.log('Going back to the group generator with the original data, see comments for additional info');
+    // Ideally the original data should be linked in the database to to the current group
+    // So we would set the data in ls then push the group generator page
+    // I didn't set my store up this way (ie didn't save the original data for each of my groups)
+    // But will set the db up properly
+    const { history } = this.props;
+    history.push('/make-groups');
   }
 
   render() {
@@ -242,7 +268,12 @@ class SavedGroupsPage extends Component {
             {showGroupings}
         </div>
         <div>
-          <button>View Data</button>
+          <button
+            type="button"
+            onClick={this.viewGroupData}
+          >
+            View Data
+          </button>
           <button>Delete Grouping</button>
           <button>Save Changes</button>
         </div>
