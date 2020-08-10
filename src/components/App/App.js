@@ -7,6 +7,7 @@ import LandingPage from '../../routes/LandingPage/LandingPage';
 import MakeGroupsPage from '../../routes/MakeGroupsPage/MakeGroupsPage';
 import GroupsMadePage from '../../routes/GroupsMadePage/GroupsMadePage';
 import SavedGroupsPage from '../../routes/SavedGroupsPage/SavedGroupsPage';
+import LoginPage from '../../routes/LoginPage/LoginPage';
 import NavBar from '../NavBar/NavBar';
 
 import ls from 'local-storage';
@@ -68,6 +69,10 @@ class App extends Component {
           <Route
             path="/my-groups"
             component={SavedGroupsPage}
+          />
+          <Route
+            path="/login"
+            component={LoginPage}
           />
         </Switch>
         </MixEdContext.Provider>
