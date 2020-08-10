@@ -7,8 +7,8 @@ class SavedGroupsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentGroups: [],
-      currentStudents: [],
+      currentNumberOfGroups: [],
+      currentGrouping: {},
       allClasses: [],
       allGroups: [],
     }
@@ -16,34 +16,22 @@ class SavedGroupsPage extends Component {
 
   componentDidMount() {
     this.loadAllGroups();
-    if (!!ls.get('studentArr')) {
-      this.localStorageDefaultGroup();
-    }
-    else {
-      this.mostRecentDefaultGroup();
-    }
+    this.loadCurrentGroup();
   }
 
   // METHODS FOR COMPONENT DID MOUNT
   loadAllGroups = () => {
     // fetch classes and groups/groupings from database
-    this.setState({ allClasses: store.myGroups.classes });
-    this.setState({ allGroups: store.myGroups.groups });
+      this.setState({ allClasses: store.myGroups.classes });
+      this.setState({ allGroups: store.myGroups.groups });
   }
 
-  localStorageDefaultGroup = () => {
-    // default grouping that user sees is from local storage
-    const currentStudents = ls.get('studentArr');
-    this.setState({ currentStudents: currentStudents });
-    this.getGroupsForCurrentGroupings(currentStudents);
+  loadCurrentGroup() {
+    const allGroups = store.myGroups.groups;
+    const lastGroup = allGroups[allGroups.length - 1];
+    this.setState({ currentGrouping: lastGroup })
+    this.getGroupsForCurrentGroupings(lastGroup.groupings);
   }
-
-  mostRecentDefaultGroup = () => {
-    // default grouping that user sees is last grouping added (highest id)
-    // fix this later to come from state, not store
-    console.log('hello world');
-  }
-
 
   getGroupsForCurrentGroupings = (studentsArr) => {
     const groupNums = [];
@@ -52,13 +40,12 @@ class SavedGroupsPage extends Component {
       groupNums.push(student.groupNum);
     })
     // create array with a set containing only unique items
-    const currentGroups = Array.from(new Set(groupNums));
-    currentGroups.sort((a, b) => a - b);
-    this.setState({ currentGroups: currentGroups });
+    const currentNumberOfGroups = Array.from(new Set(groupNums));
+    currentNumberOfGroups.sort((a, b) => a - b);
+    this.setState({ currentNumberOfGroups: currentNumberOfGroups });
   }
 
   // METHODS FOR DRAG AND DROP STUDENT NAMES
-
   handleDragStart = (event, student) => {
     event.dataTransfer.setData("student", student);
   }
@@ -81,11 +68,14 @@ class SavedGroupsPage extends Component {
   }
 
   render() {
-    const { currentGroups, currentStudents } = this.state;
+    const { currentNumberOfGroups, currentGrouping } = this.state;
+    const currentStudents = currentGrouping.groupings;
+    const currentGroupName = currentGrouping.groupName;
+    const currentGroupClass = currentGrouping.groupClass;
     const primaryCat = ls.get('primaryCat');
     const secondaryCat = ls.get('secondaryCat');
     const showGroupings = (
-      currentGroups.map((group) => (
+      currentNumberOfGroups.map((group) => (
         <div
           key={group}
           className="groups-made-page__group"
@@ -138,7 +128,7 @@ class SavedGroupsPage extends Component {
           </ul>
         </div>
         <section className="groupings">
-          <h1>Groupings</h1>
+          <h1>{`${currentGroupName} - ${currentGroupClass}`}</h1>
           <p>Click on a student to edit the group</p>
         <form>
         <div className="groupings__groups">
