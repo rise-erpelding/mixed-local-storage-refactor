@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import NewClass from '../../components/NewClass/NewClass';
 import './SavedGroupsPage.css';
 import store from '../../services/store';
 import ls from 'local-storage';
@@ -13,6 +14,7 @@ class SavedGroupsPage extends Component {
       currentGroupCategoryNames: [],
       allClasses: [],
       allGroups: [],
+      show: false,
     }
   }
 
@@ -117,6 +119,7 @@ class SavedGroupsPage extends Component {
 
   createNewClassTab = () => {
     console.log('creating new class');
+    this.showNewClassModal();
   }
 
   createNewGroup = () => {
@@ -157,13 +160,24 @@ class SavedGroupsPage extends Component {
     console.log(`Saving group id ${groupToSave.id}`);
   }
 
+    // METHODS FOR SAVE MODAL
+  
+    showNewClassModal = () => {
+      this.setState({ show: true });
+    }
+  
+    hideNewClassModal = () => {
+      this.setState({ show: false });
+    }
+
   render() {
     const { 
       currentNumberOfGroups,
       currentGrouping,
       allClasses,
       currentClassGroups,
-      currentGroupCategoryNames
+      currentGroupCategoryNames,
+      show
     } = this.state;
 
     // TO RENDER A GROUPING
@@ -296,8 +310,14 @@ class SavedGroupsPage extends Component {
           </button>
         </div>
       </form>
+
       </section>
       </div>
+      <NewClass 
+        show={show}
+        handleClose={this.hideNewClassModal}
+        handleNewClass={this.showNewClassModal}
+      />
     </main>
     )
   }
