@@ -24,7 +24,8 @@ const store = {
     categoriesLength: 3,
     categoryTypes: ['quantitative', 'quantitative', 'qualitative'],
     categoryNames: ["Reading Assessment Grade", "Vocabulary Assessment Grade", "Personality Type"],
-    categoryVals: [`Slytherin\nRavenclaw\nGryffindor\nGryffindor\nSlytherin\nGryffindor\nSlytherin\nHufflepuff\nGryffindor\nSlytherin\nHufflepuff\nGryffindor\nGryffindor\nHufflepuff\nGryffindor\nGryffindor\nRavenclaw\nRavenclaw\nGryffindor\nSlytherin\nRavenclaw\nGryffindor\nGryffindor\nGryffindor\nSlytherin\nHufflepuff\n`, `81\n89\n79\n81\n52\n75\n82\n83\n81\n55\n65\n78\n100\n77\n75\n84\n92\n68\n65\n84\n88\n90\n68\n74\n86\n95\n`],
+    categoryVals: [`81\n88\n85\n73\n91\n100\n78\n76\n87\n62\n48\n77\n86\n69\n56\n79\n78\n85\n91\n98\n100\n86\n94\n75\n79\n90`, `85\n90\n87\n75\n90\n95\n80\n74\n83\n66\n61\n81\n89\n75\n48\n82\n76\n89\n93\n94\n98\n86\n91\n74\n73\n85`,
+    `Introvert\nExtrovert\nIntrovert\nExtrovert\nExtrovert\nIntrovert\nExtrovert\nIntrovert\nIntrovert\nIntrovert\nExtrovert\nIntrovert\nExtrovert\nExtrovert\nIntrovert\nExtrovert\nIntrovert\nExtrovert\nIntrovert\nIntrovert\nIntrovert\nIntrovert\nExtrovert\nIntrovert\nExtrovert\nExtrovert`],
     aliases: `Sven\nViolet\nEthan\nAidan\nSofia\nGabriel\nAstrid\nEmilia\nJasper\nCaleb\nOlivia\nEli\nKen\nAurora\nFelix\nWyatt\nIsabella\nJordan\nElla\nJewel\nOliver\nCharlotte\nFinn\nHusdon\nLiam\nAva`,
   },
   sampleData4: {
