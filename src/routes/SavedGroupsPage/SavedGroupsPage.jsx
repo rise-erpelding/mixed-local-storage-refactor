@@ -149,6 +149,14 @@ class SavedGroupsPage extends Component {
     history.push('/make-groups');
   }
 
+  handleDelete = (groupToDelete) => {
+    console.log(`Deleting group id ${groupToDelete.id}`);
+  }
+
+  handleSave = (groupToSave) => {
+    console.log(`Saving group id ${groupToSave.id}`);
+  }
+
   render() {
     const { 
       currentNumberOfGroups,
@@ -274,8 +282,18 @@ class SavedGroupsPage extends Component {
           >
             View Data
           </button>
-          <button>Delete Grouping</button>
-          <button>Save Changes</button>
+          <button
+            type="button"
+            onClick={() => this.handleDelete(currentGrouping)}
+          >
+            Delete Grouping
+          </button>
+          <button
+            type="button"
+            onClick={() => this.handleSave(currentGrouping)}
+          >
+            Save Changes
+          </button>
         </div>
       </form>
       </section>
