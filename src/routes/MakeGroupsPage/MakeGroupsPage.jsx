@@ -23,6 +23,9 @@ class MakeGroupsPage extends Component {
     }
   }
 
+  /**
+   * Get any previous unsaved data from local storage.
+   */
   componentDidMount() {
     const savedData = ls.get('data');
     if (!!savedData) {
@@ -33,7 +36,6 @@ class MakeGroupsPage extends Component {
   // METHODS FOR FORM BUTTONS ONCLICK
   handleSubmit = (e) => {
     e.preventDefault();
-    // get things from context, props, state
     const { addData } = this.context;
     const { history } = this.props;
     const {
@@ -48,8 +50,22 @@ class MakeGroupsPage extends Component {
     // add data to local storage so it will be there if we navigate back to this page
     addData(this.state);
 
-    // turn all the textarea values into arrays, and if quantitative then turn the values to numbers
-    // first, to turn category textarea values into arrays, get indexes for each type of data
+    /**
+     * Next, prepare data for the sorting function to get the groups:
+     * -Keep track of which indexes in categories arrays are qualitative vs quantitative
+     * -Turn a set of quantitative category vals into a number array, turn a set of qualitative
+     * category vals into an array of strings, and turn aliases into an array (of strings).
+     * -Combine categoryTypes, categoryNames, categoryVals, and aliases into an array of objects,
+     * one object with info for each student.
+     * -Also add a level to each object for any quantitative variables--only as many levels as
+     * number of people in a group, which is most helpful for making mixed groups. Levels are
+     * assigned by sorting array, designating a number of cutoff points corresponding to number
+     * of levels, the interval between each set of cutoff points corresponds to a level.
+     * -Then send array of objects to grouping algorithm according to whether we want mixed
+     * or similar groups.
+     * -Then navigate to /groups-made
+     */
+
     const quantitativeIndexes = [];
     const qualitativeIndexes = [];
     categoryTypes.forEach((type, index) => {
@@ -60,36 +76,26 @@ class MakeGroupsPage extends Component {
         qualitativeIndexes.push(index);
       }
     })
-    // then copy the array containing all the values
+
+    // categoryValsArr will become an array containing arrays instead of strings
+    const aliasesArr = this.createTrimmedArr(aliases);
     const categoryValsArr = [...categoryVals];
-    // then loop over the quantitative indexes and turn to an array containing numbers
     for (let i = 0; i < quantitativeIndexes.length; i++) {
       categoryValsArr[quantitativeIndexes[i]] = this.numberizeArr(this.createTrimmedArr(categoryValsArr[quantitativeIndexes[i]]));
     }
-    // then loop over qualitative indexes and turn to an array
     for (let i = 0; i < qualitativeIndexes.length; i++) {
       categoryValsArr[qualitativeIndexes[i]] = this.createTrimmedArr(categoryValsArr[qualitativeIndexes[i]]);
     }
-    // now categoryValsArr should contain only arrays, each of the same length
-    // next change aliases to an array
-    const aliasesArr = this.createTrimmedArr(aliases);
-    
-    // then combine aliasesArr and categoryValsArr and combine into an arr of objects, studentArr
+
     const studentArr = [];
     aliasesArr.forEach((alias) => studentArr.push({ alias: alias }));
     categoryValsArr.forEach(
       (valArr, index) => MakeGroupsService.addEachToObj(studentArr, valArr, categoryNames[index])
     );
-    // for quantitative categories, we'll also go back and add a level
-    // do this only after we've already pushed the raw numbers to studentArr
-    // number of levels corresponds to groupSize
     const categoryNamesLevels = [...categoryNames]
     for (let i = 0; i < quantitativeIndexes.length; i++) {
-      // turns array of numbers into an array of levels
       categoryValsArr[quantitativeIndexes[i]] = MakeGroupsService.getLevel(categoryValsArr[quantitativeIndexes[i]], groupSize);
-      // adds the levels into the array of student objects
       MakeGroupsService.addEachToObj(studentArr, categoryValsArr[quantitativeIndexes[i]], `${categoryNames[quantitativeIndexes[i]]} Level`);
-      // replaces the category name as '... Level' because this is what we want to use in our grouping algorithm
       categoryNamesLevels[quantitativeIndexes[i]] = `${categoryNames[quantitativeIndexes[i]]} Level`;
     }
 
@@ -103,19 +109,7 @@ class MakeGroupsPage extends Component {
   }
 
   useSampleData = (datasetNum) => {
-    // TODO: update this function
-    if (datasetNum === 1) {
-      this.setState(store.sampleData1);
-    }
-    else if (datasetNum === 2) {
-      this.setState(store.sampleData2);
-    }
-    else if (datasetNum === 3) {
-      this.setState(store.sampleData3);
-    }
-    else {
-      this.setState(store.sampleData4);
-    }
+    this.setState(store['sampleData' + datasetNum])
   }
 
   handleClickCancel = () => {
@@ -135,7 +129,7 @@ class MakeGroupsPage extends Component {
   }
 
   handleSimilarGroups = (studentArr, groupSize, categoryNamesLevels, categoryNames) => {
-    const { addStudentArr, addCatNames }= this.context;
+    const { addStudentArr, addCatNames } = this.context;
     const groups = createSimilarGroups(studentArr, groupSize, categoryNamesLevels);
     // console.log(groups);
     this.addGroupNumber(groups, studentArr);
@@ -263,7 +257,17 @@ class MakeGroupsPage extends Component {
     const { aliases } = this.state;
     const aliasesArray = this.createTrimmedArr(aliases);
     if (aliasesArray.length < 3) {
-      return 'At least 3 aliases are required in order to generate groups'
+      return 'At least 3 aliases are required in order to generate groups.'
+    }
+  }
+
+  validateAliasUniqueness = () => {
+    const { aliases } = this.state;
+    const aliasesArray = this.createTrimmedArr(aliases);
+    const uniqueAliasesSet = new Set(aliasesArray);
+    const uniqueAliasesArray = [...uniqueAliasesSet];
+    if (uniqueAliasesArray.length !== aliasesArray.length) {
+      return 'No duplicate aliases allowed.'
     }
   }
 
@@ -271,7 +275,7 @@ class MakeGroupsPage extends Component {
     const { aliases, groupSize } = this.state;
     const aliasesArray = this.createTrimmedArr(aliases);
     if ((aliasesArray.length / groupSize) < 2) {
-      return `More aliases required in order to make groups of size ${groupSize}`;
+      return `More aliases required in order to make groups of size ${groupSize}.`;
     }
   }
 
@@ -455,6 +459,7 @@ class MakeGroupsPage extends Component {
                   List of names or other identifier.
                 </div>
                 <ValidationError message={this.validateAliases()} />
+                <ValidationError message={this.validateAliasUniqueness()} />
                 <ValidationError message={this.validateDataSize()} />
               </div>
               <div>
@@ -500,36 +505,33 @@ class MakeGroupsPage extends Component {
               onClick={this.handleClickCancel}
             >
               Cancel
-          </button>
-
-            <button
-              type="submit"
-            >
+            </button>
+            <button type="submit">
               Generate Groups
-          </button>
+            </button>
           </div>
           <div>
-          <button
+            <button
               type="button"
-            onClick={() => this.useSampleData(1)} 
+              onClick={() => this.useSampleData(1)}
             >
               Use sample dataset 1
           </button>
-          <button
+            <button
               type="button"
-            onClick={() => this.useSampleData(2)} 
+              onClick={() => this.useSampleData(2)}
             >
               Use sample dataset 2
           </button>
-          <button
+            <button
               type="button"
-            onClick={() => this.useSampleData(3)} 
+              onClick={() => this.useSampleData(3)}
             >
               Use sample dataset 3
           </button>
-          <button
+            <button
               type="button"
-            onClick={() => this.useSampleData(4)} 
+              onClick={() => this.useSampleData(4)}
             >
               Use sample dataset 4
           </button>
