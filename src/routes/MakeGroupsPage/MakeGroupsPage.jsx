@@ -12,6 +12,7 @@ class MakeGroupsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      error: null,
       groupSize: 2,
       groupingType: '',
       aliases: '',
@@ -253,6 +254,7 @@ class MakeGroupsPage extends Component {
 
 
   // METHODS FOR VALIDATING FORM VALUES
+
   validateAliases = () => {
     const { aliases } = this.state;
     const aliasesArray = this.createTrimmedArr(aliases);
@@ -381,13 +383,13 @@ class MakeGroupsPage extends Component {
               onChange={(event) => { this.updateCategoryVals(event, i) }}
             />
           </div>
-          <div className="make-groups-page__form--below-textarea">
+          <div className="make-groups-page__form--after-textarea">
             {i === 0 ? '' : (
               <button
                 type="button"
                 onClick={(event) => { this.shiftCategoryLeft(event, i) }}
               >
-                Shift Left
+                Increase Priority
               </button>
             )}
             {i === categoriesLength - 1 ? '' : (
@@ -395,7 +397,7 @@ class MakeGroupsPage extends Component {
                 type="button"
                 onClick={(event) => { this.shiftCategoryRight(event, i) }}
               >
-                Shift Right
+                Decrease Priority
               </button>
             )}
           </div>
@@ -413,18 +415,18 @@ class MakeGroupsPage extends Component {
             className="make-groups-page__form--grouping-characteristics"
           >
             <legend>Grouping characteristics:</legend>
-            <label htmlFor="group-size">Group size (minimum):</label>
-            <input
-              name="group-size"
-              id="group-size"
-              type="number"
-              min="2"
-              max="20"
-              value={this.state.groupSize}
-              onChange={this.updateGroupSize}
-            />
-            <div className="make-groups-page__form--radio-buttons">
-              <div>
+            <div>
+              <label htmlFor="group-size">Group size (minimum):</label>
+              <input
+                name="group-size"
+                id="group-size"
+                type="number"
+                min="2"
+                max="20"
+                value={this.state.groupSize}
+                onChange={this.updateGroupSize}
+              />
+              <div className="make-groups-page__form--radio-buttons">
                 <input
                   name="grouping-type"
                   id="grouping-similar"
@@ -436,17 +438,17 @@ class MakeGroupsPage extends Component {
                 />
                 <label htmlFor="grouping-similar">Group members are similar</label>
               </div>
-              <div>
-                <input
-                  name="grouping-type"
-                  id="grouping-mixed"
-                  value="mixed"
-                  type="radio"
-                  checked={this.state.groupingType === 'mixed'}
-                  onChange={this.updateGroupingType}
-                />
-                <label htmlFor="grouping-mixed">Group members are diverse</label>
-              </div>
+            </div>
+            <div className="make-groups-page__form--radio-buttons">
+              <input
+                name="grouping-type"
+                id="grouping-mixed"
+                value="mixed"
+                type="radio"
+                checked={this.state.groupingType === 'mixed'}
+                onChange={this.updateGroupingType}
+              />
+              <label htmlFor="grouping-mixed">Group members are diverse</label>
             </div>
           </fieldset>
           <div className="make-groups-page__form--student-data">
@@ -477,7 +479,7 @@ class MakeGroupsPage extends Component {
                   onChange={this.updateAliases}
                 />
               </div>
-              <div className="make-groups-page__form--below-textarea"></div>
+              <div className="make-groups-page__form--after-textarea"></div>
             </fieldset>
             {categories}
             <div className="make-groups-page__form--add-category-buttons">
@@ -510,7 +512,7 @@ class MakeGroupsPage extends Component {
               Generate Groups
             </button>
           </div>
-          <div>
+          <div className="make-groups-page__sampledata--buttons">
             <button
               type="button"
               onClick={() => this.useSampleData(1)}
