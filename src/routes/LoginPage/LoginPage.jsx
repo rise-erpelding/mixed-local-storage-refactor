@@ -56,7 +56,7 @@ class LoginPage extends Component {
       : null;
 
     return (
-      <div className="login-page">
+      <main className="login-page">
         <h2>Login</h2>
         {loginFailed}
         <form
@@ -92,7 +92,7 @@ class LoginPage extends Component {
           <button type="button" onClick={this.handleClickCancel}>Cancel</button>
           <button type="submit">Login</button>
         </form>
-      </div>
+      </main>
     );
   }
 }
