@@ -66,23 +66,28 @@ class LoginPage extends Component {
         >
           <div className="login-page__username">
             <label htmlFor="user_name">User name</label>
-            {' '}
-            <input
-              required
-              name="user_name"
-              type="text"
-              id="user_name"
-            />
+            <div>
+              <input
+                required
+                className="login-page__input"
+                name="user_name"
+                type="text"
+                id="user_name"
+              />
+            </div>
+
           </div>
           <div className="login-page__password">
             <label htmlFor="password">Password</label>
-            {' '}
-            <input
-              required
-              name="password"
-              type="password"
-              id="password"
-            />
+            <div>
+              <input
+                required
+                className="login-page__input"
+                name="password"
+                type="password"
+                id="password"
+              />
+            </div>
           </div>
           <button type="button" onClick={this.handleClickCancel}>Cancel</button>
           <button type="submit">Login</button>

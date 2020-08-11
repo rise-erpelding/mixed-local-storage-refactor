@@ -1,0 +1,19 @@
+.login-page {
+  height: 100vh;
+}
+
+.login-page > h2 {
+  margin-top: 60px;
+}
+
+.login-page__password > label,
+.login-page__username > label {
+  display: block;
+  text-align: left;
+  width: 180px;
+  margin: 0 auto;
+}
+
+.login-page__input {
+  width: 180px;
+}

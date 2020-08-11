@@ -7,7 +7,7 @@ const NavBar = () => {
     <nav className="nav-bar">
       <NavLink 
         activeClassName="selected"
-        to="/"
+        to="/login"
       >
         Login
       </NavLink>
