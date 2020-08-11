@@ -174,7 +174,7 @@ class SavedGroupsPage extends Component {
       currentNumberOfGroups.map((group) => (
         <div
           key={group}
-          className="groups-made-page__group"
+          className="saved-groups-page__group"
           onDragOver={(event) => this.onDragOver(event)}
           onDrop={(event) => {this.handleDrop(event, group)}}
         >
@@ -184,12 +184,12 @@ class SavedGroupsPage extends Component {
               return (
                 <div 
                   key={idx + 1}
-                  className="groups-made-page__student"
+                  className="saved-groups-page__student"
                   onDragStart={(event) => {this.handleDragStart(event, student.alias)}}
                   draggable
                 >
                   {student.alias}
-                <div className="groups-made-page__tooltip">
+                <div className="saved-groups-page__tooltip">
                   {currentGroupCategoryNames.map((category, index) => (
                     <p key={`category-${index}`}>
                     {`${category}: ${student[category]}`}
@@ -209,7 +209,7 @@ class SavedGroupsPage extends Component {
     const classTabs = allClasses.map((clss, idx) => (
       <li
         key={`${clss}-${idx}`}
-        className={clss === currentGrouping.groupClass ? 'groups-made-page__class-tab--selected groups-made-page__class-tab' : 'groups-made-page__class-tab'}
+        className={clss === currentGrouping.groupClass ? 'saved-groups-page__class-tab--selected saved-groups-page__class-tab' : 'saved-groups-page__class-tab'}
       >
         <button
           type="button"
@@ -224,7 +224,7 @@ class SavedGroupsPage extends Component {
     const groupingNames = currentClassGroups.map((grouping) => (
       <li
         key={`grouping-${grouping.id}`}
-        className={grouping.id === currentGrouping.id ? 'groups-made-page__groupings-list--selected' : ''}
+        className={grouping.id === currentGrouping.id ? 'saved-groups-page__groupings-list--selected' : ''}
       >
         <button
           type="button"
@@ -236,13 +236,12 @@ class SavedGroupsPage extends Component {
     ))
   
     return (
-      <main>
-        
-      <ul className="groups-made-page__class-tabs">
+      <main className="saved-groups-page">
+      <ul className="saved-groups-page__class-tabs">
         {classTabs}
         <li
           key="class-new"
-          className="groups-made-page__class-tab--new groups-made-page__class-tab"
+          className="saved-groups-page__class-tab--new saved-groups-page__class-tab"
         >
           <button
             type="button"
@@ -252,15 +251,16 @@ class SavedGroupsPage extends Component {
           </button>
         </li>
       </ul>
-      <div className="groups-made-page__class-groupings">
-        <div className="groups-made-page__groupings-list">
-          <ul className="groups-made-page__groupings-list--ul">
+      <div className="saved-groups-page__class-groupings">
+        <div className="saved-groups-page__groupings-list">
+          <ul className="saved-groups-page__groupings-list--ul">
             {groupingNames}
             <li
               key="grouping-new"
+              className="saved-groups-page__groupings-list--new"
             >
               <button
-                className="groups-made-page__groupings-list--new"
+                
                 onClick={this.createNewGroup}
               >
                 + New Group
@@ -268,11 +268,11 @@ class SavedGroupsPage extends Component {
             </li>
           </ul>
         </div>
-        <section className="groupings">
+        <section className="saved-groups-page__groups">
           <h1>{`${currentGroupName} - ${currentGroupClass}`}</h1>
-          <p>Click on a student to edit the group</p>
+          <p>Drag and drop students to edit groups.</p>
         <form>
-        <div className="groups-made-page__groupings">
+        <div className="saved-groups-page__groupings">
             {showGroupings}
         </div>
         <div>
