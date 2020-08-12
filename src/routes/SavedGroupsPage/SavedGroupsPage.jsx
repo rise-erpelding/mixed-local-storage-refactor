@@ -143,11 +143,11 @@ class SavedGroupsPage extends Component {
 
   // HANDLING MAIN BUTTONS (View Data, Delete Grouping, Save Changes)
   viewGroupData = () => {
-    console.log('Going back to the group generator with the original data, see comments for additional info');
+    console.log('This will go back to the group generator with the original data, see comments for additional info');
     // Ideally the original data should be linked in the database to to the current group
     // So we would set the data in ls then push the group generator page
     // I didn't set my store up this way (ie didn't save the original data for each of my groups)
-    // But will set the db up properly
+    // But will set the db up properly so that grouping and original data are linked
     const { history } = this.props;
     history.push('/make-groups');
   }
