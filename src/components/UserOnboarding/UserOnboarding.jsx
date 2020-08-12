@@ -15,9 +15,8 @@ class UserOnboarding extends Component {
             Enter the data
           </h3>
           [placeholder for image of sample data being entered into generator]
-          <p>First, enter the data for grouping students. At a minimum, you need to provide a student alias (such as a name, number, etc.) to identify the student. You  may also choose 2 categories for grouping.</p>
-          <p>The two categories may be quantitative or qualitative. Quantitative categories must consist of a number for each student (for example, an assessment score), qualitative categories must consist of some string category for each student (you could pick book choices, personality types, learning styles, etc.).</p>
-          <p>Put one value on each line. The order of the values MUST correspond to the order of the student aliases. We recommend saving your categories on a spreadsheet and copying/pasting from a spreadsheet.</p>
+          <p>First, enter the data for grouping students. At a minimum, you need to provide a student alias (such as a name, number, etc.) to identify the student. You may also add categories that you want to be taken into account when making groups--for example, student grades, personality types, learning styles, topics of interest--any value that you might want to use to categorize students.</p>
+          <p>Put one value on each line. The order of the values MUST correspond to the order in which students are inputted. We recommend saving your categories on a spreadsheet and copying/pasting from a spreadsheet.</p>
         </div>
         <div className="user-onboarding__generate-groups">
           <h3>
