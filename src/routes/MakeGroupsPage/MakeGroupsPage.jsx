@@ -36,6 +36,7 @@ class MakeGroupsPage extends Component {
 
   // METHODS FOR FORM BUTTONS ONCLICK
   handleSubmit = (e) => {
+    console.log(JSON.stringify(this.state));
     e.preventDefault();
     const { addData } = this.context;
     const { history } = this.props;
@@ -50,6 +51,8 @@ class MakeGroupsPage extends Component {
 
     // add data to local storage so it will be there if we navigate back to this page
     addData(this.state);
+
+
 
     /**
      * Next, prepare data for the sorting function to get the groups:
