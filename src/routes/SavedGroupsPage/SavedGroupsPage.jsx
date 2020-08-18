@@ -3,6 +3,7 @@ import NewClass from '../../components/NewClass/NewClass';
 import MixedApiService from '../../services/mixed-api-service';
 import './SavedGroupsPage.css';
 // import store from '../../services/store';
+import MixEdContext from '../../context/MixEdContext';
 import { Link } from 'react-router-dom';
 import ls from 'local-storage';
 
@@ -161,12 +162,14 @@ class SavedGroupsPage extends Component {
   createNewGroup = () => {
     // move clearPreviousGroups() from LandingPage to App so we can call that function instead of rewriting code
     const { history } = this.props;
+    const { removePrevData } = this.context;
     history.push('/make-groups');
-    console.log('clearing previous groups');
-    ls.remove('groupings');
-    ls.remove('data');
-    ls.remove('studentArr');
-    ls.remove('categoryNames');
+    removePrevData();
+    // console.log('clearing previous groups');
+    // ls.remove('groupings');
+    // ls.remove('data');
+    // ls.remove('studentArr');
+    // ls.remove('categoryNames');
   }
 
   // used when user clicks on grouping other than currently selected
@@ -186,6 +189,7 @@ class SavedGroupsPage extends Component {
     // So we would set the data in ls then push the group generator page
     // I didn't set my store up this way (ie didn't save the original data for each of my groups)
     // But will set the db up properly so that grouping and original data are linked
+    ls.set()
     const { history } = this.props;
     history.push('/make-groups');
   }
@@ -402,3 +406,5 @@ class SavedGroupsPage extends Component {
 }
 
 export default SavedGroupsPage;
+
+SavedGroupsPage.contextType = MixEdContext;

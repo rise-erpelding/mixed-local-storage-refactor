@@ -4,6 +4,7 @@ const MixEdContext = React.createContext({
   data: {},
   groupings: [],
   addData: () => {},
+  removePrevData: () => {},
   addCatNames: () => {},
   addStudentArr: () => {},
   toggleLogin: () => {},

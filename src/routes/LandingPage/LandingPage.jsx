@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import Landing from '../../components/Landing/Landing';
 import UserOnboarding from '../../components/UserOnboarding/UserOnboarding';
-
-import ls from 'local-storage';
+import MixEdContext from '../../context/MixEdContext';
 
 class LandingPage extends Component {
   constructor(props) {
@@ -18,20 +17,21 @@ class LandingPage extends Component {
   }
 
   // TODO: possibly move this to App.js so that it can be reused and found more easily?
-  clearPreviousGroups = () => {
-    console.log('clearing previous groups');
-    ls.remove('groupings');
-    ls.remove('data');
-    ls.remove('studentArr');
-    ls.remove('categoryNames');
-  }
+  // clearPreviousGroups = () => {
+  //   console.log('clearing previous groups');
+  //   ls.remove('groupings');
+  //   ls.remove('data');
+  //   ls.remove('studentArr');
+  //   ls.remove('categoryNames');
+  // }
 
   render() {
+    const { removePrevData } = this.context;
     return (
       <main>
         <Landing 
           handleOnboarding={this.scrollToRef}
-          handleMakeGroupsButton={this.clearPreviousGroups}
+          handleMakeGroupsButton={removePrevData}
         />
         <UserOnboarding passRef={this.scrollRef} />
       </main>
@@ -40,3 +40,5 @@ class LandingPage extends Component {
 }
 
 export default LandingPage;
+
+LandingPage.contextType = MixEdContext;

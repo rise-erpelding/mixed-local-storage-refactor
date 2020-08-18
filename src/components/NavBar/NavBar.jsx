@@ -9,6 +9,8 @@ class NavBar extends Component {
     console.log('logging you out');
     // const { toggleLogin } = this.context;
     // toggleLogin();
+    const { removePrevData } = this.context;
+    removePrevData();
     TokenService.clearAuthToken();
   }
 

@@ -29,6 +29,14 @@ class App extends Component {
     ls.set('data', data);
   }
 
+  removePrevData = () => {
+    console.log('clearing previous groups');
+    ls.remove('groupings');
+    ls.remove('data');
+    ls.remove('studentArr');
+    ls.remove('categoryNames');
+  }
+
   addStudentArr = (studentArr) => {
     this.setState({ studentArr: studentArr });
     ls.set('studentArr', studentArr);
@@ -51,6 +59,7 @@ class App extends Component {
       data,
       groupings,
       addData: this.addData,
+      removePrevData: this.removePrevData,
       addStudentArr: this.addStudentArr,
       addCatNames: this.addCatNames,
       toggleLogin: this.toggleLogin,
