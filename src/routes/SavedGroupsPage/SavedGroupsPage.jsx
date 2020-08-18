@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import NewClass from '../../components/NewClass/NewClass';
+import MixedApiService from '../../services/mixed-api-service';
 import './SavedGroupsPage.css';
-import store from '../../services/store';
+// import store from '../../services/store';
 import ls from 'local-storage';
 
 class SavedGroupsPage extends Component {
@@ -15,29 +16,54 @@ class SavedGroupsPage extends Component {
       allClasses: [],
       allGroups: [],
       show: false,
+      error: null,
     }
   }
 
   componentDidMount() {
-    this.loadAllGroups();
-    this.loadCurrentGroup();
+    this.loadAllGroupsAndClasses();
+    
   }
 
   // METHODS FOR COMPONENT DID MOUNT
   // refactor all once database is in place
-  loadAllGroups = () => {
+  loadAllGroupsAndClasses = () => {
     // fetch classes and groups/groupings from database
-      this.setState({ allClasses: store.myGroups.classes });
-      this.setState({ allGroups: store.myGroups.groups });
+    MixedApiService.getClassesForTeacher()
+      .then((response) => {
+        console.log(response)
+        this.setState({ allClasses: response });
+      })
+      .catch((error) => {
+        console.error(error);
+        this.setState({ error });
+      })
+    MixedApiService.getGroupingsForTeacher()
+      .then((response) => {
+        console.log(response)
+        const lastGroup = response[response.length - 1];
+        this.setState({ currentGrouping: lastGroup })
+        this.loadCurrentGroup(lastGroup);
+        this.setState({ allGroups: response })
+      })
+      .catch((error) => {
+        console.error(error);
+        this.setState({ error });
+      })
+      // this.setState({ allClasses: store.myGroups.classes }); // ["1st Period", "2nd Period", etc...]
+      // this.setState({ allGroups: store.myGroups.groups }); // [{id: "num", groupClass: "something", groupName: "something", groupings: [{student}, {...}, {...}]}, {...}, {...}]
+      
   }
 
-  loadCurrentGroup() {
-    const allGroups = store.myGroups.groups;
-    const lastGroup = allGroups[allGroups.length - 1];
-    this.setState({ currentGrouping: lastGroup })
-    this.getGroupsForCurrentGroupings(lastGroup.groupings);
-    this.getCurrentClass(lastGroup.groupClass);
-    this.getCategoriesForCurrentGroupings(lastGroup.groupings);
+  loadCurrentGroup(currentGroup) {
+
+    // const allGroups = store.myGroups.groups;
+    // const lastGroup = allGroups[allGroups.length - 1];
+    // add something for if there are no groups
+    // this.setState({ currentGrouping: currentGroup })
+    this.getGroupsForCurrentGroupings(currentGroup.groupings);
+    this.getCurrentClass(currentGroup.class_id);
+    this.getCategoriesForCurrentGroupings(currentGroup.groupings);
   }
 
   getGroupsForCurrentGroupings = (studentsArr) => {
@@ -65,7 +91,6 @@ class SavedGroupsPage extends Component {
      * For example, if categories contains ["Test Score", "Test Score Level"] this removes
      * "Test Score Level" from the array.
      */
-
     for (let i = 0; i < categories.length; i++) {
       let current = categories[i];
       for (let j = 0; j < categories.length; j++) {
@@ -78,9 +103,13 @@ class SavedGroupsPage extends Component {
     this.setState({ currentGroupCategoryNames: categories });
   }
 
-  getCurrentClass = (currentClassName) => {
-    const allGroups = store.myGroups.groups;
-    const currentClassGroups = allGroups.filter((grouping) => grouping.groupClass === currentClassName);
+  getCurrentClass = (currentClassId) => {
+    const { allGroups } = this.state;
+
+    // const allGroups = store.myGroups.groups;
+    const currentClassGroups = allGroups.filter(
+      (grouping) => grouping.class_id === currentClassId
+      );
     this.setState({ currentClassGroups });
   }
 
@@ -110,7 +139,7 @@ class SavedGroupsPage extends Component {
   // METHODS FOR CLICKING CLASS TABS AND GROUP TABS
   changeClassTab = (classToChange) => {
     const { allGroups } = this.state;
-    const currentClassGroups = allGroups.filter((group) => group.groupClass === classToChange)
+    const currentClassGroups = allGroups.filter((group) => group.id === classToChange)
     this.setState({ currentClassGroups });
     this.setState({ currentGrouping: currentClassGroups[0] })
     this.getGroupsForCurrentGroupings(currentClassGroups[0].groupings);
@@ -220,16 +249,20 @@ class SavedGroupsPage extends Component {
     ));
 
     // TO RENDER CLASS TABS
-    const classTabs = allClasses.map((clss, idx) => (
+    const classTabs = allClasses.map((classObj) => (
       <li
-        key={`${clss}-${idx}`}
-        className={clss === currentGrouping.groupClass ? 'saved-groups-page__class-tab--selected saved-groups-page__class-tab' : 'saved-groups-page__class-tab'}
+        key={`class-${classObj.id}`}
+        className={
+          classObj.id === currentGrouping.class_id
+          ? 'saved-groups-page__class-tab--selected saved-groups-page__class-tab'
+          : 'saved-groups-page__class-tab'
+        }
       >
         <button
           type="button"
-          onClick={() => this.changeClassTab(clss)}
+          onClick={() => this.changeClassTab(classObj.id)}
         >
-          {clss}
+          {classObj.class_name}
         </button>
       </li>
     ))
