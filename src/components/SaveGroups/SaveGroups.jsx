@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 import './SaveGroups.css';
-import store from '../../services/store';
+// import store from '../../services/store';
 
 
 class SaveGroups extends Component {
@@ -30,14 +30,14 @@ class SaveGroups extends Component {
   }
 
   render() {
-    const { handleClose, show } = this.props;
+    const { handleClose, show, classes } = this.props;
     const modalClassName = show ? 'save-groups display-block' : 'save-groups display-none';
-    const classOptions = store.myGroups.classes.map((el, idx) => (
+    const classOptions = classes.map((classObj) => (
       <option
-        key={idx + 1}
-        value={el}
+        key={classObj.id}
+        value={classObj.class_name}
       >
-        {el}
+        {classObj.class_name}
       </option>
     ))
 

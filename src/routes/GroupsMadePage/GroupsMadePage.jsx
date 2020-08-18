@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SaveGroups from '../../components/SaveGroups/SaveGroups';
 import MixEdContext from '../../context/MixEdContext';
+import MixedApiService from '../../services/mixed-api-service';
 import ls from 'local-storage';
 import './GroupsMadePage.css';
 
@@ -10,29 +11,39 @@ class GroupsMadePage extends Component {
     this.state = {
       show: false,
       students: [],
-      groups: [],
+      groupNumbers: [],
       groupingName: '',
       className: '',
+      allClasses: [],
+      error: null,
     }
   }
 
   componentDidMount() {
     const students = ls.get('studentArr');
     this.setState({ students: students });
-    this.getGroups(students);
+    this.getGroupNumbers(students);
+    MixedApiService.getClassesForTeacher()
+      .then((classes) => {
+        this.setState({ allClasses: classes })
+      })
+      .catch((error) => {
+        this.setState({ error });
+      });
+
   }
 
 
-  getGroups = (studentsArr) => {
+  getGroupNumbers = (studentsArr) => {
     const groupNums = [];
     // get all the group numbers for all the students and push into arr
     studentsArr.forEach((student) => {
       groupNums.push(student.groupNum);
     })
     // create array with a set containing only unique items
-    const groups = Array.from(new Set(groupNums));
-    groups.sort((a, b) => a - b);
-    this.setState({ groups: groups });
+    const groupNumbers = Array.from(new Set(groupNums));
+    groupNumbers.sort((a, b) => a - b);
+    this.setState({ groupNumbers });
   }
 
   // METHODS FOR BUTTONS
@@ -64,6 +75,9 @@ class GroupsMadePage extends Component {
 
   //
   saveGroups = (groupingName, className) => {
+    // match className to one of the classes that we have currently
+
+
     // currently this isn't really functional but we do update the students in local storage at this point
     this.setState({ groupingName, className });
     const { students } = this.state;
@@ -98,20 +112,20 @@ class GroupsMadePage extends Component {
   }
 
   render() {
-    const { show, groups, students } = this.state;
+    const { show, groupNumbers, students, allClasses } = this.state;
     const categoryNames = ls.get('categoryNames')
 
     const showGroupings = (
-      groups.map((group) => (
+      groupNumbers.map((groupNumber) => (
         <div
-          key={group}
+          key={groupNumber}
           className="groups-made-page__group"
           onDragOver={(event) => this.handleDragOver(event)}
-          onDrop={(event) => {this.handleDrop(event, group)}}
+          onDrop={(event) => {this.handleDrop(event, groupNumber)}}
         >
-          Group {group}
+          Group {groupNumber}
           {students.map((student, idx) => {
-            if (student.groupNum === group) {
+            if (student.groupNum === groupNumber) {
               return (
                 <div 
                   key={idx + 1}
@@ -165,6 +179,7 @@ class GroupsMadePage extends Component {
           </div>
         </form>
         <SaveGroups
+          classes={allClasses}
           show={show}
           handleClose={this.hideSaveModal}
           handleSave={this.saveGroups}

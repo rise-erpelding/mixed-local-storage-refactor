@@ -46,6 +46,9 @@ class SavedGroupsPage extends Component {
         // this.getCategoriesForCurrentGroupings(currentGrouping.groupings);
         this.getCurrentClassGroupingsList(currentClass.id, groupings);
       })
+      .catch((error) => {
+        this.setState({ error });
+      });
   }
 
   // METHODS TO SET INFO ABOUT CURRENT GROUPING IN STATE

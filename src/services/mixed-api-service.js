@@ -31,21 +31,21 @@ const MixedApiService = {
         return Promise.all([classesRes.json(), groupingsRes.json()]);
       });
   },
-  // getClassesForTeacher() {
-  //   return fetch(`${config.API_ENDPOINT}/classes/teacher`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'content-type': 'application/json',
-  //       authorization: `bearer ${TokenService.getAuthToken()}`,
-  //     },
-  //   })
-  //     .then((res) => {
-  //       if (!res.ok) {
-  //         return res.json().then((error) => Promise.reject(error));
-  //       }
-  //       return res.json();
-  //     });
-  // },
+  getClassesForTeacher() {
+    return fetch(`${config.API_ENDPOINT}/classes/teacher`, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `bearer ${TokenService.getAuthToken()}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((error) => Promise.reject(error));
+        }
+        return res.json();
+      });
+  },
   // getGroupingsForTeacher() {
   //   return fetch(`${config.API_ENDPOINT}/groupings/teacher`, {
   //     method: 'GET',
