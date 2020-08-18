@@ -22,6 +22,7 @@ class SavedGroupsPage extends Component {
       currentClass: {},
       currentClassGroupings: [],
       show: false,
+      groupingUpdated: false,
       error: null,
     }
   }
@@ -34,18 +35,29 @@ class SavedGroupsPage extends Component {
         this.setState({ 
           allClasses: classes,
           allGroupings: groupings,
-          currentGrouping: currentGrouping,
+          // currentGrouping: currentGrouping,
           currentClass: currentClass,
         })
         /* below methods will set state for currentGroupingGroupNumbers, 
         currentGroupingCategoryNames, currentClassGroupings, respectively */
-        this.getCurrentGroupingGroupNumbers(currentGrouping.groupings);
-        this.getCategoriesForCurrentGroupings(currentGrouping.groupings);
+        this.updateCurrentGrouping(currentGrouping);
+        // this.getCurrentGroupingGroupNumbers(currentGrouping.groupings);
+        // this.getCategoriesForCurrentGroupings(currentGrouping.groupings);
         this.getCurrentClassGroupingsList(currentClass.id, groupings);
       })
   }
 
   // METHODS TO SET INFO ABOUT CURRENT GROUPING IN STATE
+  updateCurrentGrouping = (currentGrouping) => {
+    this.setState({ currentGrouping });
+    this.getCurrentGroupingGroupNumbers(currentGrouping.groupings);
+    this.getCategoriesForCurrentGroupings(currentGrouping.groupings);
+  }
+
+  updateCurrentClass = (currentClassId, groupings) => {
+
+  }
+
   getCurrentGroupingGroupNumbers = (studentsArr) => {
     const allGroupNums = [];
     // get all the group numbers for all the students and push into arr
@@ -111,7 +123,8 @@ class SavedGroupsPage extends Component {
       return student;
     })
     currentGrouping = {...currentGrouping, updatedStudent};
-    this.setState({ currentGrouping });
+    this.updateCurrentGrouping(currentGrouping);
+    // this.setState({ currentGrouping });
   }
 
   // METHODS FOR CLICKING CLASS TABS AND GROUP TABS
@@ -123,7 +136,8 @@ class SavedGroupsPage extends Component {
     this.setState({ currentClass });
     if (!!currentClassGroupings.length) {   // if there are groupings in the class
       const currentGrouping = currentClassGroupings[currentClassGroupings.length - 1];
-      this.setState({ currentClassGroupings, currentGrouping });
+      this.setState({ currentClassGroupings });
+      this.setState({ currentGrouping });
       this.getCurrentGroupingGroupNumbers(currentGrouping.groupings);
       this.getCategoriesForCurrentGroupings(currentGrouping.groupings);
       this.getCurrentClassGroupingsList(classId, allGroupings);
@@ -179,8 +193,22 @@ class SavedGroupsPage extends Component {
     console.log(`Deleting group id ${groupToDelete.id}`);
   }
 
-  handleSave = (groupToSave) => {
-    console.log(`Saving group id ${groupToSave.id}`);
+  handleSave = (currentGrouping) => {
+    let { allGroupings } = this.state;
+    MixedApiService.editGrouping(currentGrouping)
+      .then(() => {
+        // Update allGroupings to include changes in currentGrouping
+        allGroupings = allGroupings.filter((grouping) => grouping.id !== currentGrouping.id)
+        allGroupings = [...allGroupings, currentGrouping];
+        this.setState({
+          allGroupings,
+          groupingUpdated: true,
+        });
+      })
+      .catch((error) => {
+        this.setState({ error })
+      })
+    console.log(`Saved group id ${currentGrouping.id}`);
   }
 
     // METHODS FOR SAVE MODAL
@@ -200,8 +228,13 @@ class SavedGroupsPage extends Component {
       currentGroupingCategoryNames,
       currentClass,
       currentClassGroupings,
+      groupingUpdated,
       show
     } = this.state;
+
+    const groupingUpdatedMessage = !!groupingUpdated ? 'Changes saved.' : '';
+    // console.log(!!groupingUpdated);
+    // const groupingUpdatedMessage = 'Changes saved';
 
     // TO RENDER A GROUPING
     const currentStudents = currentGrouping.groupings || '';
@@ -325,6 +358,7 @@ class SavedGroupsPage extends Component {
             {showGroupings}
         </div>
         <div>
+          <p>{groupingUpdatedMessage}</p>
           <button
             type="button"
             onClick={this.viewGroupData}

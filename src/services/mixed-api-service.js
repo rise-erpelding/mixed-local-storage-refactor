@@ -31,36 +31,36 @@ const MixedApiService = {
         return Promise.all([classesRes.json(), groupingsRes.json()]);
       });
   },
-  getClassesForTeacher() {
-    return fetch(`${config.API_ENDPOINT}/classes/teacher`, {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-        authorization: `bearer ${TokenService.getAuthToken()}`,
-      },
-    })
-      .then((res) => {
-        if (!res.ok) {
-          return res.json().then((error) => Promise.reject(error));
-        }
-        return res.json();
-      });
-  },
-  getGroupingsForTeacher() {
-    return fetch(`${config.API_ENDPOINT}/groupings/teacher`, {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-        authorization: `bearer ${TokenService.getAuthToken()}`,
-      },
-    })
-      .then((res) => {
-        if (!res.ok) {
-          return res.json().then((error) => Promise.reject(error));
-        }
-        return res.json();
-      });
-  },
+  // getClassesForTeacher() {
+  //   return fetch(`${config.API_ENDPOINT}/classes/teacher`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'content-type': 'application/json',
+  //       authorization: `bearer ${TokenService.getAuthToken()}`,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       if (!res.ok) {
+  //         return res.json().then((error) => Promise.reject(error));
+  //       }
+  //       return res.json();
+  //     });
+  // },
+  // getGroupingsForTeacher() {
+  //   return fetch(`${config.API_ENDPOINT}/groupings/teacher`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'content-type': 'application/json',
+  //       authorization: `bearer ${TokenService.getAuthToken()}`,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       if (!res.ok) {
+  //         return res.json().then((error) => Promise.reject(error));
+  //       }
+  //       return res.json();
+  //     });
+  // },
   insertNewClass(newClass) {
     return fetch(`${config.API_ENDPOINT}/classes`, {
       method: 'POST',
@@ -114,8 +114,8 @@ const MixedApiService = {
         }
       });
   },
-  editGrouping(groupingId, updatedGrouping) {
-    return fetch(`${config.API_ENDPOINT}/groupings/${groupingId}`, {
+  editGrouping(updatedGrouping) {
+    return fetch(`${config.API_ENDPOINT}/groupings/${updatedGrouping.id}`, {
       method: 'PATCH',
       body: JSON.stringify(updatedGrouping),
       headers: {
