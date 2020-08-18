@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import DemoLoginInfo from '../../components/DemoLoginInfo/DemoLoginInfo';
+import AuthApiService from '../../services/auth-api-service';
+import TokenService from '../../services/token-service';
+import MixEdContext from '../../context/MixEdContext';
 import './LoginPage.css';
 
 
@@ -10,39 +14,34 @@ class LoginPage extends Component {
     };
   }
 
-  pretendSubmit = () => {
-    const { history } = this.props;
-    history.push('/my-groups');
+  handleSubmitJwtAuth = (e) => {
+    e.preventDefault();
+    this.setState({ error: null });
+    const { teacher_name, password } = e.target;
+
+    AuthApiService.postLogin({
+      teacher_name: teacher_name.value,
+      password: password.value,
+    })
+      .then((res) => {
+        teacher_name.value = '';
+        password.value = '';
+        TokenService.saveAuthToken(res.authToken);
+        this.handleLoginSuccess();
+      })
+      .catch(() => {
+        teacher_name.value = '';
+        password.value = '';
+        this.setState({ error: true });
+      });
   }
 
-  // handleSubmitJwtAuth = (e) => {
-  //   e.preventDefault();
-  //   this.setState({ error: null });
-  //   const { user_name, password } = e.target;
-
-  //   AuthApiService.postLogin({
-  //     user_name: user_name.value,
-  //     password: password.value,
-  //   })
-  //     .then((res) => {
-  //       user_name.value = '';
-  //       password.value = '';
-  //       TokenService.saveAuthToken(res.authToken);
-  //       this.handleLoginSuccess();
-  //     })
-  //     .catch(() => {
-  //       user_name.value = '';
-  //       password.value = '';
-  //       this.setState({ error: true });
-  //     });
-  // }
-
-  // handleLoginSuccess = () => {
-  //   const { history } = this.props;
-  //   const { toggleLogin } = this.context;
-  //   history.push('/');
-  //   toggleLogin();
-  // }
+  handleLoginSuccess = () => {
+    const { history } = this.props;
+    const { toggleLogin } = this.context;
+    history.push('/');
+    toggleLogin();
+  }
 
   handleClickCancel = () => {
     const { history } = this.props;
@@ -61,18 +60,17 @@ class LoginPage extends Component {
         {loginFailed}
         <form
           className="login-page__form"
-          // onSubmit={this.handleSubmitJwtAuth}
-          onSubmit={this.pretendSubmit}
+          onSubmit={this.handleSubmitJwtAuth}
         >
           <div className="login-page__username">
-            <label htmlFor="user_name">User name</label>
+            <label htmlFor="teacher_name">User name</label>
             <div>
               <input
                 required
                 className="login-page__input"
-                name="user_name"
+                name="teacher_name"
                 type="text"
-                id="user_name"
+                id="teacher_name"
               />
             </div>
 
@@ -92,9 +90,12 @@ class LoginPage extends Component {
           <button type="button" onClick={this.handleClickCancel}>Cancel</button>
           <button type="submit">Login</button>
         </form>
+        <DemoLoginInfo />
       </main>
     );
   }
 }
 
 export default LoginPage;
+
+LoginPage.contextType = MixEdContext;

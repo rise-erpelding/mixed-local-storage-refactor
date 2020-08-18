@@ -9,7 +9,7 @@ import GroupsMadePage from '../../routes/GroupsMadePage/GroupsMadePage';
 import SavedGroupsPage from '../../routes/SavedGroupsPage/SavedGroupsPage';
 import LoginPage from '../../routes/LoginPage/LoginPage';
 import NavBar from '../NavBar/NavBar';
-
+import TokenService from '../../services/token-service';
 import ls from 'local-storage';
 
 import './App.css';
@@ -20,6 +20,7 @@ class App extends Component {
     this.state = {
       data: {},
       studentArr: [],
+      isLoggedIn: TokenService.hasAuthToken(),
     }
   }
 
@@ -37,6 +38,12 @@ class App extends Component {
     ls.set('categoryNames', catNamesArr);
   }
 
+  toggleLogin() {
+    this.setState((prevState) => ({
+      isLoggedIn: !prevState.isLoggedIn,
+    }));
+  }
+
   render() {
     const { data, groupings } = this.state;
 
@@ -46,6 +53,7 @@ class App extends Component {
       addData: this.addData,
       addStudentArr: this.addStudentArr,
       addCatNames: this.addCatNames,
+      toggleLogin: this.toggleLogin,
     };
 
     return (

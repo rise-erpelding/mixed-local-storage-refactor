@@ -17,3 +17,7 @@
 .login-page__input {
   width: 180px;
 }
+
+.login-page__login-error {
+  color: red;
+}

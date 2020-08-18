@@ -6,6 +6,7 @@ const MixEdContext = React.createContext({
   addData: () => {},
   addCatNames: () => {},
   addStudentArr: () => {},
+  toggleLogin: () => {},
 });
 
 export default MixEdContext;
