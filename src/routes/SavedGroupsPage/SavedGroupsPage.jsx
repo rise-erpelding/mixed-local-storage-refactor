@@ -137,9 +137,10 @@ class SavedGroupsPage extends Component {
     if (!!currentClassGroupings.length) {   // if there are groupings in the class
       const currentGrouping = currentClassGroupings[currentClassGroupings.length - 1];
       this.setState({ currentClassGroupings });
-      this.setState({ currentGrouping });
-      this.getCurrentGroupingGroupNumbers(currentGrouping.groupings);
-      this.getCategoriesForCurrentGroupings(currentGrouping.groupings);
+      this.updateCurrentGrouping(currentGrouping);
+      // this.setState({ currentGrouping });
+      // this.getCurrentGroupingGroupNumbers(currentGrouping.groupings);
+      // this.getCategoriesForCurrentGroupings(currentGrouping.groupings);
       this.getCurrentClassGroupingsList(classId, allGroupings);
     }
     else {                                // if there are no groupings in the class
@@ -189,8 +190,19 @@ class SavedGroupsPage extends Component {
     history.push('/make-groups');
   }
 
-  handleDelete = (groupToDelete) => {
-    console.log(`Deleting group id ${groupToDelete.id}`);
+  handleDelete = (currentGrouping) => {
+    // remove the current grouping from all groupings
+    // remove current grouping from everywhere else? see if this is necessary before trying to do it
+    // call changeClassTab with the current class Id again to re-render?
+    console.log(`Deleting group id ${currentGrouping.id}`);
+    // let { allGroupings } = this.state;
+    // MixedApiService.deleteGrouping(currentGrouping.id)
+    //   .then((res) => {
+    //     console.log(res.json)
+    //   })
+    //   .catch((error) => {
+    //     this.setState({ error })
+    //   })
   }
 
   handleSave = (currentGrouping) => {
@@ -208,7 +220,6 @@ class SavedGroupsPage extends Component {
       .catch((error) => {
         this.setState({ error })
       })
-    console.log(`Saved group id ${currentGrouping.id}`);
   }
 
     // METHODS FOR SAVE MODAL
@@ -233,8 +244,6 @@ class SavedGroupsPage extends Component {
     } = this.state;
 
     const groupingUpdatedMessage = !!groupingUpdated ? 'Changes saved.' : '';
-    // console.log(!!groupingUpdated);
-    // const groupingUpdatedMessage = 'Changes saved';
 
     // TO RENDER A GROUPING
     const currentStudents = currentGrouping.groupings || '';
