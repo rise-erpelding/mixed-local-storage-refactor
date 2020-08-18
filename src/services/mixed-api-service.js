@@ -2,6 +2,35 @@ import config from '../config';
 import TokenService from './token-service';
 
 const MixedApiService = {
+  getClassesAndGroupingsForTeacher() {
+    return Promise.all([
+      fetch(`${config.API_ENDPOINT}/classes/teacher`, {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          authorization: `bearer ${TokenService.getAuthToken()}`,
+        },
+      }),
+      fetch(`${config.API_ENDPOINT}/groupings/teacher`, {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          authorization: `bearer ${TokenService.getAuthToken()}`,
+        },
+      })
+    ])
+      .then(([classesRes, groupingsRes]) => {
+        if (!classesRes.ok) {
+          return classesRes.json()
+            .then((error) => Promise.reject(error));
+        }
+        if (!groupingsRes.ok) {
+          return groupingsRes.json()
+            .then((error) => Promise.reject(error));
+        }
+        return Promise.all([classesRes.json(), groupingsRes.json()]);
+      });
+  },
   getClassesForTeacher() {
     return fetch(`${config.API_ENDPOINT}/classes/teacher`, {
       method: 'GET',

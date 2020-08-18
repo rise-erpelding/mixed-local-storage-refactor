@@ -3,79 +3,60 @@ import NewClass from '../../components/NewClass/NewClass';
 import MixedApiService from '../../services/mixed-api-service';
 import './SavedGroupsPage.css';
 // import store from '../../services/store';
+import { Link } from 'react-router-dom';
 import ls from 'local-storage';
+
+// TO BE CLEAR
+// A 'Grouping' Refers to a class of students that has been broken into groups
+// A 'group' should refer to the group within a class
 
 class SavedGroupsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentNumberOfGroups: [],
-      currentGrouping: {},
-      currentClassGroups: [],
-      currentGroupCategoryNames: [],
       allClasses: [],
-      allGroups: [],
+      allGroupings: [],
+      currentGrouping: {},
+      currentGroupingGroupNumbers: [],
+      currentGroupingCategoryNames: [],
+      currentClass: {},
+      currentClassGroupings: [],
       show: false,
       error: null,
     }
   }
 
   componentDidMount() {
-    this.loadAllGroupsAndClasses();
-    
+    MixedApiService.getClassesAndGroupingsForTeacher()
+      .then(([classes, groupings]) => {
+        const currentGrouping = groupings[groupings.length - 1];
+        const currentClass = classes.find((classObj) => classObj.id === currentGrouping.class_id);
+        this.setState({ 
+          allClasses: classes,
+          allGroupings: groupings,
+          currentGrouping: currentGrouping,
+          currentClass: currentClass,
+        })
+        /* below methods will set state for currentGroupingGroupNumbers, 
+        currentGroupingCategoryNames, currentClassGroupings, respectively */
+        this.getCurrentGroupingGroupNumbers(currentGrouping.groupings);
+        this.getCategoriesForCurrentGroupings(currentGrouping.groupings);
+        this.getCurrentClassGroupingsList(currentClass.id, groupings);
+      })
   }
 
-  // METHODS FOR COMPONENT DID MOUNT
-  // refactor all once database is in place
-  loadAllGroupsAndClasses = () => {
-    // fetch classes and groups/groupings from database
-    MixedApiService.getClassesForTeacher()
-      .then((response) => {
-        console.log(response)
-        this.setState({ allClasses: response });
-      })
-      .catch((error) => {
-        console.error(error);
-        this.setState({ error });
-      })
-    MixedApiService.getGroupingsForTeacher()
-      .then((response) => {
-        console.log(response)
-        const lastGroup = response[response.length - 1];
-        this.setState({ currentGrouping: lastGroup })
-        this.loadCurrentGroup(lastGroup);
-        this.setState({ allGroups: response })
-      })
-      .catch((error) => {
-        console.error(error);
-        this.setState({ error });
-      })
-      // this.setState({ allClasses: store.myGroups.classes }); // ["1st Period", "2nd Period", etc...]
-      // this.setState({ allGroups: store.myGroups.groups }); // [{id: "num", groupClass: "something", groupName: "something", groupings: [{student}, {...}, {...}]}, {...}, {...}]
-      
-  }
-
-  loadCurrentGroup(currentGroup) {
-
-    // const allGroups = store.myGroups.groups;
-    // const lastGroup = allGroups[allGroups.length - 1];
-    // add something for if there are no groups
-    // this.setState({ currentGrouping: currentGroup })
-    this.getGroupsForCurrentGroupings(currentGroup.groupings);
-    this.getCurrentClass(currentGroup.class_id);
-    this.getCategoriesForCurrentGroupings(currentGroup.groupings);
-  }
-
-  getGroupsForCurrentGroupings = (studentsArr) => {
-    const groupNums = [];
+  // METHODS TO SET INFO ABOUT CURRENT GROUPING IN STATE
+  getCurrentGroupingGroupNumbers = (studentsArr) => {
+    const allGroupNums = [];
     // get all the group numbers for all the students and push into arr
     studentsArr.forEach((student) => {
-      groupNums.push(student.groupNum);
+      allGroupNums.push(student.groupNum);
     })
     // create array with a set containing only unique items
-    const currentNumberOfGroups = Array.from(new Set(groupNums));
-    currentNumberOfGroups.sort((a, b) => a - b);
-    this.setState({ currentNumberOfGroups });
+    const currentGroupNumbers = Array.from(new Set(allGroupNums));
+    currentGroupNumbers.sort((a, b) => a - b);
+    // console.log(currentGroupNumbers);
+    this.setState({ currentGroupingGroupNumbers: currentGroupNumbers });
   }
 
   getCategoriesForCurrentGroupings = (studentsArr) => {
@@ -100,17 +81,14 @@ class SavedGroupsPage extends Component {
         }
       }
     }
-    this.setState({ currentGroupCategoryNames: categories });
+    this.setState({ currentGroupingCategoryNames: categories });
   }
 
-  getCurrentClass = (currentClassId) => {
-    const { allGroups } = this.state;
-
-    // const allGroups = store.myGroups.groups;
-    const currentClassGroups = allGroups.filter(
+  getCurrentClassGroupingsList = (currentClassId, allGroupings) => {
+    const currentClassGroupings = allGroupings.filter(
       (grouping) => grouping.class_id === currentClassId
       );
-    this.setState({ currentClassGroups });
+    this.setState({ currentClassGroupings });
   }
 
   // METHODS FOR DRAG AND DROP STUDENT NAMES
@@ -137,13 +115,27 @@ class SavedGroupsPage extends Component {
   }
 
   // METHODS FOR CLICKING CLASS TABS AND GROUP TABS
-  changeClassTab = (classToChange) => {
-    const { allGroups } = this.state;
-    const currentClassGroups = allGroups.filter((group) => group.id === classToChange)
-    this.setState({ currentClassGroups });
-    this.setState({ currentGrouping: currentClassGroups[0] })
-    this.getGroupsForCurrentGroupings(currentClassGroups[0].groupings);
-    this.getCategoriesForCurrentGroupings(currentClassGroups[0].groupings);
+  // used when user clicks on class tab other than currently selected
+  changeClassTab = (classId) => {
+    const { allGroupings, allClasses } = this.state;
+    const currentClassGroupings = allGroupings.filter((group) => group.class_id === classId);
+    const currentClass = allClasses.find((classObj) => classObj.id === classId);
+    this.setState({ currentClass });
+    if (!!currentClassGroupings.length) {   // if there are groupings in the class
+      const currentGrouping = currentClassGroupings[currentClassGroupings.length - 1];
+      this.setState({ currentClassGroupings, currentGrouping });
+      this.getCurrentGroupingGroupNumbers(currentGrouping.groupings);
+      this.getCategoriesForCurrentGroupings(currentGrouping.groupings);
+      this.getCurrentClassGroupingsList(classId, allGroupings);
+    }
+    else {                                // if there are no groupings in the class
+      this.setState({
+        currentClassGroupings: [],
+        currentGrouping: {},
+        currentGroupingCategoryNames: [],
+        currentGroupingGroupNumbers: [],
+      });
+    }
   }
 
   createNewClassTab = () => {
@@ -162,9 +154,11 @@ class SavedGroupsPage extends Component {
     ls.remove('categoryNames');
   }
 
+  // used when user clicks on grouping other than currently selected
   seeSelectedGrouping = (groupingId) => {
-    const { currentClassGroups } = this.state;
-    const currentGrouping = currentClassGroups.filter((group) => group.id === groupingId)[0];
+    const { currentClassGroupings } = this.state;
+    const currentGrouping = currentClassGroupings.find((grouping) => grouping.id === groupingId);
+    console.log(currentGrouping); // should be an object
     this.setState({ currentGrouping });
     this.getGroupsForCurrentGroupings(currentGrouping.groupings);
     this.getCategoriesForCurrentGroupings(currentGrouping.groupings);
@@ -190,7 +184,6 @@ class SavedGroupsPage extends Component {
   }
 
     // METHODS FOR SAVE MODAL
-  
     showNewClassModal = () => {
       this.setState({ show: true });
     }
@@ -201,29 +194,31 @@ class SavedGroupsPage extends Component {
 
   render() {
     const { 
-      currentNumberOfGroups,
-      currentGrouping,
       allClasses,
-      currentClassGroups,
-      currentGroupCategoryNames,
+      currentGrouping,
+      currentGroupingGroupNumbers,
+      currentGroupingCategoryNames,
+      currentClass,
+      currentClassGroupings,
       show
     } = this.state;
 
     // TO RENDER A GROUPING
-    const currentStudents = currentGrouping.groupings;
-    const currentGroupName = currentGrouping.groupName;
-    const currentGroupClass = currentGrouping.groupClass;
+    const currentStudents = currentGrouping.groupings || '';
+    const currentGroupingName = currentGrouping.grouping_name || '';
+    const currentClassName = currentClass.class_name || '';
+
     const showGroupings = (
-      currentNumberOfGroups.map((group) => (
+      currentGroupingGroupNumbers.map((groupNumber) => (
         <div
-          key={group}
+          key={groupNumber}
           className="saved-groups-page__group"
           onDragOver={(event) => this.onDragOver(event)}
-          onDrop={(event) => {this.handleDrop(event, group)}}
+          onDrop={(event) => {this.handleDrop(event, groupNumber)}}
         >
-          Group {group}
+          Group {groupNumber}
           {currentStudents.map((student, idx) => {
-            if (student.groupNum === group) {
+            if (student.groupNum === groupNumber) {
               return (
                 <div 
                   key={idx + 1}
@@ -233,7 +228,7 @@ class SavedGroupsPage extends Component {
                 >
                   {student.alias}
                 <div className="saved-groups-page__tooltip">
-                  {currentGroupCategoryNames.map((category, index) => (
+                  {currentGroupingCategoryNames.map((category, index) => (
                     <p key={`category-${index}`}>
                     {`${category}: ${student[category]}`}
                     </p>
@@ -268,7 +263,7 @@ class SavedGroupsPage extends Component {
     ))
 
     // TO RENDER GROUPINGS ON LEFT SIDE
-    const groupingNames = currentClassGroups.map((grouping) => (
+    const groupingNames = currentClassGroupings.map((grouping) => (
       <li
         key={`grouping-${grouping.id}`}
         className={grouping.id === currentGrouping.id ? 'saved-groups-page__groupings-list--selected' : ''}
@@ -277,7 +272,7 @@ class SavedGroupsPage extends Component {
           type="button"
           onClick={() => this.seeSelectedGrouping(grouping.id)}
         >
-          {grouping.groupName}
+          {grouping.grouping_name}
         </button>
       </li>
     ))
@@ -316,8 +311,15 @@ class SavedGroupsPage extends Component {
           </ul>
         </div>
         <section className="saved-groups-page__groups">
-          <h1>{`${currentGroupName} - ${currentGroupClass}`}</h1>
-          <p>Drag and drop students to edit groups.</p>
+          {!!this.state.currentClassGroupings.length 
+          ? <div>
+              <h1>{`${currentGroupingName} - ${currentClassName}`}</h1>
+              <p>Drag and drop students to edit groups.</p>
+            </div>
+          : <div>
+              <h1>{currentClassName}</h1>
+              <p>No groups found for this class. <span onClick={this.createNewGroup}><Link to='/make-groups'>Add a new group?</Link></span></p>
+            </div>}
         <form>
         <div className="saved-groups-page__groupings">
             {showGroupings}
