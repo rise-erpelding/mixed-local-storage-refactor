@@ -198,18 +198,41 @@ class SavedGroupsPage extends Component {
   }
 
   handleDelete = (currentGrouping) => {
+    const { allGroupings, currentClassGroupings } = this.state;
     // remove the current grouping from all groupings
     // remove current grouping from everywhere else? see if this is necessary before trying to do it
     // call changeClassTab with the current class Id again to re-render?
     console.log(`Deleting group id ${currentGrouping.id}`);
     // let { allGroupings } = this.state;
-    // MixedApiService.deleteGrouping(currentGrouping.id)
-    //   .then((res) => {
-    //     console.log(res.json)
-    //   })
-    //   .catch((error) => {
-    //     this.setState({ error })
-    //   })
+    MixedApiService.deleteGrouping(currentGrouping.id)
+      .then((res) => {
+        console.log(res.json)
+      })
+      .catch((error) => {
+        this.setState({ error })
+      })
+    const updatedAllGroupings = allGroupings.filter(
+      (grouping) => grouping.id !== currentGrouping.id
+    );
+    const updatedCurrentClassGroupings = currentClassGroupings.filter(
+      (grouping) => grouping.id !==currentGrouping.id
+    );
+    this.setState({ 
+      allGroupings: updatedAllGroupings,
+      currentClassGroupings: updatedCurrentClassGroupings,
+    })
+    if (!!updatedCurrentClassGroupings.length) { // if there are still groupings to show
+      // TODO: put some logic here that will render the most recent group, still have to figure out how to do that
+      const currentGrouping = updatedCurrentClassGroupings[0];
+      this.updateCurrentGrouping(currentGrouping);
+    }
+    else { // if there are no groupings to show
+      this.setState({
+        currentGrouping: {},
+        currentGroupingCategorynames: [],
+        currentGroupingGroupNumbers: [],
+      })
+    }
   }
 
   handleSave = (currentGrouping) => {
@@ -379,6 +402,7 @@ class SavedGroupsPage extends Component {
             {showGroupings}
         </div>
         <div className={groupingButtonDisplay}>
+          {/* TODO */}
           <p>{groupingUpdatedMessage}</p>
           <button
             type="button"
