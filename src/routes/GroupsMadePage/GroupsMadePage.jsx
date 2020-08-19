@@ -99,16 +99,15 @@ class GroupsMadePage extends Component {
     }
     MixedApiService.insertNewGrouping(newGrouping)
       .then((res) => {
-        console.log(res)
+        // console.log(res);
+        const { addStudentArr } = this.context;
+        const { history } = this.props;
+        addStudentArr(students);
+        history.push('/my-groups');
       })
       .catch((error) => {
         this.setState({ error });
       })
-
-    const { addStudentArr } = this.context;
-    const { history } = this.props;
-    addStudentArr(students);
-    history.push('/my-groups');
   }
 
   // METHODS FOR DRAG AND DROP NAMES

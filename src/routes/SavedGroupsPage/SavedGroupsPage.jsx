@@ -32,12 +32,14 @@ class SavedGroupsPage extends Component {
   componentDidMount() {
     MixedApiService.getClassesAndGroupingsForTeacher()
       .then(([classes, groupings]) => {
-        const currentGrouping = groupings[groupings.length - 1];
+        // sort classes & groupings to put most recent at front, to render most recent first
+        const sortedClasses = classes.sort((a, b) => b.id - a.id);
+        const sortedGroupings = groupings.sort((a, b) => b.id - a.id);
+        const currentGrouping = sortedGroupings[0];
         const currentClass = classes.find((classObj) => classObj.id === currentGrouping.class_id);
         this.setState({
-          allClasses: classes,
-          allGroupings: groupings,
-          // currentGrouping: currentGrouping,
+          allClasses: sortedClasses,
+          allGroupings: sortedGroupings,
           currentClass: currentClass,
         })
         /* below methods will set state for currentGroupingGroupNumbers, 
@@ -143,9 +145,6 @@ class SavedGroupsPage extends Component {
       const currentGrouping = currentClassGroupings[currentClassGroupings.length - 1];
       this.setState({ currentClassGroupings });
       this.updateCurrentGrouping(currentGrouping);
-      // this.setState({ currentGrouping });
-      // this.getCurrentGroupingGroupNumbers(currentGrouping.groupings);
-      // this.getCategoriesForCurrentGroupings(currentGrouping.groupings);
       this.getCurrentClassGroupingsList(classId, allGroupings);
     }
     else {                                // if there are no groupings in the class
@@ -223,7 +222,7 @@ class SavedGroupsPage extends Component {
       currentClassGroupings: updatedCurrentClassGroupings,
     })
     if (!!updatedCurrentClassGroupings.length) { // if there are still groupings to show
-      // TODO: put some logic here that will render the most recent group, still have to figure out how to do that
+      // should default to most recent grouping
       const currentGrouping = updatedCurrentClassGroupings[0];
       this.updateCurrentGrouping(currentGrouping);
     }
