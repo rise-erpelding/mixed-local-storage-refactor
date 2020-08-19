@@ -12,8 +12,6 @@ class GroupsMadePage extends Component {
       show: false,
       students: [],
       groupNumbers: [],
-      groupingName: '',
-      className: '',
       allClasses: [],
       error: null,
     }
@@ -75,16 +73,49 @@ class GroupsMadePage extends Component {
 
   //
   saveGroups = (groupingName, className) => {
-    // match className to one of the classes that we have currently
+    // in order to make a complete grouping we need
+      // 1. grouping_name
+      // 2. groupings JSON this.state.students
+      // 3. data JSON ls.get('data')
+      // 4. teacher_id (but this should come from auth header)
+      // 5. class_id (use className to match to id OR if there isn't one we need to create one here)
+      // this.state.allClasses.findIndex((classObj) => classObj.class_name === className))
+    const { students, allClasses } = this.state;
+    const data = ls.get('data');
+    const selectedClassIndex = allClasses.findIndex((classObj) => classObj.class_name === className);
+    let newGrouping = {
+      grouping_name: groupingName,
+      groupings: students,
+      data: data,
+    }
+    let classId;
+    if (selectedClassIndex === -1) {
+      MixedApiService.insertNewClass(className)
+        .then((res) => {
+          classId = res.id;
+        })
+        .catch((error) => {
+          this.setState({ error });
+        })
+    }
+    else {
+      classId = allClasses[selectedClassIndex].id;
+    }
+    newGrouping = {
+      ...newGrouping,
+      class_id: classId,
+    }
+    MixedApiService.insertNewGrouping(newGrouping)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((error) => {
+        this.setState({ error });
+      })
 
-
-    // currently this isn't really functional but we do update the students in local storage at this point
-    this.setState({ groupingName, className });
-    const { students } = this.state;
     const { addStudentArr } = this.context;
     const { history } = this.props;
     addStudentArr(students);
-    console.log(`saving groups to database under name ${groupingName} and class ${className}`);
     history.push('/my-groups');
   }
 

@@ -61,10 +61,12 @@ const MixedApiService = {
   //       return res.json();
   //     });
   // },
-  insertNewClass(newClass) {
+  insertNewClass(newClassName) {
     return fetch(`${config.API_ENDPOINT}/classes`, {
       method: 'POST',
-      body: JSON.stringify(newClass),
+      body: JSON.stringify({
+        class_name: newClassName
+      }),
       headers: {
         'content-type': 'application/json',
         authorization: `bearer ${TokenService.getAuthToken()}`,
