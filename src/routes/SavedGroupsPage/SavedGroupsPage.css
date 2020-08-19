@@ -145,6 +145,14 @@
   border-color: transparent transparent black transparent;
 }
 
+.saved-groups-page__show {
+  display: block;
+}
+
+.saved-groups-page__hide {
+  display: none;
+}
+
 @media screen and (min-width: 800px) {
   .saved-groups-page__class-tabs {
     display: flex;

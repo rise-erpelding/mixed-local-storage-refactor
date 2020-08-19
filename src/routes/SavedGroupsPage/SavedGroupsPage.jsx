@@ -181,8 +181,7 @@ class SavedGroupsPage extends Component {
     const currentGrouping = currentClassGroupings.find((grouping) => grouping.id === groupingId);
     console.log(currentGrouping); // should be an object
     this.setState({ currentGrouping });
-    this.getGroupsForCurrentGroupings(currentGrouping.groupings);
-    this.getCategoriesForCurrentGroupings(currentGrouping.groupings);
+    this.updateCurrentGrouping(currentGrouping);
   }
 
   // HANDLING MAIN BUTTONS (View Data, Delete Grouping, Save Changes)
@@ -326,6 +325,11 @@ class SavedGroupsPage extends Component {
         </button>
       </li>
     ))
+
+    // HIDES BUTTONS USING CLASSNAME IF THERE ARE NO GROUPINGS
+    const groupingButtonDisplay = !!this.state.currentClassGroupings.length
+      ? 'saved-groups-page__show'
+      : 'saved-groups-page__hide';
   
     return (
       <main className="saved-groups-page">
@@ -374,7 +378,7 @@ class SavedGroupsPage extends Component {
         <div className="saved-groups-page__groupings">
             {showGroupings}
         </div>
-        <div>
+        <div className={groupingButtonDisplay}>
           <p>{groupingUpdatedMessage}</p>
           <button
             type="button"
