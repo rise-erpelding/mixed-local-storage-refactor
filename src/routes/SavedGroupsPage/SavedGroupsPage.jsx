@@ -6,6 +6,7 @@ import './SavedGroupsPage.css';
 import MixEdContext from '../../context/MixEdContext';
 import { Link } from 'react-router-dom';
 import ls from 'local-storage';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // TO BE CLEAR
 // A 'Grouping' Refers to a class of students that has been broken into groups
@@ -33,7 +34,7 @@ class SavedGroupsPage extends Component {
       .then(([classes, groupings]) => {
         const currentGrouping = groupings[groupings.length - 1];
         const currentClass = classes.find((classObj) => classObj.id === currentGrouping.class_id);
-        this.setState({ 
+        this.setState({
           allClasses: classes,
           allGroupings: groupings,
           // currentGrouping: currentGrouping,
@@ -103,7 +104,7 @@ class SavedGroupsPage extends Component {
   getCurrentClassGroupingsList = (currentClassId, allGroupings) => {
     const currentClassGroupings = allGroupings.filter(
       (grouping) => grouping.class_id === currentClassId
-      );
+    );
     this.setState({ currentClassGroupings });
   }
 
@@ -126,7 +127,7 @@ class SavedGroupsPage extends Component {
       }
       return student;
     })
-    currentGrouping = {...currentGrouping, updatedStudent};
+    currentGrouping = { ...currentGrouping, updatedStudent };
     this.updateCurrentGrouping(currentGrouping);
     // this.setState({ currentGrouping });
   }
@@ -215,9 +216,9 @@ class SavedGroupsPage extends Component {
       (grouping) => grouping.id !== currentGrouping.id
     );
     const updatedCurrentClassGroupings = currentClassGroupings.filter(
-      (grouping) => grouping.id !==currentGrouping.id
+      (grouping) => grouping.id !== currentGrouping.id
     );
-    this.setState({ 
+    this.setState({
       allGroupings: updatedAllGroupings,
       currentClassGroupings: updatedCurrentClassGroupings,
     })
@@ -252,35 +253,51 @@ class SavedGroupsPage extends Component {
       })
   }
 
-    // METHODS FOR SAVE MODAL
-    showNewClassModal = () => {
-      this.setState({ show: true });
-    }
-  
-    hideNewClassModal = () => {
-      this.setState({ show: false });
-    }
+  // METHODS FOR SAVE MODAL
+  showNewClassModal = () => {
+    this.setState({ show: true });
+  }
 
-    addNewClassName = (newClassName) => {
-      const { allClasses } = this.state;
-      MixedApiService.insertNewClass(newClassName)
-        .then((newClass) => {
-          this.setState({ 
-            allClasses: [...allClasses, newClass],
-            currentClass: newClass,
-            currentClassGroupings: [],
-            currentGrouping: {},
-            currentGroupingCategoryNames: [],
-            currentGroupingGroupNumbers: [],
-          })
+  hideNewClassModal = () => {
+    this.setState({ show: false });
+  }
+
+  addNewClassName = (newClassName) => {
+    const { allClasses } = this.state;
+    MixedApiService.insertNewClass(newClassName)
+      .then((newClass) => {
+        this.setState({
+          allClasses: [...allClasses, newClass],
+          currentClass: newClass,
+          currentClassGroupings: [],
+          currentGrouping: {},
+          currentGroupingCategoryNames: [],
+          currentGroupingGroupNumbers: [],
         })
-        .catch((error) => {
-          this.setState({ error });
-        })
-    }
+      })
+      .catch((error) => {
+        this.setState({ error });
+      })
+  }
+
+  // METHODS FOR UPDATING CLASS NAME OR DELETING
+  deleteClass = (classId) => {
+    // this should also delete any classes within the group
+    console.log(`deleting class ${classId}`);
+    // if currentClassGroupings is not empty, for each in currentClassGroupings, delete
+    // then also delete the class id
+    // TODO: put some logic here that will render the most recent class
+    // for now change allClasses to exclude the deleted class
+    // remove all groupings with current classId from allGroupings
+    // currentClassGroupings will correspond to the first index in 
+  }
+
+  editClassName = (classId, className) => {
+    console.log('editClassName');
+  }
 
   render() {
-    const { 
+    const {
       allClasses,
       currentGrouping,
       currentGroupingGroupNumbers,
@@ -304,26 +321,26 @@ class SavedGroupsPage extends Component {
           key={groupNumber}
           className="saved-groups-page__group"
           onDragOver={(event) => this.onDragOver(event)}
-          onDrop={(event) => {this.handleDrop(event, groupNumber)}}
+          onDrop={(event) => { this.handleDrop(event, groupNumber) }}
         >
           Group {groupNumber}
           {currentStudents.map((student, idx) => {
             if (student.groupNum === groupNumber) {
               return (
-                <div 
+                <div
                   key={idx + 1}
                   className="saved-groups-page__student"
-                  onDragStart={(event) => {this.handleDragStart(event, student.alias)}}
+                  onDragStart={(event) => { this.handleDragStart(event, student.alias) }}
                   draggable
                 >
                   {student.alias}
-                <div className="saved-groups-page__tooltip">
-                  {currentGroupingCategoryNames.map((category, index) => (
-                    <p key={`category-${index}`}>
-                    {`${category}: ${student[category]}`}
-                    </p>
-                  ))}
-                </div>
+                  <div className="saved-groups-page__tooltip">
+                    {currentGroupingCategoryNames.map((category, index) => (
+                      <p key={`category-${index}`}>
+                        {`${category}: ${student[category]}`}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               )
             }
@@ -331,7 +348,7 @@ class SavedGroupsPage extends Component {
           })}
         </div>
       )
-    ));
+      ));
 
     // TO RENDER CLASS TABS
     const classTabs = allClasses.map((classObj) => (
@@ -339,8 +356,8 @@ class SavedGroupsPage extends Component {
         key={`class-${classObj.id}`}
         className={
           classObj.id === currentGrouping.class_id
-          ? 'saved-groups-page__class-tab--selected saved-groups-page__class-tab'
-          : 'saved-groups-page__class-tab'
+            ? 'saved-groups-page__class-tab--selected saved-groups-page__class-tab'
+            : 'saved-groups-page__class-tab'
         }
       >
         <button
@@ -348,6 +365,18 @@ class SavedGroupsPage extends Component {
           onClick={() => this.changeClassTab(classObj.id)}
         >
           {classObj.class_name}
+        </button>
+        <button
+          type="button"
+          onClick={() => this.editClassName(classObj.id)}
+        >
+          <FontAwesomeIcon icon="edit" />
+        </button>
+        <button
+          type="button"
+          onClick={() => this.deleteClass(classObj.id)}
+        >
+          <FontAwesomeIcon icon="trash-alt" />
         </button>
       </li>
     ))
@@ -371,86 +400,86 @@ class SavedGroupsPage extends Component {
     const groupingButtonDisplay = !!this.state.currentClassGroupings.length
       ? 'saved-groups-page__show'
       : 'saved-groups-page__hide';
-  
+
     return (
       <main className="saved-groups-page">
-      <ul className="saved-groups-page__class-tabs">
-        {classTabs}
-        <li
-          key="class-new"
-          className="saved-groups-page__class-tab--new saved-groups-page__class-tab"
-        >
-          <button
-            type="button"
-            onClick={this.createNewClassTab}
+        <ul className="saved-groups-page__class-tabs">
+          {classTabs}
+          <li
+            key="class-new"
+            className="saved-groups-page__class-tab--new saved-groups-page__class-tab"
           >
-            + New Class
-          </button>
-        </li>
-      </ul>
-      <div className="saved-groups-page__class-groupings">
-        <div className="saved-groups-page__groupings-list">
-          <ul className="saved-groups-page__groupings-list--ul">
-            {groupingNames}
-            <li
-              key="grouping-new"
-              className="saved-groups-page__groupings-list--new"
+            <button
+              type="button"
+              onClick={this.createNewClassTab}
             >
-              <button
-                
-                onClick={this.createNewGroup}
+              + New Class
+          </button>
+          </li>
+        </ul>
+        <div className="saved-groups-page__class-groupings">
+          <div className="saved-groups-page__groupings-list">
+            <ul className="saved-groups-page__groupings-list--ul">
+              {groupingNames}
+              <li
+                key="grouping-new"
+                className="saved-groups-page__groupings-list--new"
               >
-                + New Group
-              </button>
-            </li>
-          </ul>
-        </div>
-        <section className="saved-groups-page__groups">
-          {!!this.state.currentClassGroupings.length 
-          ? <div>
-              <h1>{`${currentGroupingName} - ${currentClassName}`}</h1>
-              <p>Drag and drop students to edit groups.</p>
-            </div>
-          : <div>
-              <h1>{currentClassName}</h1>
-              <p>No groups found for this class. <span onClick={this.createNewGroup}><Link to='/make-groups'>Add a new group?</Link></span></p>
-            </div>}
-        <form>
-        <div className="saved-groups-page__groupings">
-            {showGroupings}
-        </div>
-        <div className={groupingButtonDisplay}>
-          {/* TODO */}
-          <p>{groupingUpdatedMessage}</p>
-          <button
-            type="button"
-            onClick={this.viewGroupData}
-          >
-            View Data
-          </button>
-          <button
-            type="button"
-            onClick={() => this.handleDelete(currentGrouping)}
-          >
-            Delete Grouping
-          </button>
-          <button
-            type="button"
-            onClick={() => this.handleSave(currentGrouping)}
-          >
-            Save Changes
-          </button>
-        </div>
-      </form>
+                <button
 
-      </section>
-      </div>
-      <NewClass 
-        show={show}
-        handleClose={this.hideNewClassModal}
-        handleNewClass={this.addNewClassName}
-      />
-    </main>
+                  onClick={this.createNewGroup}
+                >
+                  + New Group
+              </button>
+              </li>
+            </ul>
+          </div>
+          <section className="saved-groups-page__groups">
+            {!!this.state.currentClassGroupings.length
+              ? <div>
+                <h1>{`${currentGroupingName} - ${currentClassName}`}</h1>
+                <p>Drag and drop students to edit groups.</p>
+              </div>
+              : <div>
+                <h1>{currentClassName}</h1>
+                <p>No groups found for this class. <span onClick={this.createNewGroup}><Link to='/make-groups'>Add a new group?</Link></span></p>
+              </div>}
+            <form>
+              <div className="saved-groups-page__groupings">
+                {showGroupings}
+              </div>
+              <div className={groupingButtonDisplay}>
+                {/* TODO */}
+                <p>{groupingUpdatedMessage}</p>
+                <button
+                  type="button"
+                  onClick={this.viewGroupData}
+                >
+                  View Data
+          </button>
+                <button
+                  type="button"
+                  onClick={() => this.handleDelete(currentGrouping)}
+                >
+                  Delete Grouping <FontAwesomeIcon icon="trash-alt" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => this.handleSave(currentGrouping)}
+                >
+                  Save Changes
+          </button>
+              </div>
+            </form>
+
+          </section>
+        </div>
+        <NewClass
+          show={show}
+          handleClose={this.hideNewClassModal}
+          handleNewClass={this.addNewClassName}
+        />
+      </main>
     )
   }
 }
