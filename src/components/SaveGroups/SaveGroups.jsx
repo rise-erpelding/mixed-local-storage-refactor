@@ -52,6 +52,7 @@ class SaveGroups extends Component {
                 id="grouping-name"
                 type="text"
                 onChange={this.updateName}
+                required
               /><br />
               <label htmlFor="grouping-class">Class:</label><br />
               <select name="grouping-class" id="grouping-class" onChange={this.updateClass}>

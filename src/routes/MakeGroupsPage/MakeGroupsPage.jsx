@@ -36,7 +36,6 @@ class MakeGroupsPage extends Component {
 
   // METHODS FOR FORM BUTTONS ONCLICK
   handleSubmit = (e) => {
-    console.log(JSON.stringify(this.state));
     e.preventDefault();
     const { addData } = this.context;
     const { history } = this.props;
@@ -125,9 +124,7 @@ class MakeGroupsPage extends Component {
   handleMixedGroups = (studentArr, groupSize, categoryNamesLevels, categoryNames) => {
     const { addStudentArr, addCatNames } = this.context;
     const groups = createDifferentGroups(studentArr, groupSize, categoryNamesLevels);
-    // console.log(groups);
     this.addGroupNumber(groups, studentArr);
-    // console.log(studentArr);
     addStudentArr(studentArr);
     addCatNames(categoryNames);
   }
@@ -135,9 +132,7 @@ class MakeGroupsPage extends Component {
   handleSimilarGroups = (studentArr, groupSize, categoryNamesLevels, categoryNames) => {
     const { addStudentArr, addCatNames } = this.context;
     const groups = createSimilarGroups(studentArr, groupSize, categoryNamesLevels);
-    // console.log(groups);
     this.addGroupNumber(groups, studentArr);
-    // console.log(studentArr);
     addStudentArr(studentArr);
     addCatNames(categoryNames);
   }
@@ -186,7 +181,6 @@ class MakeGroupsPage extends Component {
   }
 
   shiftCategoryLeft(event, index) {
-    console.log(`shifting ${index} to the left`)
     const { categoryTypes, categoryNames, categoryVals } = this.state;
     const catTypeArr = [...categoryTypes];
     const catNameArr = [...categoryNames];
@@ -202,7 +196,6 @@ class MakeGroupsPage extends Component {
   }
 
   shiftCategoryRight(event, index) {
-    console.log(`shifting ${index} to the right`);
     const { categoryTypes, categoryNames, categoryVals } = this.state;
     const catTypeArr = [...categoryTypes];
     const catNameArr = [...categoryNames];
