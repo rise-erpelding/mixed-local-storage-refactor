@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import MixedApiService from '../../services/mixed-api-service';
 // import PropTypes from 'prop-types';
 import './NewClass.css';
 

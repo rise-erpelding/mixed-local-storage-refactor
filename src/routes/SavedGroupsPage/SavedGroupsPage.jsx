@@ -261,6 +261,24 @@ class SavedGroupsPage extends Component {
       this.setState({ show: false });
     }
 
+    addNewClassName = (newClassName) => {
+      const { allClasses } = this.state;
+      MixedApiService.insertNewClass(newClassName)
+        .then((newClass) => {
+          this.setState({ 
+            allClasses: [...allClasses, newClass],
+            currentClass: newClass,
+            currentClassGroupings: [],
+            currentGrouping: {},
+            currentGroupingCategoryNames: [],
+            currentGroupingGroupNumbers: [],
+          })
+        })
+        .catch((error) => {
+          this.setState({ error });
+        })
+    }
+
   render() {
     const { 
       allClasses,
@@ -430,7 +448,7 @@ class SavedGroupsPage extends Component {
       <NewClass 
         show={show}
         handleClose={this.hideNewClassModal}
-        handleNewClass={this.showNewClassModal}
+        handleNewClass={this.addNewClassName}
       />
     </main>
     )

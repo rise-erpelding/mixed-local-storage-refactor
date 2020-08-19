@@ -71,15 +71,7 @@ class GroupsMadePage extends Component {
     this.setState({ show: false });
   }
 
-  //
   saveGroups = (groupingName, className) => {
-    // in order to make a complete grouping we need
-      // 1. grouping_name
-      // 2. groupings JSON this.state.students
-      // 3. data JSON ls.get('data')
-      // 4. teacher_id (but this should come from auth header)
-      // 5. class_id (use className to match to id OR if there isn't one we need to create one here)
-      // this.state.allClasses.findIndex((classObj) => classObj.class_name === className))
     const { students, allClasses } = this.state;
     const data = ls.get('data');
     const selectedClassIndex = allClasses.findIndex((classObj) => classObj.class_name === className);
