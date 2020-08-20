@@ -56,6 +56,7 @@ export default AddUpdateClass;
 
 AddUpdateClass.defaultProps = {
   show: false,
+  title: '',
   handleClose: () => {},
   handleNewClass: () => {},
 };
