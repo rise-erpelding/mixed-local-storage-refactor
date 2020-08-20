@@ -99,10 +99,12 @@ const MixedApiService = {
         return res.json();
       });
   },
-  editClass(classId, updatedClass) {
+  editClass(classId, updatedClassName) {
     return fetch(`${config.API_ENDPOINT}/classes/${classId}`, {
       method: 'PATCH',
-      body: JSON.stringify(updatedClass),
+      body: JSON.stringify({
+        class_name: updatedClassName
+      }),
       headers: {
         'content-type': 'application/json',
         authorization: `bearer ${TokenService.getAuthToken()}`,

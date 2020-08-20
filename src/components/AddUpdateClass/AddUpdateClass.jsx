@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
-import './NewClass.css';
+import './AddUpdateClass.css';
 
 
-class NewClass extends Component {
+class AddUpdateClass extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,26 +17,29 @@ class NewClass extends Component {
 
   handleSubmit = (e) => {
     const { className } = this.state;
-    const { handleNewClass, handleClose } = this.props;
+    const { handleUpdate, handleClose } = this.props;
     e.preventDefault();
-    handleNewClass(className);
+    handleUpdate(className);
     handleClose();
+    this.setState({ className: '' });
   }
 
   render() {
-    const { handleClose, show } = this.props;
-    const modalClassName = show ? 'new-class display-block' : 'new-class display-none';
+    const { className } = this.state;
+    const { handleClose, show, title } = this.props;
+    const modalClassName = show ? 'add-update-class display-block' : 'add-update-class display-none';
 
     return (
       <div className={modalClassName}>
-        <main className="new-class__main">
-          <h1>New Class</h1>
+        <main className="add-update-class__main">
+          <h1>{title}</h1>
           <form onSubmit={this.handleSubmit}>
-              <label htmlFor="new-class-name">New Class Name:</label><br />
+              <label htmlFor="name-of-class">Class Name:</label><br />
               <input
-                name="new-class-name"
-                id="new-class-name"
+                name="name-of-class"
+                id="class-name"
                 type="text"
+                value={className}
                 onChange={this.updateClass}
                 /><br />
     
@@ -49,9 +52,9 @@ class NewClass extends Component {
   }
 }
 
-export default NewClass;
+export default AddUpdateClass;
 
-NewClass.defaultProps = {
+AddUpdateClass.defaultProps = {
   show: false,
   handleClose: () => {},
   handleNewClass: () => {},

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NewClass from '../../components/NewClass/NewClass';
+import AddUpdateClass from '../../components/AddUpdateClass/AddUpdateClass';
 import MixedApiService from '../../services/mixed-api-service';
 import './SavedGroupsPage.css';
 // import store from '../../services/store';
@@ -23,7 +23,10 @@ class SavedGroupsPage extends Component {
       currentGroupingCategoryNames: [],
       currentClass: {},
       currentClassGroupings: [],
-      show: false,
+      showNewClassModal: false,
+      showUpdateClassModal: false,
+      showDeleteClassModal: false,
+      showDeleteGroupingModal: false,
       groupingUpdated: false,
       error: null,
     }
@@ -157,10 +160,7 @@ class SavedGroupsPage extends Component {
     }
   }
 
-  createNewClassTab = () => {
-    console.log('creating new class');
-    this.showNewClassModal();
-  }
+
 
   createNewGroup = () => {
     // move clearPreviousGroups() from LandingPage to App so we can call that function instead of rewriting code
@@ -252,13 +252,23 @@ class SavedGroupsPage extends Component {
       })
   }
 
-  // METHODS FOR SAVE MODAL
-  showNewClassModal = () => {
-    this.setState({ show: true });
+  // METHODS FOR MODALS
+  handleShowModal = (modalName) => {
+    console.log(modalName);
+    this.setState({ [modalName]: true });
   }
 
-  hideNewClassModal = () => {
-    this.setState({ show: false });
+  handleHideModal = (modalName) => {
+    this.setState({ [modalName]: false });
+  }
+
+  createNewClassTab = () => {
+    console.log('creating new class');
+    this.handleShowModal('showNewClassModal');
+  }
+
+  updateClassTab = () => {
+    this.handleShowModal('showUpdateClassModal');
   }
 
   addNewClassName = (newClassName) => {
@@ -279,7 +289,30 @@ class SavedGroupsPage extends Component {
       })
   }
 
-  // METHODS FOR UPDATING CLASS NAME OR DELETING
+  updateClassName = (newClassName) => {
+    // TODO
+    const { allClasses, currentClass } = this.state;
+    const updatedClass = { // not ideal but will be sufficient until page is reloaded
+      id: currentClass.id,
+      class_name: newClassName
+    }
+    MixedApiService.editClass(currentClass.id, newClassName)
+      .then(() => {
+        console.log(updatedClass);
+        const updatedIndex = allClasses.findIndex(
+          (classObj) => classObj.id === currentClass.id
+        );
+        allClasses[updatedIndex] = updatedClass;
+        this.setState({
+          allClasses: allClasses,
+          currentClass: updatedClass,
+        })
+      })
+      .catch((error) => {
+        this.setState({ error });
+      })
+  }
+
   deleteClass = (classId) => {
     // this should also delete any classes within the group
     console.log(`deleting class ${classId}`);
@@ -289,11 +322,10 @@ class SavedGroupsPage extends Component {
     // for now change allClasses to exclude the deleted class
     // remove all groupings with current classId from allGroupings
     // currentClassGroupings will correspond to the first index in 
+
   }
 
-  editClassName = (classId, className) => {
-    console.log('editClassName');
-  }
+
 
   render() {
     const {
@@ -304,8 +336,12 @@ class SavedGroupsPage extends Component {
       currentClass,
       currentClassGroupings,
       groupingUpdated,
-      show
+      showNewClassModal,
+      showUpdateClassModal,
+      showDeleteClassModal,
+      showDeleteGroupingModal,
     } = this.state;
+
 
     const groupingUpdatedMessage = !!groupingUpdated ? 'Changes saved.' : '';
 
@@ -313,6 +349,8 @@ class SavedGroupsPage extends Component {
     const currentStudents = currentGrouping.groupings || '';
     const currentGroupingName = currentGrouping.grouping_name || '';
     const currentClassName = currentClass.class_name || '';
+    const currentClassId = currentClass.id;
+    console.log(currentClassId);
 
     const showGroupings = (
       currentGroupingGroupNumbers.map((groupNumber) => (
@@ -364,18 +402,6 @@ class SavedGroupsPage extends Component {
           onClick={() => this.changeClassTab(classObj.id)}
         >
           {classObj.class_name}
-        </button>
-        <button
-          type="button"
-          onClick={() => this.editClassName(classObj.id)}
-        >
-          <FontAwesomeIcon icon="edit" />
-        </button>
-        <button
-          type="button"
-          onClick={() => this.deleteClass(classObj.id)}
-        >
-          <FontAwesomeIcon icon="trash-alt" />
         </button>
       </li>
     ))
@@ -434,13 +460,27 @@ class SavedGroupsPage extends Component {
             </ul>
           </div>
           <section className="saved-groups-page__groups">
+            <h1>
+              {currentClassName}
+              <button
+                type="button"
+                onClick={this.updateClassTab}
+              >
+                <FontAwesomeIcon icon="edit" />
+              </button>
+              <button
+                type="button"
+                onClick={() => this.deleteClass(currentClassId)}
+              >
+                <FontAwesomeIcon icon="trash-alt" />
+              </button>
+            </h1>
             {!!this.state.currentClassGroupings.length
               ? <div>
-                <h1>{`${currentGroupingName} - ${currentClassName}`}</h1>
+                <h2>{currentGroupingName}</h2>
                 <p>Drag and drop students to edit groups.</p>
               </div>
               : <div>
-                <h1>{currentClassName}</h1>
                 <p>No groups found for this class. <span onClick={this.createNewGroup}><Link to='/make-groups'>Add a new group?</Link></span></p>
               </div>}
             <form>
@@ -473,10 +513,17 @@ class SavedGroupsPage extends Component {
 
           </section>
         </div>
-        <NewClass
-          show={show}
-          handleClose={this.hideNewClassModal}
-          handleNewClass={this.addNewClassName}
+        <AddUpdateClass
+          show={showNewClassModal}
+          title="Add New Class"
+          handleClose={() => this.handleHideModal('showNewClassModal')}
+          handleUpdate={this.addNewClassName}
+        />
+        <AddUpdateClass
+          show={showUpdateClassModal}
+          title="Update Class Name"
+          handleClose={() => this.handleHideModal('showUpdateClassModal')}
+          handleUpdate={this.updateClassName}
         />
       </main>
     )
