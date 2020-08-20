@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ValidationError from '../../components/ValidationError/ValidationError';
+import FirstVisitModal from '../../components/FirstVisitModal/FirstVisitModal';
 import MixEdContext from '../../context/MixEdContext';
 import createDifferentGroups from '../../services/groupingAlgorithms/differentGroups';
 import createSimilarGroups from '../../services/groupingAlgorithms/similarGroups';
@@ -21,13 +22,22 @@ class MakeGroupsPage extends Component {
       categoryNames: [''],
       categoryVals: [''],
       savedData: '',
+      showPopUp: true,
     }
   }
 
   /**
    * Get any previous unsaved data from local storage.
+   * Also, if it is the first visit, do a pop up here.
    */
   componentDidMount() {
+    const visited = ls.get('alreadyVisited');
+    if (!!visited) {
+      this.setState({ showPopUp: false });
+    }
+    else {
+      ls.set('alreadyVisited', true);
+    }
     const savedData = ls.get('data');
     if (!!savedData) {
       this.setState(savedData);
@@ -304,6 +314,11 @@ class MakeGroupsPage extends Component {
     }
   }
 
+  // FIRST VISIT POP UP
+  handleHidePopUp = () => {
+    this.setState({ showPopUp: false });
+  }
+
   // HELPER METHODS
 
   // creates array, trimming excess whitespace
@@ -313,7 +328,7 @@ class MakeGroupsPage extends Component {
   numberizeArr = (arr) => arr.map((val) => Number(val));
 
   render() {
-    const { categoriesLength } = this.state;
+    const { categoriesLength, showPopUp } = this.state;
     let categories = [];
     for (let i = 0; i < categoriesLength; i++) {
       categories.push(
@@ -535,6 +550,10 @@ class MakeGroupsPage extends Component {
           </button>
           </div>
         </form>
+        <FirstVisitModal
+          show={showPopUp}
+          handleClose={this.handleHidePopUp}
+        />
       </main>
     )
   }
