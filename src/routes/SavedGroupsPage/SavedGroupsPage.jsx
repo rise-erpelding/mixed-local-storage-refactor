@@ -81,7 +81,6 @@ class SavedGroupsPage extends Component {
     // create array with a set containing only unique items
     const currentGroupNumbers = Array.from(new Set(allGroupNums));
     currentGroupNumbers.sort((a, b) => a - b);
-    // console.log(currentGroupNumbers);
     this.setState({ currentGroupingGroupNumbers: currentGroupNumbers });
   }
 
@@ -174,30 +173,20 @@ class SavedGroupsPage extends Component {
     const { removePrevData } = this.context;
     history.push('/make-groups');
     removePrevData();
-    // console.log('clearing previous groups');
-    // ls.remove('groupings');
-    // ls.remove('data');
-    // ls.remove('studentArr');
-    // ls.remove('categoryNames');
   }
 
   // used when user clicks on grouping other than currently selected
   seeSelectedGrouping = (groupingId) => {
     const { currentClassGroupings } = this.state;
     const currentGrouping = currentClassGroupings.find((grouping) => grouping.id === groupingId);
-    console.log(currentGrouping); // should be an object
     this.setState({ currentGrouping });
     this.updateCurrentGrouping(currentGrouping);
   }
 
   // HANDLING MAIN BUTTONS (View Data, Delete Grouping, Save Changes)
   viewGroupData = () => {
+    // sends user back to Make Groups Page with original data
     const { currentGrouping } = this.state;
-    console.log('This will go back to the group generator with the original data, see comments for additional info');
-    // Ideally the original data should be linked in the database to to the current group
-    // So we would set the data in ls then push the group generator page
-    // I didn't set my store up this way (ie didn't save the original data for each of my groups)
-    // But will set the db up properly so that grouping and original data are linked
     ls.set('data', currentGrouping.data);
     const { history } = this.props;
     history.push('/make-groups');
@@ -224,7 +213,6 @@ class SavedGroupsPage extends Component {
 
   // METHODS FOR MODALS
   handleShowModal = (modalName) => {
-    console.log(modalName);
     this.setState({ [modalName]: true });
   }
 
@@ -259,7 +247,6 @@ class SavedGroupsPage extends Component {
     }
     MixedApiService.editClass(currentClass.id, newClassName)
       .then(() => {
-        console.log(updatedClass);
         const updatedIndex = allClasses.findIndex(
           (classObj) => classObj.id === currentClass.id
         );
@@ -301,14 +288,10 @@ class SavedGroupsPage extends Component {
       allGroupings: updatedAllGroupings,
     });
     if (!!updatedAllClasses.length) {
-      console.log(updatedAllClasses);
       const newCurrentClass = updatedAllClasses[0];
-      console.log(newCurrentClass);
-      console.log(updatedAllGroupings);
       const newCurrentClassGroupings = updatedAllGroupings.filter(
         (grouping) => grouping.class_id === newCurrentClass.id
       );
-      console.log(newCurrentClassGroupings);
       this.setState({
         currentClass: newCurrentClass,
         currentClassGroupings: newCurrentClassGroupings,
@@ -342,12 +325,8 @@ class SavedGroupsPage extends Component {
 
   deleteGrouping = () => {
     const { allGroupings, currentClassGroupings, currentGrouping } = this.state;
-    console.log(`Deleting group id ${currentGrouping.id}`);
     this.handleHideModal('showDeleteGroupingModal');
     MixedApiService.deleteGrouping(currentGrouping.id)
-      .then((res) => {
-        console.log(res.json)
-      })
       .catch((error) => {
         this.setState({ error });
       })
