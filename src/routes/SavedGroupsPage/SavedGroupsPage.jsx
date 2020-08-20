@@ -8,9 +8,9 @@ import ls from 'local-storage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './SavedGroupsPage.css';
 
-// TO BE CLEAR
-// A 'Grouping' Refers to a class of students that has been broken into groups
-// A 'group' should refer to the group within a class
+// TO CLARIFY
+// 'Grouping' refers to a class of students that has been broken into groups
+// 'Group' refers to the group within a class
 
 class SavedGroupsPage extends Component {
   constructor(props) {
@@ -137,7 +137,6 @@ class SavedGroupsPage extends Component {
     })
     currentGrouping = { ...currentGrouping, updatedStudent };
     this.updateCurrentGrouping(currentGrouping);
-    // this.setState({ currentGrouping });
   }
 
   // METHODS FOR CLICKING CLASS TABS AND GROUP TABS
@@ -165,10 +164,7 @@ class SavedGroupsPage extends Component {
     }
   }
 
-
-
   createNewGroup = () => {
-    // move clearPreviousGroups() from LandingPage to App so we can call that function instead of rewriting code
     const { history } = this.props;
     const { removePrevData } = this.context;
     history.push('/make-groups');
@@ -239,9 +235,12 @@ class SavedGroupsPage extends Component {
   }
 
   updateClassName = (newClassName) => {
-    // TODO
     const { allClasses, currentClass } = this.state;
-    const updatedClass = { // not ideal but will be sufficient until page is reloaded
+    const updatedClass = {
+      /** 
+       * will not contain all the same information as in the db, uses only the info
+       * currently used in the app, so is sufficient until page is reloaded
+       * */
       id: currentClass.id,
       class_name: newClassName
     }
@@ -262,8 +261,8 @@ class SavedGroupsPage extends Component {
   }
 
   deleteClass = () => {
-    // this should also delete any classes within the group
-    const { currentClassGroupings, currentClass, allClasses, allGroupings,  } = this.state;
+    // this also deletes any classes within the group
+    const { currentClassGroupings, currentClass, allClasses, allGroupings, } = this.state;
     this.handleHideModal('showDeleteClassModal');
     currentClassGroupings.forEach((grouping) => {
       MixedApiService.deleteGrouping(grouping.id)
@@ -275,7 +274,7 @@ class SavedGroupsPage extends Component {
       .catch((error) => {
         this.setState({ error });
       })
-    
+
     const updatedAllClasses = allClasses.filter(
       (classObj) => classObj.id !== currentClass.id
     );
@@ -321,7 +320,6 @@ class SavedGroupsPage extends Component {
       });
     }
   }
-
 
   deleteGrouping = () => {
     const { allGroupings, currentClassGroupings, currentGrouping } = this.state;
@@ -399,7 +397,7 @@ class SavedGroupsPage extends Component {
           <p>
             No groups found for this class.
             {' '}
-          <span onClick={this.createNewGroup}>
+            <span onClick={this.createNewGroup}>
               <Link to='/make-groups'>
                 Add a new group?
             </Link>
@@ -538,14 +536,13 @@ class SavedGroupsPage extends Component {
                 {showGroupings}
               </div>
               <div className={groupingButtonDisplay}>
-                {/* TODO */}
                 <p>{groupingUpdatedMessage}</p>
                 <button
                   type="button"
                   onClick={this.viewGroupData}
                 >
                   View Data
-          </button>
+                </button>
                 <button
                   type="button"
                   onClick={() => this.handleShowModal('showDeleteGroupingModal')}
