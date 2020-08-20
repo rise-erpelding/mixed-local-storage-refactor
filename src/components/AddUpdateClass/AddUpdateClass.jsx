@@ -58,7 +58,7 @@ AddUpdateClass.defaultProps = {
   show: false,
   title: '',
   handleClose: () => {},
-  handleNewClass: () => {},
+  handleUpdate: () => {},
 };
 
 // SaveGroups.propTypes = {
