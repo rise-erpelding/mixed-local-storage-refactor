@@ -287,7 +287,7 @@ class SavedGroupsPage extends Component {
     // remove current grouping from everywhere else? see if this is necessary before trying to do it
     // call changeClassTab with the current class Id again to re-render?
     console.log(`Deleting group id ${currentGrouping.id}`);
-    this.handleHideModal('showDeleteClassModal')
+    this.handleHideModal('showDeleteGroupingModal')
     // let { allGroupings } = this.state;
     MixedApiService.deleteGrouping(currentGrouping.id)
       .then((res) => {
@@ -343,7 +343,6 @@ class SavedGroupsPage extends Component {
     const currentGroupingName = currentGrouping.grouping_name || '';
     const currentClassName = currentClass.class_name || '';
     const currentClassId = currentClass.id;
-    console.log(currentClassId);
 
     const showGroupings = (
       currentGroupingGroupNumbers.map((groupNumber) => (
@@ -463,7 +462,7 @@ class SavedGroupsPage extends Component {
               </button>
               <button
                 type="button"
-                onClick={() => this.handleShowModal('showDeleteGroupingModal')}
+                onClick={() => this.handleShowModal('showDeleteClassModal')}
               >
                 <FontAwesomeIcon icon="trash-alt" />
               </button>
@@ -519,18 +518,18 @@ class SavedGroupsPage extends Component {
           handleUpdate={this.updateClassName}
         />
         <DeleteClassGrouping
-          show={showDeleteClassModal}
+          show={showDeleteGroupingModal}
           title="Delete Grouping"
           message="This will remove the grouping from this class."
           handleClose={() => this.handleHideModal('showDeleteClassModal')}
-          handleDelete={this.deleteClass}
+          handleDelete={this.deleteGrouping}
         />
         <DeleteClassGrouping
-          show={showDeleteGroupingModal}
+          show={showDeleteClassModal}
           title="Delete Class"
           message="This will remove this class and all groupings within it."
           handleClose={() => this.handleHideModal('showDeleteGroupingModal')}
-          handleDelete={this.deleteGrouping}
+          handleDelete={this.deleteClass}
         />
       </main>
     )
