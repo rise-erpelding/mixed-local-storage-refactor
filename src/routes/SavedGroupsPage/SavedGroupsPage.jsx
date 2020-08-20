@@ -37,9 +37,20 @@ class SavedGroupsPage extends Component {
       .then(([classes, groupings]) => {
         // sort classes & groupings to put most recent at front, to render most recent first
         const sortedClasses = classes.sort((a, b) => b.id - a.id);
-        const sortedGroupings = groupings.sort((a, b) => b.id - a.id);
-        const currentGrouping = sortedGroupings[0];
-        const currentClass = classes.find((classObj) => classObj.id === currentGrouping.class_id);
+        this.setState({ allClasses: sortedClasses });
+        let sortedGroupings = [];
+        let currentClass;
+        if (!!groupings.length) {
+          // in most cases there should be groupings
+          sortedGroupings = groupings.sort((a, b) => b.id - a.id);
+          const currentGrouping = sortedGroupings[0];
+          this.updateCurrentGrouping(currentGrouping);
+          currentClass = classes.find((classObj) => classObj.id === currentGrouping.class_id);
+        }
+        else {
+          // in the edge case that there are classes but not groupings
+          currentClass = sortedClasses[0];
+        }
         this.setState({
           allClasses: sortedClasses,
           allGroupings: sortedGroupings,
@@ -47,9 +58,6 @@ class SavedGroupsPage extends Component {
         })
         /* below methods will set state for currentGroupingGroupNumbers, 
         currentGroupingCategoryNames, currentClassGroupings, respectively */
-        this.updateCurrentGrouping(currentGrouping);
-        // this.getCurrentGroupingGroupNumbers(currentGrouping.groupings);
-        // this.getCategoriesForCurrentGroupings(currentGrouping.groupings);
         this.getCurrentClassGroupingsList(currentClass.id, groupings);
       })
       .catch((error) => {
@@ -62,10 +70,6 @@ class SavedGroupsPage extends Component {
     this.setState({ currentGrouping });
     this.getCurrentGroupingGroupNumbers(currentGrouping.groupings);
     this.getCategoriesForCurrentGroupings(currentGrouping.groupings);
-  }
-
-  updateCurrentClass = (currentClassId, groupings) => {
-
   }
 
   getCurrentGroupingGroupNumbers = (studentsArr) => {
@@ -141,7 +145,9 @@ class SavedGroupsPage extends Component {
   // used when user clicks on class tab other than currently selected
   changeClassTab = (classId) => {
     const { allGroupings, allClasses } = this.state;
-    const currentClassGroupings = allGroupings.filter((group) => group.class_id === classId);
+    const currentClassGroupings = allGroupings.filter(
+      (grouping) => grouping.class_id === classId
+    );
     const currentClass = allClasses.find((classObj) => classObj.id === classId);
     this.setState({ currentClass });
     if (!!currentClassGroupings.length) {   // if there are groupings in the class
@@ -268,33 +274,82 @@ class SavedGroupsPage extends Component {
       })
   }
 
-  deleteClass = (classId) => {
+  deleteClass = () => {
     // this should also delete any classes within the group
-    console.log(`deleting class ${classId}`);
-    // if currentClassGroupings is not empty, for each in currentClassGroupings, delete
-    // then also delete the class id
-    // TODO: put some logic here that will render the most recent class
-    // for now change allClasses to exclude the deleted class
-    // remove all groupings with current classId from allGroupings
-    // currentClassGroupings will correspond to the first index in 
+    const { currentClassGroupings, currentClass, allClasses, allGroupings,  } = this.state;
+    this.handleHideModal('showDeleteClassModal');
+    currentClassGroupings.forEach((grouping) => {
+      MixedApiService.deleteGrouping(grouping.id)
+        .catch((error) => {
+          this.setState({ error });
+        })
+    })
+    MixedApiService.deleteClass(currentClass.id)
+      .catch((error) => {
+        this.setState({ error });
+      })
+    
+    const updatedAllClasses = allClasses.filter(
+      (classObj) => classObj.id !== currentClass.id
+    );
+    const updatedAllGroupings = allGroupings.filter(
+      (grouping) => grouping.class_id !== currentClass.id
+    );
 
+    this.setState({
+      allClasses: updatedAllClasses,
+      allGroupings: updatedAllGroupings,
+    });
+    if (!!updatedAllClasses.length) {
+      console.log(updatedAllClasses);
+      const newCurrentClass = updatedAllClasses[0];
+      console.log(newCurrentClass);
+      console.log(updatedAllGroupings);
+      const newCurrentClassGroupings = updatedAllGroupings.filter(
+        (grouping) => grouping.class_id === newCurrentClass.id
+      );
+      console.log(newCurrentClassGroupings);
+      this.setState({
+        currentClass: newCurrentClass,
+        currentClassGroupings: newCurrentClassGroupings,
+      });
+      let newCurrentGrouping = {};
+
+      if (!newCurrentClassGroupings.length) {
+        this.setState({
+          currentGrouping: {},
+          currentGroupingCategoryNames: [],
+          currentGroupingGroupNumbers: [],
+        })
+      }
+      else {
+        newCurrentGrouping = newCurrentClassGroupings[0];
+        this.updateCurrentGrouping(newCurrentGrouping);
+      }
+
+    }
+    else {
+      this.setState({
+        currentClass: {},
+        currentClassGroupings: [],
+        currentGrouping: {},
+        currentGroupingCategoryNames: [],
+        currentGroupingGroupNumbers: [],
+      });
+    }
   }
 
 
   deleteGrouping = () => {
     const { allGroupings, currentClassGroupings, currentGrouping } = this.state;
-    // remove the current grouping from all groupings
-    // remove current grouping from everywhere else? see if this is necessary before trying to do it
-    // call changeClassTab with the current class Id again to re-render?
     console.log(`Deleting group id ${currentGrouping.id}`);
-    this.handleHideModal('showDeleteGroupingModal')
-    // let { allGroupings } = this.state;
+    this.handleHideModal('showDeleteGroupingModal');
     MixedApiService.deleteGrouping(currentGrouping.id)
       .then((res) => {
         console.log(res.json)
       })
       .catch((error) => {
-        this.setState({ error })
+        this.setState({ error });
       })
     const updatedAllGroupings = allGroupings.filter(
       (grouping) => grouping.id !== currentGrouping.id
@@ -335,14 +390,45 @@ class SavedGroupsPage extends Component {
       showDeleteGroupingModal,
     } = this.state;
 
-
     const groupingUpdatedMessage = !!groupingUpdated ? 'Changes saved.' : '';
 
     // TO RENDER A GROUPING
     const currentStudents = currentGrouping.groupings || '';
     const currentGroupingName = currentGrouping.grouping_name || '';
     const currentClassName = currentClass.class_name || '';
-    const currentClassId = currentClass.id;
+
+    let groupingHeading;
+    if (!!currentClassGroupings.length) {
+      groupingHeading = (
+        <div>
+          <h2>{currentGroupingName}</h2>
+          <p>Drag and drop students to edit groups.</p>
+        </div>
+      )
+    }
+    else if (!currentClassGroupings.length && !allClasses.length) {
+      groupingHeading = (
+        <div>
+          <p>
+            No groups or classes found. Add a new class or new group.
+          </p>
+        </div>
+      )
+    } else {
+      groupingHeading = (
+        <div>
+          <p>
+            No groups found for this class.
+            {' '}
+          <span onClick={this.createNewGroup}>
+              <Link to='/make-groups'>
+                Add a new group?
+            </Link>
+            </span>
+          </p>
+        </div>
+      )
+    }
 
     const showGroupings = (
       currentGroupingGroupNumbers.map((groupNumber) => (
@@ -467,14 +553,7 @@ class SavedGroupsPage extends Component {
                 <FontAwesomeIcon icon="trash-alt" />
               </button>
             </h1>
-            {!!this.state.currentClassGroupings.length
-              ? <div>
-                <h2>{currentGroupingName}</h2>
-                <p>Drag and drop students to edit groups.</p>
-              </div>
-              : <div>
-                <p>No groups found for this class. <span onClick={this.createNewGroup}><Link to='/make-groups'>Add a new group?</Link></span></p>
-              </div>}
+            {groupingHeading}
             <form>
               <div className="saved-groups-page__groupings">
                 {showGroupings}
