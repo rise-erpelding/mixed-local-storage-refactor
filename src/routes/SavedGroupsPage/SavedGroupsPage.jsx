@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import AddUpdateClass from '../../components/AddUpdateClass/AddUpdateClass';
+import DeleteClassGrouping from '../../components/DeleteClassGrouping/DeleteClassGrouping';
 import MixedApiService from '../../services/mixed-api-service';
-import './SavedGroupsPage.css';
-// import store from '../../services/store';
 import MixEdContext from '../../context/MixEdContext';
 import { Link } from 'react-router-dom';
 import ls from 'local-storage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import './SavedGroupsPage.css';
 
 // TO BE CLEAR
 // A 'Grouping' Refers to a class of students that has been broken into groups
@@ -197,43 +197,7 @@ class SavedGroupsPage extends Component {
     history.push('/make-groups');
   }
 
-  handleDelete = (currentGrouping) => {
-    const { allGroupings, currentClassGroupings } = this.state;
-    // remove the current grouping from all groupings
-    // remove current grouping from everywhere else? see if this is necessary before trying to do it
-    // call changeClassTab with the current class Id again to re-render?
-    console.log(`Deleting group id ${currentGrouping.id}`);
-    // let { allGroupings } = this.state;
-    MixedApiService.deleteGrouping(currentGrouping.id)
-      .then((res) => {
-        console.log(res.json)
-      })
-      .catch((error) => {
-        this.setState({ error })
-      })
-    const updatedAllGroupings = allGroupings.filter(
-      (grouping) => grouping.id !== currentGrouping.id
-    );
-    const updatedCurrentClassGroupings = currentClassGroupings.filter(
-      (grouping) => grouping.id !== currentGrouping.id
-    );
-    this.setState({
-      allGroupings: updatedAllGroupings,
-      currentClassGroupings: updatedCurrentClassGroupings,
-    })
-    if (!!updatedCurrentClassGroupings.length) { // if there are still groupings to show
-      // should default to most recent grouping
-      const currentGrouping = updatedCurrentClassGroupings[0];
-      this.updateCurrentGrouping(currentGrouping);
-    }
-    else { // if there are no groupings to show
-      this.setState({
-        currentGrouping: {},
-        currentGroupingCategorynames: [],
-        currentGroupingGroupNumbers: [],
-      })
-    }
-  }
+
 
   handleSave = (currentGrouping) => {
     let { allGroupings } = this.state;
@@ -260,15 +224,6 @@ class SavedGroupsPage extends Component {
 
   handleHideModal = (modalName) => {
     this.setState({ [modalName]: false });
-  }
-
-  createNewClassTab = () => {
-    console.log('creating new class');
-    this.handleShowModal('showNewClassModal');
-  }
-
-  updateClassTab = () => {
-    this.handleShowModal('showUpdateClassModal');
   }
 
   addNewClassName = (newClassName) => {
@@ -326,6 +281,44 @@ class SavedGroupsPage extends Component {
   }
 
 
+  deleteGrouping = () => {
+    const { allGroupings, currentClassGroupings, currentGrouping } = this.state;
+    // remove the current grouping from all groupings
+    // remove current grouping from everywhere else? see if this is necessary before trying to do it
+    // call changeClassTab with the current class Id again to re-render?
+    console.log(`Deleting group id ${currentGrouping.id}`);
+    this.handleHideModal('showDeleteClassModal')
+    // let { allGroupings } = this.state;
+    MixedApiService.deleteGrouping(currentGrouping.id)
+      .then((res) => {
+        console.log(res.json)
+      })
+      .catch((error) => {
+        this.setState({ error })
+      })
+    const updatedAllGroupings = allGroupings.filter(
+      (grouping) => grouping.id !== currentGrouping.id
+    );
+    const updatedCurrentClassGroupings = currentClassGroupings.filter(
+      (grouping) => grouping.id !== currentGrouping.id
+    );
+    this.setState({
+      allGroupings: updatedAllGroupings,
+      currentClassGroupings: updatedCurrentClassGroupings,
+    })
+    if (!!updatedCurrentClassGroupings.length) { // if there are still groupings to show
+      // should default to most recent grouping
+      const currentGrouping = updatedCurrentClassGroupings[0];
+      this.updateCurrentGrouping(currentGrouping);
+    }
+    else { // if there are no groupings to show
+      this.setState({
+        currentGrouping: {},
+        currentGroupingCategorynames: [],
+        currentGroupingGroupNumbers: [],
+      })
+    }
+  }
 
   render() {
     const {
@@ -436,7 +429,7 @@ class SavedGroupsPage extends Component {
           >
             <button
               type="button"
-              onClick={this.createNewClassTab}
+              onClick={() => this.handleShowModal('showNewClassModal')}
             >
               + New Class
           </button>
@@ -464,13 +457,13 @@ class SavedGroupsPage extends Component {
               {currentClassName}
               <button
                 type="button"
-                onClick={this.updateClassTab}
+                onClick={() => this.handleShowModal('showUpdateClassModal')}
               >
                 <FontAwesomeIcon icon="edit" />
               </button>
               <button
                 type="button"
-                onClick={() => this.deleteClass(currentClassId)}
+                onClick={() => this.handleShowModal('showDeleteGroupingModal')}
               >
                 <FontAwesomeIcon icon="trash-alt" />
               </button>
@@ -498,7 +491,7 @@ class SavedGroupsPage extends Component {
           </button>
                 <button
                   type="button"
-                  onClick={() => this.handleDelete(currentGrouping)}
+                  onClick={() => this.handleShowModal('showDeleteGroupingModal')}
                 >
                   Delete Grouping <FontAwesomeIcon icon="trash-alt" />
                 </button>
@@ -524,6 +517,20 @@ class SavedGroupsPage extends Component {
           title="Update Class Name"
           handleClose={() => this.handleHideModal('showUpdateClassModal')}
           handleUpdate={this.updateClassName}
+        />
+        <DeleteClassGrouping
+          show={showDeleteClassModal}
+          title="Delete Grouping"
+          message="This will remove the grouping from this class."
+          handleClose={() => this.handleHideModal('showDeleteClassModal')}
+          handleDelete={this.deleteClass}
+        />
+        <DeleteClassGrouping
+          show={showDeleteGroupingModal}
+          title="Delete Class"
+          message="This will remove this class and all groupings within it."
+          handleClose={() => this.handleHideModal('showDeleteGroupingModal')}
+          handleDelete={this.deleteGrouping}
         />
       </main>
     )
