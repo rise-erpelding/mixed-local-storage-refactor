@@ -7,6 +7,8 @@ import './LoginPage.css';
 
 
 class LoginPage extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -14,9 +16,12 @@ class LoginPage extends Component {
     };
   }
 
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
   handleSubmitJwtAuth = (e) => {
     e.preventDefault();
-    this.setState({ error: null });
     const { teacher_name, password } = e.target;
 
     AuthApiService.postLogin({
@@ -32,7 +37,9 @@ class LoginPage extends Component {
       .catch(() => {
         teacher_name.value = '';
         password.value = '';
-        this.setState({ error: true });
+        if (this._isMounted) {
+          this.setState({ error: true });
+        }
       });
   }
 
@@ -46,6 +53,10 @@ class LoginPage extends Component {
   handleClickCancel = () => {
     const { history } = this.props;
     history.goBack();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {
@@ -99,3 +110,7 @@ class LoginPage extends Component {
 export default LoginPage;
 
 LoginPage.contextType = MixEdContext;
+
+LoginPage.defaultProps = {
+  history: {},
+};

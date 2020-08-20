@@ -1,0 +1,5 @@
+.not-found-page > p {
+  font-size: 1.2em;
+  color: red;
+  padding: 20px;
+}
