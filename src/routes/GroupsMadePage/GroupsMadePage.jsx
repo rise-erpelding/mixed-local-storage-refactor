@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SaveGroups from '../../components/SaveGroups/SaveGroups';
 import MixEdContext from '../../context/MixEdContext';
 import MixedApiService from '../../services/mixed-api-service';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ls from 'local-storage';
 import './GroupsMadePage.css';
 
@@ -62,7 +63,7 @@ class GroupsMadePage extends Component {
   }
 
   // METHODS FOR SAVE MODAL
-  
+
   showSaveModal = () => {
     this.setState({ show: true });
   }
@@ -143,26 +144,26 @@ class GroupsMadePage extends Component {
           key={groupNumber}
           className="groups-made-page__group"
           onDragOver={(event) => this.handleDragOver(event)}
-          onDrop={(event) => {this.handleDrop(event, groupNumber)}}
+          onDrop={(event) => { this.handleDrop(event, groupNumber) }}
         >
           Group {groupNumber}
           {students.map((student, idx) => {
             if (student.groupNum === groupNumber) {
               return (
-                <div 
+                <div
                   key={idx + 1}
                   className="groups-made-page__student"
-                  onDragStart={(event) => {this.handleDragStart(event, student.alias)}}
+                  onDragStart={(event) => { this.handleDragStart(event, student.alias) }}
                   draggable
                 >
                   {student.alias}
-                <div className="groups-made-page__tooltip">
-                  {categoryNames.map((category, index) => (
-                    <p key={`category-${index}`}>
-                      {`${category}: ${student[category]}`}
-                    </p>
-                  ))}
-                </div>
+                  <div className="groups-made-page__tooltip">
+                    {categoryNames.map((category, index) => (
+                      <p key={`category-${index}`}>
+                        {`${category}: ${student[category]}`}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               )
             }
@@ -170,42 +171,74 @@ class GroupsMadePage extends Component {
           })}
         </div>
       )
-    ));
+      ));
 
     return (
       <main className="groups-made-page">
-        <h1>Groupings</h1>
-        <p>Drag and drop students to rearrange groups.</p>
-        <form className="groups-made-page__form" onSubmit={this.handleSubmit}>
-          <div className="groups-made-page__groupings">
-          {showGroupings}
-          </div>
-          <div>
-            <button
-              type="button"
-              onClick={this.handleClickCancel}
-            >
-              Cancel
+        <div className="groups-made-page__body-container">
+          <h1>Groupings</h1>
+          <p>Drag and drop students to rearrange groups.</p>
+          <form className="groups-made-page__form" onSubmit={this.handleSubmit}>
+            <div className="groups-made-page__groupings">
+              {showGroupings}
+            </div>
+            <div className="groups-made-page__main--buttons">
+              <button
+                type="button"
+                onClick={this.handleClickCancel}
+              >
+                <div className="groups-made-page__button--container">
+                    <div>
+                      Cancel
+                    </div>
+                    <div>
+                      <FontAwesomeIcon
+                        className="groups-made-page__button--icon"
+                        icon="window-close"
+                      />
+                    </div>
+                  </div>
             </button>
-            <button
-              type="button"
-              onClick={this.handleClickBack}
-            >
-              Back
+              <button
+                type="button"
+                onClick={this.handleClickBack}
+              >
+                <div className="groups-made-page__button--container">
+                    <div>
+                      Back
+                    </div>
+                    <div>
+                      <FontAwesomeIcon
+                        className="groups-made-page__button--icon"
+                        icon="arrow-left"
+                      />
+                    </div>
+                  </div>
             </button>
-            <button
-              type="submit"
-            >
-              Save
+              <button
+                type="submit"
+              >
+                <div className="groups-made-page__button--container">
+                    <div>
+                      Save
+                    </div>
+                    <div>
+                    <FontAwesomeIcon
+                        className="groups-made-page__button--icon"
+                        icon={['far', 'save']}
+                      />
+                    </div>
+                  </div>
             </button>
-          </div>
-        </form>
-        <SaveGroups
-          classes={allClasses}
-          show={show}
-          handleClose={this.hideSaveModal}
-          handleSave={this.saveGroups}
-        />
+            </div>
+          </form>
+          <SaveGroups
+            classes={allClasses}
+            show={show}
+            handleClose={this.hideSaveModal}
+            handleSave={this.saveGroups}
+          />
+        </div>
       </main>
     )
   }

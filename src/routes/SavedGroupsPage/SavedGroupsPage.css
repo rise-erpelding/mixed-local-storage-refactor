@@ -1,8 +1,5 @@
 .saved-groups-page {
   background-color: #E2E4F3;
-  /* -webkit-box-shadow: inset 0px 5px 5px 0px rgba(63,79,141,1);
-  -moz-box-shadow: inset 0px 5px 5px 0px rgba(63,79,141,1);
-  box-shadow: inset 0px 5px 5px 0px rgba(63,79,141,1); */
   padding: 10px 10px;
   display: flex;
   flex-direction: column;
@@ -52,12 +49,7 @@
 
 .saved-groups-page__class-tab--new {
   background-color: whitesmoke;
-  /* border: 2px solid transparent; */
 }
-/* 
-.saved-groups-page__class-tab--new > button {
-  font-weight: bold;
-} */
 
 .saved-groups-page__class-groupings {
   background-color: whitesmoke;
@@ -72,9 +64,7 @@
 }
 
 .saved-groups-page__groupings-list {
-  /* margin: 10px 0px; */
   padding: 10px;
-  /* border-right: 2px solid #FF9A5C; */
   background-color: #e8e8e8;
   border-radius: 0px 0px 0px 10px;
 }
@@ -97,11 +87,6 @@
   background-color: whitesmoke;
   border: 2px solid lightgray;
 }
-
-/* .saved-groups-page__groupings-list--new > button {
-  color: white;
-  font-weight: bold;
-} */
 
 .saved-groups-page__groupings-list--ul > li > button {
   border: transparent;
@@ -160,7 +145,6 @@
 .saved-groups-page__student {
   background-color: whitesmoke;
   border-radius: 5px;
-  /* border: 1px solid #46579B; */
   color: #3d3d3d;
   font-weight: normal;
   padding: 5px;
@@ -248,7 +232,6 @@
   border: none;
   width: 100px;
   text-align: right;
-
 }
 
 .saved-groups-page__button--container {
