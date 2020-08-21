@@ -377,7 +377,7 @@ class SavedGroupsPage extends Component {
     let groupingHeading;
     if (!!currentClassGroupings.length) {
       groupingHeading = (
-        <div>
+        <div className="saved-groups-page__grouping-heading">
           <h2>{currentGroupingName}</h2>
           <p>Drag and drop students to edit groups.</p>
         </div>
@@ -385,7 +385,7 @@ class SavedGroupsPage extends Component {
     }
     else if (!currentClassGroupings.length && !allClasses.length) {
       groupingHeading = (
-        <div>
+        <div className="saved-groups-page__grouping-heading">
           <p>
             No groups or classes found. Add a new class or new group.
           </p>
