@@ -1,8 +1,16 @@
 .nav-bar {
-  background-color: gray;
+  background: #F4976C;
+  padding: 10px 10px;
+  font-weight: bold;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .nav-bar > a {
   padding: 10px;
   
+}
+
+.nav-bar > a:hover {
+  text-decoration: underline;
 }

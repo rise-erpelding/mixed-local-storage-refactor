@@ -11,7 +11,9 @@ import {
   faFlushed,
   faPlus,
   faMinus,
+
 } from '@fortawesome/free-solid-svg-icons';
+import { faSave as faSaveRegular, faEye as faEyeRegular } from '@fortawesome/free-regular-svg-icons';
 
 library.add(
   faTrashAlt,
@@ -20,6 +22,8 @@ library.add(
   faFlushed,
   faPlus,
   faMinus,
+  faSaveRegular,
+  faEyeRegular,
 );
 
 ReactDOM.render(
