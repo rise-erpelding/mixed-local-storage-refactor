@@ -13,6 +13,7 @@ import {
   faMinus,
   faWindowClose,
   faArrowLeft,
+  faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { faSave as faSaveRegular, faEye as faEyeRegular } from '@fortawesome/free-regular-svg-icons';
 
@@ -26,7 +27,8 @@ library.add(
   faSaveRegular,
   faEyeRegular,
   faWindowClose,
-  faArrowLeft
+  faArrowLeft,
+  faArrowRight
 );
 
 ReactDOM.render(

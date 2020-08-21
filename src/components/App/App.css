@@ -8,9 +8,9 @@ a {
   color: inherit;
 }
 
-a:hover {
-  /* text-decoration: underline; */
-}
+/* a:hover {
+  text-decoration: underline;
+} */
 
 h1, h2, h3 {
   padding: 0;
@@ -24,6 +24,7 @@ h2 {
 button {
   margin: 5px;
   cursor: pointer;
+  font-family: inherit;
 }
 
 button > a:hover {
@@ -32,4 +33,15 @@ button > a:hover {
 
 textarea {
   font-family: inherit;
+  resize: none;
+  border: 1px solid silver;
+}
+
+input {
+  font-family: inherit;
+  border: 1px solid silver;
+}
+
+fieldset {
+  border: 2px solid #D3D3D3;
 }
