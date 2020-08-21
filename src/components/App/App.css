@@ -45,3 +45,8 @@ input {
 fieldset {
   border: 2px solid #D3D3D3;
 }
+
+legend {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

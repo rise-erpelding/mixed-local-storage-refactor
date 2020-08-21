@@ -1,15 +1,15 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
-import './DeleteClassGrouping.css';
+import '../Modals.css';
 
 const DeleteClassGrouping = (props) => {
     return (
       <div className={
         props.show 
-        ? 'delete-class-grouping display-block'
-        : 'delete-class-grouping display-none'
+        ? 'modal modal__display-block'
+        : 'modal modal__display-none'
       }>
-        <main className="delete-class-grouping__main">
+        <main className="modal__main">
           <h1>{props.title}</h1>
           <p>{props.message}</p>
             <button type="button" onClick={props.handleClose}>Cancel</button>

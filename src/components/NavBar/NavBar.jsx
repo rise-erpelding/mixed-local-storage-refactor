@@ -17,6 +17,12 @@ class NavBar extends Component {
   renderLoggedInLinks() {
     return (
       <nav className="nav-bar">
+        <NavLink
+          activeClassName="selected"
+          to="/"
+        >
+          Home
+        </NavLink>
         <NavLink 
           activeClassName="selected"
           to="/make-groups"
@@ -42,17 +48,23 @@ class NavBar extends Component {
   renderNotLoggedInLinks() {
     return (
       <nav className="nav-bar">
-        <NavLink 
+        <NavLink
           activeClassName="selected"
-          to="/login"
+          to="/"
         >
-          Login
+          Home
         </NavLink>
         <NavLink 
           activeClassName="selected"
           to="/make-groups"
         >
           Generate Groups
+        </NavLink>
+        <NavLink 
+          activeClassName="selected"
+          to="/login"
+        >
+          Login
         </NavLink>
       </nav>
     )

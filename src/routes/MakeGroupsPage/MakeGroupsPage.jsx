@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ValidationError from '../../components/ValidationError/ValidationError';
-import FirstVisitModal from '../../components/FirstVisitModal/FirstVisitModal';
+import FirstVisitModal from '../../components/Modals/FirstVisitModal/FirstVisitModal';
 import MixEdContext from '../../context/MixEdContext';
 import createDifferentGroups from '../../services/groupingAlgorithms/differentGroups';
 import createSimilarGroups from '../../services/groupingAlgorithms/similarGroups';
@@ -515,7 +515,13 @@ class MakeGroupsPage extends Component {
               <div className="make-groups-page__form--after-textarea"></div>
             </fieldset>
             {categories}
-            <div className="make-groups-page__form--add-category-buttons">
+            
+          </div>
+          <div>
+            <ValidationError message={this.validateTextareaLines()} />
+            <ValidationError message={this.validateCatNumbers()} />
+          </div>
+          <div className="make-groups-page__form--buttons">
               <button
                 type="button"
                 onClick={this.addCategory}
@@ -548,20 +554,13 @@ class MakeGroupsPage extends Component {
                     </div>
                   </div>
               </button>
-            </div>
-          </div>
-          <div>
-            <ValidationError message={this.validateTextareaLines()} />
-            <ValidationError message={this.validateCatNumbers()} />
-          </div>
-          <div className="make-groups-page__form--buttons">
             <button
               type="button"
               onClick={this.handleClickCancel}
             >
               <div className="make-groups-page__button--container">
                     <div>
-                    Cancel
+                    Cancel Generator
                     </div>
                     <div>
                       <FontAwesomeIcon

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SaveGroups from '../../components/SaveGroups/SaveGroups';
+import SaveGroups from '../../components/Modals/SaveGroups/SaveGroups';
 import MixEdContext from '../../context/MixEdContext';
 import MixedApiService from '../../services/mixed-api-service';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

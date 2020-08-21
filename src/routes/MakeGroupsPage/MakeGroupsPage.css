@@ -62,7 +62,6 @@
 
 .make-groups-page__sampledata--buttons,
 .make-groups-page__form--buttons,
-.make-groups-page__form--add-category-buttons,
 .make-groups-page__form--after-textarea {
   text-align: right;
   padding: 15px;
@@ -70,7 +69,6 @@
 
 .make-groups-page__sampledata--buttons > button,
 .make-groups-page__form--buttons > button,
-.make-groups-page__form--add-category-buttons > button,
 .make-groups-page__form--after-textarea > button {
   font-family: inherit;
   line-height: 100%;
@@ -82,8 +80,9 @@
   text-align: right;
 }
 
-.make-groups-page__form--add-category-buttons > button {
-  margin-top: 25px;
+.make-groups-page__form--after-textarea,
+.make-groups-page__form--after-textarea > button {
+  text-align: center;
 }
 
 .make-groups-page__button--container {
@@ -92,6 +91,7 @@
 }
 
 .make-groups-page__button--icon {
+  font-weight: bold;
   font-size: 22px;
   padding-left: 5px;
 }
@@ -128,12 +128,6 @@
 
   .make-groups-page__form--after-textarea > button {
     width: 42%;
-  }
-
-  .make-groups-page__form--add-category-buttons {
-    width: 260px;
-    display: flex;
-    flex-direction: column;
   }
 
 }

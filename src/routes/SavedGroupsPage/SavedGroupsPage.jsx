@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import AddUpdateClass from '../../components/AddUpdateClass/AddUpdateClass';
-import DeleteClassGrouping from '../../components/DeleteClassGrouping/DeleteClassGrouping';
+import AddUpdateClass from '../../components/Modals/AddUpdateClass/AddUpdateClass';
+import DeleteClassGrouping from '../../components/Modals/DeleteClassGrouping/DeleteClassGrouping';
 import MixedApiService from '../../services/mixed-api-service';
 import MixEdContext from '../../context/MixEdContext';
 import { Link } from 'react-router-dom';
@@ -632,14 +632,14 @@ class SavedGroupsPage extends Component {
           show={showDeleteGroupingModal}
           title="Delete Grouping"
           message="This will remove the grouping from this class."
-          handleClose={() => this.handleHideModal('showDeleteClassModal')}
+          handleClose={() => this.handleHideModal('showDeleteGroupingModal')}
           handleDelete={this.deleteGrouping}
         />
         <DeleteClassGrouping
           show={showDeleteClassModal}
           title="Delete Class"
           message="This will remove this class and all groupings within it."
-          handleClose={() => this.handleHideModal('showDeleteGroupingModal')}
+          handleClose={() => this.handleHideModal('showDeleteClassModal')}
           handleDelete={this.deleteClass}
         />
       </main>
