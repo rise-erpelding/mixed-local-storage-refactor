@@ -1,8 +1,8 @@
 .user-onboarding__intro {
   /* background-color: #FF0054; */
-  background: #A52A70;
-  background: -webkit-linear-gradient(to bottom, #4A00E0, #A52A70);
-  background: linear-gradient(to bottom, #4A00E0, #A52A70);
+  background: #8633B4;
+  background: -webkit-linear-gradient(to bottom, #4A00E0, #8633B4);
+  background: linear-gradient(to bottom, #4A00E0, #8633B4);
   height: 60vh;
   padding: 0px 30px;
 }
@@ -15,9 +15,9 @@
 
 .user-onboarding__data-entry {
   /* background-color: #9E0059; */
-  background: #FF5400;
-  background: -webkit-linear-gradient(to bottom, #A52A70, #FF5400);
-  background: linear-gradient(to bottom, #A52A70, #FF5400);
+  background: #C36788;
+  background: -webkit-linear-gradient(to bottom, #8633B4, #C36788);
+  background: linear-gradient(to bottom, #8633B4, #C36788);
   padding: 30px 30px;
 }
 
@@ -36,9 +36,9 @@
 
 .user-onboarding__saved-groups {
   /* background-color: #FFBD00; */
-  background: #A52A70;
-  background: -webkit-linear-gradient(to bottom, #FF5400, #A52A70);
-  background: linear-gradient(to bottom, #FF5400, #A52A70);
+  background: #FF9A5C;
+  background: -webkit-linear-gradient(to bottom, #C36788, #FF9A5C);
+  background: linear-gradient(to bottom, #C36788, #FF9A5C);
   padding: 30px 30px;
 }
 
@@ -53,15 +53,15 @@
 
 .user-onboarding__buttons {
   padding: 40px 0px;
-  /* background-color: #4A00E0; */
-  background: #4A00E0;
+  background-color: #FF9A5C;
+  /* background: #4A00E0;
   background: -webkit-linear-gradient(to bottom, #A52A70, #4A00E0);
-  background: linear-gradient(to bottom, #A52A70, #4A00E0);
+  background: linear-gradient(to bottom, #A52A70, #4A00E0); */
 }
 
 .user-onboarding__buttons > button {
-  background-color: #FF9A5C;
-  color: #2C3763;
+  background-color: #4A00E0;
+  color: #FBE8A6;
   border: none;
   font-weight: bold;
   letter-spacing: 1px;

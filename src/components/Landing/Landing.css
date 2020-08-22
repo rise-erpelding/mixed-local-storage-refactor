@@ -42,7 +42,6 @@
 }
 
 .landing__buttons > button:hover {
-
   background-color: #FBE8A6;
   color: #2C3763;
   transition: 0.2s ease-in;
