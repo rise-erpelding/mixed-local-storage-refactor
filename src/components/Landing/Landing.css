@@ -4,8 +4,7 @@
   background: #3F4F8D;
   background: -webkit-linear-gradient(to top, #4A00E0, #3F4F8D);
   background: linear-gradient(to top, #4A00E0, #3F4F8D);
-  padding: 30px;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 65px);
 }
 
 .landing > h1 {
@@ -30,8 +29,6 @@
 }
 
 .landing__buttons > button {
-
-  
   background-color: #FF9A5C;
   color: #2C3763;
   border: none;

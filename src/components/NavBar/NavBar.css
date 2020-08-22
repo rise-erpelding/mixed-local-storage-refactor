@@ -6,6 +6,7 @@
   justify-content: flex-end;
   color: white;
   transition: 0.2s ease-out;
+  height: 45px;
 }
 
 .nav-bar > a {
