@@ -1,7 +1,27 @@
 .make-groups-page {
-  background-color: gainsboro;
-  font-size: 0.8em;
-  box-sizing: border-box;
+  background-color: #E2E4F3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.make-groups-page__body-container {
+  background-color: whitesmoke;
+  -webkit-box-shadow: 1px 1px 3px 0px rgba(211,211,211,1);
+  -moz-box-shadow: 1px 1px 3px 0px rgba(211,211,211,1);
+  box-shadow: 1px 1px 3px 0px rgba(211,211,211,1);
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  border: 3px solid #FF9A5C;
+}
+
+.make-groups-page__body-container > h1 {
+  color: #3d3d3d;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding-bottom: 10px;
 }
 
 .make-groups-page__form--fieldset,
@@ -27,16 +47,8 @@
 
 .make-groups-page__form--explanation {
   font-size: 0.9em;
-  color: #505050;
+  color: #3d3d3d;
   padding-bottom: 10px;
-}
-
-.make-groups-page__form--add-category-buttons > button {
-  width: 140px;
-}
-
-.make-groups-page__form--add-category-buttons {
-  padding: 10px;
 }
 
 .make-groups-page__form--buttons {
@@ -44,8 +56,44 @@
 }
 
 .make-groups-page__sampledata--buttons {
-  border-top: 1px solid black;
+  border-top: 1px solid #3F4F8D;
   padding: 10px;
+}
+
+.make-groups-page__sampledata--buttons,
+.make-groups-page__form--buttons,
+.make-groups-page__form--after-textarea {
+  text-align: right;
+  padding: 15px;
+}
+
+.make-groups-page__sampledata--buttons > button,
+.make-groups-page__form--buttons > button,
+.make-groups-page__form--after-textarea > button {
+  font-family: inherit;
+  line-height: 100%;
+  font-size: 11px;
+  color: #3F4F8D;
+  background-color: transparent;
+  border: none;
+  width: 100px;
+  text-align: right;
+}
+
+.make-groups-page__form--after-textarea,
+.make-groups-page__form--after-textarea > button {
+  text-align: center;
+}
+
+.make-groups-page__button--container {
+  display: flex;
+  align-items: center;
+}
+
+.make-groups-page__button--icon {
+  font-weight: bold;
+  font-size: 22px;
+  padding-left: 5px;
 }
 
 @media screen and (min-width: 800px) {
@@ -80,12 +128,6 @@
 
   .make-groups-page__form--after-textarea > button {
     width: 42%;
-  }
-
-  .make-groups-page__form--add-category-buttons {
-    width: 260px;
-    display: flex;
-    flex-direction: column;
   }
 
 }

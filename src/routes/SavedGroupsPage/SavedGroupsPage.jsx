@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import AddUpdateClass from '../../components/AddUpdateClass/AddUpdateClass';
-import DeleteClassGrouping from '../../components/DeleteClassGrouping/DeleteClassGrouping';
+import AddUpdateClass from '../../components/Modals/AddUpdateClass/AddUpdateClass';
+import DeleteClassGrouping from '../../components/Modals/DeleteClassGrouping/DeleteClassGrouping';
 import MixedApiService from '../../services/mixed-api-service';
 import MixEdContext from '../../context/MixEdContext';
 import { Link } from 'react-router-dom';
@@ -377,7 +377,7 @@ class SavedGroupsPage extends Component {
     let groupingHeading;
     if (!!currentClassGroupings.length) {
       groupingHeading = (
-        <div>
+        <div className="saved-groups-page__grouping-heading">
           <h2>{currentGroupingName}</h2>
           <p>Drag and drop students to edit groups.</p>
         </div>
@@ -385,7 +385,7 @@ class SavedGroupsPage extends Component {
     }
     else if (!currentClassGroupings.length && !allClasses.length) {
       groupingHeading = (
-        <div>
+        <div className="saved-groups-page__grouping-heading">
           <p>
             No groups or classes found. Add a new class or new group.
           </p>
@@ -447,7 +447,7 @@ class SavedGroupsPage extends Component {
       <li
         key={`class-${classObj.id}`}
         className={
-          classObj.id === currentGrouping.class_id
+          classObj.id === currentClass.id
             ? 'saved-groups-page__class-tab--selected saved-groups-page__class-tab'
             : 'saved-groups-page__class-tab'
         }
@@ -465,7 +465,11 @@ class SavedGroupsPage extends Component {
     const groupingNames = currentClassGroupings.map((grouping) => (
       <li
         key={`grouping-${grouping.id}`}
-        className={grouping.id === currentGrouping.id ? 'saved-groups-page__groupings-list--selected' : ''}
+        className={
+          grouping.id === currentGrouping.id
+          ? 'saved-groups-page__groupings-list--selected'
+          : 'saved-groups-page__groupings-list--unselected'
+        }
       >
         <button
           type="button"
@@ -478,8 +482,8 @@ class SavedGroupsPage extends Component {
 
     // HIDES BUTTONS USING CLASSNAME IF THERE ARE NO GROUPINGS
     const groupingButtonDisplay = !!this.state.currentClassGroupings.length
-      ? 'saved-groups-page__show'
-      : 'saved-groups-page__hide';
+      ? 'saved-groups-page__main--buttons saved-groups-page__show'
+      : 'saved-groups-page__main--buttons saved-groups-page__hide';
 
     return (
       <main className="saved-groups-page">
@@ -506,7 +510,6 @@ class SavedGroupsPage extends Component {
                 className="saved-groups-page__groupings-list--new"
               >
                 <button
-
                   onClick={this.createNewGroup}
                 >
                   + New Group
@@ -517,18 +520,40 @@ class SavedGroupsPage extends Component {
           <section className="saved-groups-page__groups">
             <h1>
               {currentClassName}
-              <button
-                type="button"
-                onClick={() => this.handleShowModal('showUpdateClassModal')}
-              >
-                <FontAwesomeIcon icon="edit" />
-              </button>
-              <button
-                type="button"
-                onClick={() => this.handleShowModal('showDeleteClassModal')}
-              >
-                <FontAwesomeIcon icon="trash-alt" />
-              </button>
+              <div className="saved-groups-page__class--buttons">
+                <button
+                  type="button"
+                  onClick={() => this.handleShowModal('showUpdateClassModal')}
+                >
+                  <div className="saved-groups-page__button--container">
+                    <div>
+                      Edit Class Name
+                    </div>
+                    <div>
+                      <FontAwesomeIcon
+                        className="saved-groups-page__button--icon"
+                        icon="edit"
+                      />
+                    </div>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => this.handleShowModal('showDeleteClassModal')}
+                >
+                  <div className="saved-groups-page__button--container">
+                    <div>
+                      Delete Class
+                    </div>
+                    <div>
+                      <FontAwesomeIcon
+                        className="saved-groups-page__button--icon"
+                        icon="trash-alt"
+                      />
+                    </div>
+                  </div>
+                </button>
+              </div>
             </h1>
             {groupingHeading}
             <form>
@@ -541,20 +566,51 @@ class SavedGroupsPage extends Component {
                   type="button"
                   onClick={this.viewGroupData}
                 >
-                  View Data
+                  <div className="saved-groups-page__button--container">
+                    <div>
+                      View in Generator
+                    </div>
+                    <div>
+                      <FontAwesomeIcon
+                        className="saved-groups-page__button--icon"
+                        icon={['far', 'eye']}
+                      />
+                    </div>
+                  </div>
                 </button>
                 <button
                   type="button"
                   onClick={() => this.handleShowModal('showDeleteGroupingModal')}
                 >
-                  Delete Grouping <FontAwesomeIcon icon="trash-alt" />
+                  <div className="saved-groups-page__button--container">
+                    <div>
+                    Delete Grouping
+                    </div>
+                    <div>
+                      <FontAwesomeIcon
+                        className="saved-groups-page__button--icon"
+                        icon="trash-alt"
+                      />
+                    </div>
+                  </div>
                 </button>
                 <button
+                  className="saved-groups-page__button--save"
                   type="button"
                   onClick={() => this.handleSave(currentGrouping)}
                 >
-                  Save Changes
-          </button>
+                  <div className="saved-groups-page__button--container">
+                    <div>
+                      Save Changes
+                    </div>
+                    <div>
+                      <FontAwesomeIcon
+                        className="saved-groups-page__button--icon"
+                        icon={['far', 'save']}
+                      />
+                    </div>
+                  </div>
+                </button>
               </div>
             </form>
 
@@ -576,14 +632,14 @@ class SavedGroupsPage extends Component {
           show={showDeleteGroupingModal}
           title="Delete Grouping"
           message="This will remove the grouping from this class."
-          handleClose={() => this.handleHideModal('showDeleteClassModal')}
+          handleClose={() => this.handleHideModal('showDeleteGroupingModal')}
           handleDelete={this.deleteGrouping}
         />
         <DeleteClassGrouping
           show={showDeleteClassModal}
           title="Delete Class"
           message="This will remove this class and all groupings within it."
-          handleClose={() => this.handleHideModal('showDeleteGroupingModal')}
+          handleClose={() => this.handleHideModal('showDeleteClassModal')}
           handleDelete={this.deleteClass}
         />
       </main>

@@ -1,0 +1,52 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal__main,
+.modal__main--first-visit {
+  position: fixed;
+  background: whitesmoke;
+  width: 80%;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid #FF9A5C;
+}
+
+.modal__display-block {
+  display: block;
+}
+
+.modal__display-none {
+  display: none;
+}
+
+.modal__text {
+  padding: 15px;
+}
+
+.modal__close {
+  text-align: right;
+}
+
+.modal__close > button {
+  border: none;
+  background-color: transparent;
+  font-size: 22px;
+}
+
+@media screen and (min-width: 800px) {
+  .modal__main {
+    width: 400px;
+  }
+
+  .modal__main--first-visit {
+    width: 70%;
+  }
+}

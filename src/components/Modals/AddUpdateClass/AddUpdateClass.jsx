@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
-import './AddUpdateClass.css';
+import '../Modals.css';
 
 
 class AddUpdateClass extends Component {
@@ -27,11 +27,11 @@ class AddUpdateClass extends Component {
   render() {
     const { className } = this.state;
     const { handleClose, show, title } = this.props;
-    const modalClassName = show ? 'add-update-class display-block' : 'add-update-class display-none';
+    const modalClassName = show ? 'modal modal__display-block' : 'modal modal__display-none';
 
     return (
       <div className={modalClassName}>
-        <main className="add-update-class__main">
+        <main className="modal__main">
           <h1>{title}</h1>
           <form onSubmit={this.handleSubmit}>
               <label htmlFor="name-of-class">Class Name:</label><br />

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
-import './SaveGroups.css';
+import '../Modals.css';
 // import store from '../../services/store';
 
 
@@ -31,7 +31,9 @@ class SaveGroups extends Component {
 
   render() {
     const { handleClose, show, classes } = this.props;
-    const modalClassName = show ? 'save-groups display-block' : 'save-groups display-none';
+    const modalClassName = show 
+      ? 'modal modal__display-block' 
+      : 'modal modal__display-none';
     const classOptions = classes.map((classObj) => (
       <option
         key={classObj.id}
@@ -43,7 +45,7 @@ class SaveGroups extends Component {
 
     return (
       <div className={modalClassName}>
-        <main className="save-groups__main">
+        <main className="modal__main">
           <h1>Save Grouping</h1>
           <form onSubmit={this.handleSubmit}>
             <label htmlFor="grouping-name">Grouping name:</label><br />

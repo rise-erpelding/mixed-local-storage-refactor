@@ -1,8 +1,21 @@
 .nav-bar {
-  background-color: gray;
+  background: #3F4F8D;
+  padding: 10px 10px;
+  font-weight: bold;
+  display: flex;
+  justify-content: flex-end;
+  color: white;
+  transition: 0.2s ease-out;
+  height: 45px;
 }
 
 .nav-bar > a {
   padding: 10px;
   
+}
+
+.nav-bar > a:hover {
+  /* text-decoration: underline; */
+  color: #FBE8A6;
+  transition: 0.2s ease-in;
 }

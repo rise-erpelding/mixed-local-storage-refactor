@@ -1,24 +1,23 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import PropTypes from 'prop-types';
-import './FirstVisitModal.css';
-// import store from '../../services/store';
+import '../Modals.css';
 
 
 const FirstVisitModal = (props) => {
   return (
     <div className={
       props.show 
-      ? 'first-visit-modal display-block' 
-      : 'first-visit-modal display-none'
+      ? 'modal modal__display-block' 
+      : 'modal modal__display-none'
       }>
-      <main className="first-visit-modal__main">
-        <div className="first-visit-modal__close">
+      <main className="modal__main--first-visit">
+        <div className="modal__close">
           <button type="button" onClick={props.handleClose}>
             <FontAwesomeIcon icon="times" />
           </button>
         </div>
-        <div className="first-visit-modal__text">
+        <div className="modal__text">
           <h1>Welcome to the Group Generator</h1>
           <p>
             This is where you can enter data for grouping your students.
