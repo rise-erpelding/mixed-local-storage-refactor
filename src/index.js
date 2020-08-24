@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './components/App/App';
+import AppError from './components/AppError/AppError';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faTrashAlt,
@@ -32,8 +33,10 @@ library.add(
 );
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+  <AppError>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </AppError>,
   document.getElementById('root')
 );
