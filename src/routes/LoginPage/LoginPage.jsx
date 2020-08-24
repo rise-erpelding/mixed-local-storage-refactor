@@ -67,40 +67,41 @@ class LoginPage extends Component {
 
     return (
       <main className="login-page">
-        <h2>Login</h2>
-        {loginFailed}
-        <form
-          className="login-page__form"
-          onSubmit={this.handleSubmitJwtAuth}
-        >
-          <div className="login-page__username">
-            <label htmlFor="teacher_name">User name</label>
-            <div>
-              <input
-                required
-                className="login-page__input"
-                name="teacher_name"
-                type="text"
-                id="teacher_name"
-              />
+        <div className="login-page__main">
+          <h2>Login</h2>
+          {loginFailed}
+          <form
+            className="login-page__form"
+            onSubmit={this.handleSubmitJwtAuth}
+          >
+            <div className="login-page__username">
+              <label htmlFor="teacher_name">User name</label>
+              <div>
+                <input
+                  required
+                  className="login-page__input"
+                  name="teacher_name"
+                  type="text"
+                  id="teacher_name"
+                />
+              </div>
             </div>
-
-          </div>
-          <div className="login-page__password">
-            <label htmlFor="password">Password</label>
-            <div>
-              <input
-                required
-                className="login-page__input"
-                name="password"
-                type="password"
-                id="password"
-              />
+            <div className="login-page__password">
+              <label htmlFor="password">Password</label>
+              <div>
+                <input
+                  required
+                  className="login-page__input"
+                  name="password"
+                  type="password"
+                  id="password"
+                />
+              </div>
             </div>
-          </div>
-          <button type="button" onClick={this.handleClickCancel}>Cancel</button>
-          <button type="submit">Login</button>
-        </form>
+            <button type="button" onClick={this.handleClickCancel}>Cancel</button>
+            <button type="submit">Login</button>
+          </form>
+        </div>
         <DemoLoginInfo />
       </main>
     );
