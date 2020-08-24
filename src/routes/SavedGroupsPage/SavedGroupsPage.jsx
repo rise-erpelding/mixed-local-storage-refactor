@@ -1,8 +1,10 @@
+/* eslint-disable no-extra-boolean-cast */
 import React, { Component } from 'react';
 import AddUpdateClass from '../../components/Modals/AddUpdateClass/AddUpdateClass';
 import DeleteClassGrouping from '../../components/Modals/DeleteClassGrouping/DeleteClassGrouping';
 import MixedApiService from '../../services/mixed-api-service';
 import MixEdContext from '../../context/MixEdContext';
+import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ls from 'local-storage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -29,7 +31,7 @@ class SavedGroupsPage extends Component {
       showDeleteGroupingModal: false,
       groupingUpdated: false,
       error: null,
-    }
+    };
   }
 
   componentDidMount() {
@@ -55,7 +57,7 @@ class SavedGroupsPage extends Component {
           allClasses: sortedClasses,
           allGroupings: sortedGroupings,
           currentClass: currentClass,
-        })
+        });
         /* below methods will set state for currentGroupingGroupNumbers, 
         currentGroupingCategoryNames, currentClassGroupings, respectively */
         this.getCurrentClassGroupingsList(currentClass.id, groupings);
@@ -77,7 +79,7 @@ class SavedGroupsPage extends Component {
     // get all the group numbers for all the students and push into arr
     studentsArr.forEach((student) => {
       allGroupNums.push(student.groupNum);
-    })
+    });
     // create array with a set containing only unique items
     const currentGroupNumbers = Array.from(new Set(allGroupNums));
     currentGroupNumbers.sort((a, b) => a - b);
@@ -100,7 +102,7 @@ class SavedGroupsPage extends Component {
     for (let i = 0; i < categories.length; i++) {
       let current = categories[i];
       for (let j = 0; j < categories.length; j++) {
-        let currentPlusLevel = `${categories[j]} Level`
+        let currentPlusLevel = `${categories[j]} Level`;
         if (current === currentPlusLevel) {
           categories.splice(i, 1);
         }
@@ -134,7 +136,7 @@ class SavedGroupsPage extends Component {
         student.groupNum = newGroup;
       }
       return student;
-    })
+    });
     currentGrouping = { ...currentGrouping, updatedStudent };
     this.updateCurrentGrouping(currentGrouping);
   }
@@ -195,7 +197,7 @@ class SavedGroupsPage extends Component {
     MixedApiService.editGrouping(currentGrouping)
       .then(() => {
         // Update allGroupings to include changes in currentGrouping
-        allGroupings = allGroupings.filter((grouping) => grouping.id !== currentGrouping.id)
+        allGroupings = allGroupings.filter((grouping) => grouping.id !== currentGrouping.id);
         allGroupings = [...allGroupings, currentGrouping];
         this.setState({
           allGroupings,
@@ -203,8 +205,8 @@ class SavedGroupsPage extends Component {
         });
       })
       .catch((error) => {
-        this.setState({ error })
-      })
+        this.setState({ error });
+      });
   }
 
   // METHODS FOR MODALS
@@ -227,11 +229,11 @@ class SavedGroupsPage extends Component {
           currentGrouping: {},
           currentGroupingCategoryNames: [],
           currentGroupingGroupNumbers: [],
-        })
+        });
       })
       .catch((error) => {
         this.setState({ error });
-      })
+      });
   }
 
   updateClassName = (newClassName) => {
@@ -243,7 +245,7 @@ class SavedGroupsPage extends Component {
        * */
       id: currentClass.id,
       class_name: newClassName
-    }
+    };
     MixedApiService.editClass(currentClass.id, newClassName)
       .then(() => {
         const updatedIndex = allClasses.findIndex(
@@ -253,11 +255,11 @@ class SavedGroupsPage extends Component {
         this.setState({
           allClasses: allClasses,
           currentClass: updatedClass,
-        })
+        });
       })
       .catch((error) => {
         this.setState({ error });
-      })
+      });
   }
 
   deleteClass = () => {
@@ -268,12 +270,12 @@ class SavedGroupsPage extends Component {
       MixedApiService.deleteGrouping(grouping.id)
         .catch((error) => {
           this.setState({ error });
-        })
-    })
+        });
+    });
     MixedApiService.deleteClass(currentClass.id)
       .catch((error) => {
         this.setState({ error });
-      })
+      });
 
     const updatedAllClasses = allClasses.filter(
       (classObj) => classObj.id !== currentClass.id
@@ -302,7 +304,7 @@ class SavedGroupsPage extends Component {
           currentGrouping: {},
           currentGroupingCategoryNames: [],
           currentGroupingGroupNumbers: [],
-        })
+        });
       }
       else {
         newCurrentGrouping = newCurrentClassGroupings[0];
@@ -327,7 +329,7 @@ class SavedGroupsPage extends Component {
     MixedApiService.deleteGrouping(currentGrouping.id)
       .catch((error) => {
         this.setState({ error });
-      })
+      });
     const updatedAllGroupings = allGroupings.filter(
       (grouping) => grouping.id !== currentGrouping.id
     );
@@ -337,7 +339,7 @@ class SavedGroupsPage extends Component {
     this.setState({
       allGroupings: updatedAllGroupings,
       currentClassGroupings: updatedCurrentClassGroupings,
-    })
+    });
     if (!!updatedCurrentClassGroupings.length) { // if there are still groupings to show
       // should default to most recent grouping
       const currentGrouping = updatedCurrentClassGroupings[0];
@@ -348,7 +350,7 @@ class SavedGroupsPage extends Component {
         currentGrouping: {},
         currentGroupingCategorynames: [],
         currentGroupingGroupNumbers: [],
-      })
+      });
     }
   }
 
@@ -381,7 +383,7 @@ class SavedGroupsPage extends Component {
           <h2>{currentGroupingName}</h2>
           <p>Drag and drop students to edit groups.</p>
         </div>
-      )
+      );
     }
     else if (!currentClassGroupings.length && !allClasses.length) {
       groupingHeading = (
@@ -390,7 +392,7 @@ class SavedGroupsPage extends Component {
             No groups or classes found. Add a new class or new group.
           </p>
         </div>
-      )
+      );
     } else {
       groupingHeading = (
         <div>
@@ -404,7 +406,7 @@ class SavedGroupsPage extends Component {
             </span>
           </p>
         </div>
-      )
+      );
     }
 
     const showGroupings = (
@@ -413,7 +415,7 @@ class SavedGroupsPage extends Component {
           key={groupNumber}
           className="saved-groups-page__group"
           onDragOver={(event) => this.onDragOver(event)}
-          onDrop={(event) => { this.handleDrop(event, groupNumber) }}
+          onDrop={(event) => { this.handleDrop(event, groupNumber); }}
         >
           Group {groupNumber}
           {currentStudents.map((student, idx) => {
@@ -422,7 +424,7 @@ class SavedGroupsPage extends Component {
                 <div
                   key={idx + 1}
                   className="saved-groups-page__student"
-                  onDragStart={(event) => { this.handleDragStart(event, student.alias) }}
+                  onDragStart={(event) => { this.handleDragStart(event, student.alias); }}
                   draggable
                 >
                   {student.alias}
@@ -434,7 +436,7 @@ class SavedGroupsPage extends Component {
                     ))}
                   </div>
                 </div>
-              )
+              );
             }
             return '';
           })}
@@ -459,7 +461,7 @@ class SavedGroupsPage extends Component {
           {classObj.class_name}
         </button>
       </li>
-    ))
+    ));
 
     // TO RENDER GROUPINGS ON LEFT SIDE
     const groupingNames = currentClassGroupings.map((grouping) => (
@@ -478,7 +480,7 @@ class SavedGroupsPage extends Component {
           {grouping.grouping_name}
         </button>
       </li>
-    ))
+    ));
 
     // HIDES BUTTONS USING CLASSNAME IF THERE ARE NO GROUPINGS
     const groupingButtonDisplay = !!this.state.currentClassGroupings.length
@@ -643,10 +645,30 @@ class SavedGroupsPage extends Component {
           handleDelete={this.deleteClass}
         />
       </main>
-    )
+    );
   }
 }
 
 export default SavedGroupsPage;
+
+SavedGroupsPage.defaultProps = {
+  history: {},
+};
+
+SavedGroupsPage.propTypes = {
+  history: propTypes.shape({
+    action: propTypes.string,
+    block: propTypes.func,
+    createHref: propTypes.func,
+    go: propTypes.func,
+    goBack: propTypes.func,
+    goForward: propTypes.func,
+    length: propTypes.number,
+    listen: propTypes.func,
+    location: propTypes.object,
+    push: propTypes.func,
+    replace: propTypes.func,
+  }),
+};
 
 SavedGroupsPage.contextType = MixEdContext;

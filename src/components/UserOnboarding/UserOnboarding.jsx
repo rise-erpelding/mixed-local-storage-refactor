@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import GroupGeneratorScreen from '../../images/group-generator-screen.png';
@@ -6,6 +7,7 @@ import './UserOnboarding.css';
 
 class UserOnboarding extends Component {
   render() {
+    console.log(this.props.passRef);
     return (
       <section ref={this.props.passRef} className="user-onboarding">
         <div className="user-onboarding__intro">
@@ -16,7 +18,7 @@ class UserOnboarding extends Component {
             <h3>
               Enter the data into the group generator
           </h3>
-            <p>First, enter the data for grouping students. You'll need to provide a name and any
+            <p>First, enter the data for grouping students. You&apos;ll need to provide a name and any
             categories to be taken into account when creating the groups--student grades,
             personality types, learning styles, etc.</p>
             <p>Put one value on each line. The order of the values must correspond to the order

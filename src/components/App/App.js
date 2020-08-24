@@ -25,7 +25,7 @@ class App extends Component {
       data: {},
       studentArr: [],
       isLoggedIn: TokenService.hasAuthToken(),
-    }
+    };
     this.toggleLogin = this.toggleLogin.bind(this);
   }
 

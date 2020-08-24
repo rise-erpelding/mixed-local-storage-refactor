@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import '../Modals.css';
-// import store from '../../services/store';
-
 
 class SaveGroups extends Component {
   constructor(props) {
@@ -10,7 +8,7 @@ class SaveGroups extends Component {
     this.state = {
       groupingName: '',
       className: '',
-    }
+    };
   }
 
   updateName = (e) => {
@@ -41,7 +39,7 @@ class SaveGroups extends Component {
       >
         {classObj.class_name}
       </option>
-    ))
+    ));
 
     return (
       <div className={modalClassName}>
@@ -83,12 +81,14 @@ export default SaveGroups;
 
 SaveGroups.defaultProps = {
   show: false,
+  classes: [],
   handleClose: () => {},
-  saveGroups: () => {},
+  handleSave: () => {},
 };
 
-// SaveGroups.propTypes = {
-//   show: PropTypes.bool,
-//   handleClose: PropTypes.func,
-//   saveGroups: PropTypes.func,
-// };
+SaveGroups.propTypes = {
+  show: propTypes.bool,
+  handleClose: propTypes.func,
+  handleSave: propTypes.func,
+  classes: propTypes.array,
+};

@@ -3,6 +3,7 @@ import DemoLoginInfo from '../../components/DemoLoginInfo/DemoLoginInfo';
 import AuthApiService from '../../services/auth-api-service';
 import TokenService from '../../services/token-service';
 import MixEdContext from '../../context/MixEdContext';
+import propTypes from 'prop-types';
 import './LoginPage.css';
 
 
@@ -114,4 +115,20 @@ LoginPage.contextType = MixEdContext;
 
 LoginPage.defaultProps = {
   history: {},
+};
+
+LoginPage.propTypes = {
+  history: propTypes.shape({
+    action: propTypes.string,
+    block: propTypes.func,
+    createHref: propTypes.func,
+    go: propTypes.func,
+    goBack: propTypes.func,
+    goForward: propTypes.func,
+    length: propTypes.number,
+    listen: propTypes.func,
+    location: propTypes.object,
+    push: propTypes.func,
+    replace: propTypes.func,
+  }),
 };

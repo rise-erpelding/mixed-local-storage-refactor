@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import propTypes from 'prop-types';
 import './Landing.css';
 
 const Landing = (props) => {
@@ -32,6 +33,16 @@ const Landing = (props) => {
         </div>
       </section>
     );
-}
+};
 
 export default Landing;
+
+Landing.defaultProps = {
+  handleOnboarding: () => {},
+  handleMakeGroupsButton: () => {},
+};
+
+Landing.propTypes = {
+  handleOnboarding: propTypes.func,
+  handleMakeGroupsButton: propTypes.func,
+};

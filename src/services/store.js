@@ -36,7 +36,6 @@ const store = {
     categoryVals: [`Introversion\nIntroversion\nExtroversion\nIntroversion\nExtroversion\nIntroversion\nExtroversion\nExtroversion\nExtroversion\nExtroversion\nIntroversion\nExtroversion\nIntroversion\nExtroversion\nIntroversion\nExtroversion\nIntroversion\nExtroversion\nIntroversion\nExtroversion\nExtroversion\nIntroversion\nExtroversion`, `Intuition\nSensing\nSensing\nIntuition\nIntuition\nIntuition\nSensing\nIntuition\nIntuition\nSensing\nSensing\nSensing\nIntuition\nSensing\nSensing\nIntuition\nSensing\nIntuition\nIntuition\nSensing\nIntuition\nSensing\nSensing`, `Thinking\nFeeling\nThinking\nThinking\nFeeling\nThinking\nThinking\nThinking\nFeeling\nFeeling\nThinking\nFeeling\nThinking\nThinking\nThinking\nFeeling\nFeeling\nFeeling\nThinking\nThinking\nThinking\nFeeling\nThinking`, `Perceiving\nPerceiving\nPerceiving\nPerceiving\nJudging\nJudging\nPerceiving\nJudging\nPerceiving\nJudging\nJudging\nPerceiving\nJudging\nJudging\nJudging\nPerceiving\nJudging\nPerceiving\nJudging\nJudging\nPerceiving\nJudging\nPerceiving`],
     aliases: `Rose\nEllie\nKiefer\nTomas\nPollyanna\nRoberto\nAllen\nGeorge\nCarol\nHenrietta\nMarie\nJohn\nJules\nJennifer\nGarrett\nJavier\nKayle\nDawn\nCat\nGreg\nAnneliese\nLillian\nMiles`,
   }
-}
-
+};
 
 export default store;

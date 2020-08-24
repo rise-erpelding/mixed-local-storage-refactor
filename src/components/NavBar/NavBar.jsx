@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import MixEdContext from '../../context/MixEdContext';
 import TokenService from '../../services/token-service';
+import propTypes from 'prop-types';
 import './NavBar.css';
 
 class NavBar extends Component {
@@ -42,7 +43,7 @@ class NavBar extends Component {
           Logout
         </Link>
       </nav>
-    )
+    );
   }
 
   renderNotLoggedInLinks() {
@@ -67,12 +68,11 @@ class NavBar extends Component {
           Login
         </NavLink>
       </nav>
-    )
+    );
   }
 
   render() {
     const { login } = this.props;
-    // console.log(login);
     return (
       <>
       { login === true
@@ -87,6 +87,10 @@ export default NavBar;
 
 NavBar.defaultProps = {
   login: false,
+};
+
+NavBar.propTypes = {
+  login: propTypes.bool,
 };
 
 NavBar.contextType = MixEdContext;

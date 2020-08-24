@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SaveGroups from '../../components/Modals/SaveGroups/SaveGroups';
 import MixEdContext from '../../context/MixEdContext';
 import MixedApiService from '../../services/mixed-api-service';
+import propTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ls from 'local-storage';
 import './GroupsMadePage.css';
@@ -15,7 +16,7 @@ class GroupsMadePage extends Component {
       groupNumbers: [],
       allClasses: [],
       error: null,
-    }
+    };
   }
 
   componentDidMount() {
@@ -24,7 +25,7 @@ class GroupsMadePage extends Component {
     this.getGroupNumbers(students);
     MixedApiService.getClassesForTeacher()
       .then((classes) => {
-        this.setState({ allClasses: classes })
+        this.setState({ allClasses: classes });
       })
       .catch((error) => {
         this.setState({ error });
@@ -38,7 +39,7 @@ class GroupsMadePage extends Component {
     // get all the group numbers for all the students and push into arr
     studentsArr.forEach((student) => {
       groupNums.push(student.groupNum);
-    })
+    });
     // create array with a set containing only unique items
     const groupNumbers = Array.from(new Set(groupNums));
     groupNumbers.sort((a, b) => a - b);
@@ -80,7 +81,7 @@ class GroupsMadePage extends Component {
       grouping_name: groupingName,
       groupings: students,
       data: data,
-    }
+    };
     let classId;
     if (selectedClassIndex === -1) {
       MixedApiService.insertNewClass(className)
@@ -89,7 +90,7 @@ class GroupsMadePage extends Component {
         })
         .catch((error) => {
           this.setState({ error });
-        })
+        });
     }
     else {
       classId = allClasses[selectedClassIndex].id;
@@ -97,10 +98,9 @@ class GroupsMadePage extends Component {
     newGrouping = {
       ...newGrouping,
       class_id: classId,
-    }
+    };
     MixedApiService.insertNewGrouping(newGrouping)
-      .then((res) => {
-        // console.log(res);
+      .then(() => {
         const { addStudentArr } = this.context;
         const { history } = this.props;
         addStudentArr(students);
@@ -108,7 +108,7 @@ class GroupsMadePage extends Component {
       })
       .catch((error) => {
         this.setState({ error });
-      })
+      });
   }
 
   // METHODS FOR DRAG AND DROP NAMES
@@ -130,13 +130,13 @@ class GroupsMadePage extends Component {
         student.groupNum = newGroup;
       }
       return student;
-    })
+    });
     this.setState({ ...this.state, updatedStudent });
   }
 
   render() {
     const { show, groupNumbers, students, allClasses } = this.state;
-    const categoryNames = ls.get('categoryNames')
+    const categoryNames = ls.get('categoryNames');
 
     const showGroupings = (
       groupNumbers.map((groupNumber) => (
@@ -144,7 +144,7 @@ class GroupsMadePage extends Component {
           key={groupNumber}
           className="groups-made-page__group"
           onDragOver={(event) => this.handleDragOver(event)}
-          onDrop={(event) => { this.handleDrop(event, groupNumber) }}
+          onDrop={(event) => { this.handleDrop(event, groupNumber); }}
         >
           Group {groupNumber}
           {students.map((student, idx) => {
@@ -153,7 +153,7 @@ class GroupsMadePage extends Component {
                 <div
                   key={idx + 1}
                   className="groups-made-page__student"
-                  onDragStart={(event) => { this.handleDragStart(event, student.alias) }}
+                  onDragStart={(event) => { this.handleDragStart(event, student.alias); }}
                   draggable
                 >
                   {student.alias}
@@ -165,7 +165,7 @@ class GroupsMadePage extends Component {
                     ))}
                   </div>
                 </div>
-              )
+              );
             }
             return '';
           })}
@@ -240,10 +240,26 @@ class GroupsMadePage extends Component {
           />
         </div>
       </main>
-    )
+    );
   }
 }
 
 export default GroupsMadePage;
+
+GroupsMadePage.propTypes = {
+  history: propTypes.shape({
+    action: propTypes.string,
+    block: propTypes.func,
+    createHref: propTypes.func,
+    go: propTypes.func,
+    goBack: propTypes.func,
+    goForward: propTypes.func,
+    length: propTypes.number,
+    listen: propTypes.func,
+    location: propTypes.object,
+    push: propTypes.func,
+    replace: propTypes.func,
+  }),
+};
 
 GroupsMadePage.contextType = MixEdContext;

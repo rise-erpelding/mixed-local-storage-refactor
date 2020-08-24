@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import '../Modals.css';
 
 const DeleteClassGrouping = (props) => {
@@ -17,7 +17,7 @@ const DeleteClassGrouping = (props) => {
         </main>
       </div>
     );
-}
+};
 
 export default DeleteClassGrouping;
 
@@ -29,8 +29,10 @@ DeleteClassGrouping.defaultProps = {
   handleDelete: () => {}
 };
 
-// SaveGroups.propTypes = {
-//   show: PropTypes.bool,
-//   handleClose: PropTypes.func,
-//   saveGroups: PropTypes.func,
-// };
+DeleteClassGrouping.propTypes = {
+  show: propTypes.bool,
+  title: propTypes.string,
+  message: propTypes.string,
+  handleClose: propTypes.func,
+  handleDelete: propTypes.func,
+};

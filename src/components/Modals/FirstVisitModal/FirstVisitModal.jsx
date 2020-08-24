@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import '../Modals.css';
 
 
@@ -21,7 +21,7 @@ const FirstVisitModal = (props) => {
           <h1>Welcome to the Group Generator</h1>
           <p>
             This is where you can enter data for grouping your students.
-            At a minimum, you will need to provide your students' names
+            At a minimum, you will need to provide your students&apos; names
             (or some alias to help you identify them).
             You can add any categories you want for grouping, one value on each line.
           </p>
@@ -33,7 +33,7 @@ const FirstVisitModal = (props) => {
       </main>
     </div>
   );
-}
+};
 
 export default FirstVisitModal;
 
@@ -42,8 +42,8 @@ FirstVisitModal.defaultProps = {
   handleClose: () => {},
 };
 
-// SaveGroups.propTypes = {
-//   show: PropTypes.bool,
-//   handleClose: PropTypes.func,
-//   saveGroups: PropTypes.func,
-// };
+FirstVisitModal.propTypes = {
+  show: propTypes.bool,
+  handleClose: propTypes.func,
+  saveGroups: propTypes.func,
+};

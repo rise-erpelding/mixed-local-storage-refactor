@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import '../Modals.css';
 
 
@@ -8,7 +8,7 @@ class AddUpdateClass extends Component {
     super(props);
     this.state = {
       className: '',
-    }
+    };
   }
 
   updateClass = (e) => {
@@ -61,8 +61,9 @@ AddUpdateClass.defaultProps = {
   handleUpdate: () => {},
 };
 
-// SaveGroups.propTypes = {
-//   show: PropTypes.bool,
-//   handleClose: PropTypes.func,
-//   saveGroups: PropTypes.func,
-// };
+AddUpdateClass.propTypes = {
+  show: propTypes.bool,
+  title: propTypes.string,
+  handleClose: propTypes.func,
+  handleUpdate: propTypes.func,
+};
