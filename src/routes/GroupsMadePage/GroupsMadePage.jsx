@@ -66,7 +66,8 @@ class GroupsMadePage extends Component {
   // METHODS FOR SAVE MODAL
 
   showSaveModal = () => {
-    this.setState({ show: true });
+    const { login, history } = this.props;
+    login ? this.setState({ show: true }) : history.push('/login');
   }
 
   hideSaveModal = () => {
@@ -246,7 +247,12 @@ class GroupsMadePage extends Component {
 
 export default GroupsMadePage;
 
+GroupsMadePage.defaultProps = {
+  login: false,
+};
+
 GroupsMadePage.propTypes = {
+  login: propTypes.bool,
   history: propTypes.shape({
     action: propTypes.string,
     block: propTypes.func,

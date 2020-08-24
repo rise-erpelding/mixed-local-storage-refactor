@@ -52,9 +52,6 @@ class App extends Component {
   }
 
   toggleLogin() {
-    // this.setState((prevState) => ({
-    //   isLoggedIn: !prevState.isLoggedIn,
-    // }));
     const { isLoggedIn } = this.state;
     this.setState({ isLoggedIn: !isLoggedIn });
   }
@@ -88,7 +85,7 @@ class App extends Component {
           />
           <Route
             path="/groups-made"
-            component={GroupsMadePage}
+            component={(props) => <GroupsMadePage login={isLoggedIn} {...props} />}
           />
           <PrivateRoute
             path="/my-groups"
