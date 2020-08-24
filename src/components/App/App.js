@@ -12,6 +12,7 @@ import LoginPage from '../../routes/LoginPage/LoginPage';
 import PrivateRoute from '../../Utils/PrivateRoute';
 import PublicOnlyRoute from '../../Utils/PublicOnlyRoute';
 import NavBar from '../NavBar/NavBar';
+import Footer from '../Footer/Footer';
 import TokenService from '../../services/token-service';
 import ls from 'local-storage';
 
@@ -102,6 +103,7 @@ class App extends Component {
           />
         </Switch>
         </MixEdContext.Provider>
+        <Footer />
       </div>
     );
   }
