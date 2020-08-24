@@ -8,24 +8,25 @@
 }
 
 .landing > h1 {
-  font-size: 6em;
+  font-size: 5em;
   font-weight: 900;
-  padding: 20px;
+  padding: 13px;
   position: relative;
-  top: 20vh;
+  top: 12vh;
   letter-spacing: 0.05em;
+  line-height: 100%;
 }
 
 .landing > h2 {
   padding: 10px;
   position: relative;
-  top: 20vh;
+  top: 12vh;
 }
 
 .landing__buttons {
   padding: 20px;
   position: relative;
-  top: 20vh;
+  top: 12vh;
 }
 
 .landing__buttons > button {
@@ -55,3 +56,16 @@
   color: #FF9A5C;
 }
 
+@media screen and (min-width: 800px) {
+
+  .landing > h1 {
+    font-size: 6em;
+  }
+
+  .landing > h1,
+  .landing > h2,
+  .landing__buttons {
+    top: 20vh;
+  }
+
+}

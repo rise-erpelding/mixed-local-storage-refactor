@@ -571,7 +571,9 @@ class MakeGroupsPage extends Component {
                   </div>
             </button>
             <button type="submit">
-            <div className="make-groups-page__button--container">
+            <div
+              className="make-groups-page__button--container
+              make-groups-page__button--generate-groups">
                     <div>
                     Generate Groups
                     </div>

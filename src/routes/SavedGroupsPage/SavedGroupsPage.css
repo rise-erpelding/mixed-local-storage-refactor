@@ -25,6 +25,8 @@
   padding: 8px;
   margin: 5px 5px;
   transition: 0.2s ease-out;
+  width: 40%;
+  min-height: 46px;
 }
 
 .saved-groups-page__class-tab > button {
@@ -69,10 +71,6 @@
   border-radius: 0px 0px 0px 10px;
 }
 
-.saved-groups-page__groupings {
-  font-size: 0.8em;
-}
-
 .saved-groups-page__groupings-list--ul {
   margin: 0;
   padding: 0;
@@ -96,7 +94,8 @@
 
 .saved-groups-page__groupings-list--ul > li {
   margin: 5px;
-  width: 110px;
+  width: 45%;
+  min-height: 46px;
   border-radius: 5px;
   transition: 0.2s ease-out;
 }
@@ -125,10 +124,12 @@
 }
 
 .saved-groups-page__groupings {
+  font-size: 0.8em;
   margin: 0px 40px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  width: auto;
 }
 
 .saved-groups-page__group {
@@ -139,7 +140,7 @@
   border: 3px solid lightgray;
   font-weight: bold;
   color: #3d3d3d;
-  min-width: 120px;
+  width: 30%;
 }
 
 .saved-groups-page__student {
@@ -202,10 +203,8 @@
 }
 
 .saved-groups-page__class--buttons {
-  text-align: right;
+  text-align: center;
   position: relative;
-  top: -40px;
-  height: 0px;
 }
 
 .saved-groups-page__class--buttons > button {
@@ -237,7 +236,7 @@
   color: #3F4F8D;
   background-color: transparent;
   border: none;
-  width: 100px;
+  width: 90px;
   text-align: right;
 }
 
@@ -254,6 +253,10 @@
   color: #3d3d3d;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+.saved-groups-page__grouping-heading > p {
+  padding: 0px 10px;
 }
 
 .saved-groups-page__grouping-heading {
@@ -278,8 +281,13 @@
   .saved-groups-page__class-tab {
     border-radius: 10px 10px 0px 0px;
     margin: 0px 5px;
+    width: 125px;
   }
   
+  .saved-groups-page__group {
+    width: 20%;
+  }
+
   .saved-groups-page__class-groupings {
     flex-direction: row;
   }
@@ -295,5 +303,15 @@
   
   .saved-groups-page__groupings-list--ul {
     flex-direction: column;
+  }
+
+  .saved-groups-page__groupings-list--ul > li {
+    width: 110px;
+  }
+
+  .saved-groups-page__class--buttons {
+    text-align: right;
+    top: -40px;
+    height: 0px;
   }
 }

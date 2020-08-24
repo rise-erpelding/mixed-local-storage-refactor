@@ -7,7 +7,6 @@ import './UserOnboarding.css';
 
 class UserOnboarding extends Component {
   render() {
-    console.log(this.props.passRef);
     return (
       <section ref={this.props.passRef} className="user-onboarding">
         <div className="user-onboarding__intro">

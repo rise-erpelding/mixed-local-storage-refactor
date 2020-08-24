@@ -395,7 +395,7 @@ class SavedGroupsPage extends Component {
       );
     } else {
       groupingHeading = (
-        <div>
+        <div className="saved-groups-page__grouping-heading">
           <p>
             No groups found for this class.
             {' '}
@@ -615,7 +615,6 @@ class SavedGroupsPage extends Component {
                 </button>
               </div>
             </form>
-
           </section>
         </div>
         <AddUpdateClass
