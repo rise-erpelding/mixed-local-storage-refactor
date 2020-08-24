@@ -224,6 +224,12 @@
   padding: 15px;
 }
 
+.saved-groups-page__main--buttons > p {
+  font-size: 1.2 em;
+  color: #3F4F8D;
+  font-weight: bold;
+}
+
 .saved-groups-page__main--buttons > button {
   font-family: inherit;
   line-height: 100%;
