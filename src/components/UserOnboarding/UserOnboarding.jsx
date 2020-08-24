@@ -44,7 +44,7 @@ class UserOnboarding extends Component {
             <img
               src={SavedGroupsScreen}
               className="user-onboarding__saved-groups--img"
-              alt="screen shot of group generator"
+              alt="screen shot of saved groups dashboard"
             />
           </div>
         </div>

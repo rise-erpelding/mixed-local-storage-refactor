@@ -8,7 +8,6 @@ import './NavBar.css';
 class NavBar extends Component {
 
   handleLogoutClick = () => {
-    console.log('logging you out');
     const { toggleLogin, removePrevData } = this.context;
     removePrevData();
     toggleLogin();

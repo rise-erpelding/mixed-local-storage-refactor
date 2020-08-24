@@ -35,7 +35,6 @@ class App extends Component {
   }
 
   removePrevData = () => {
-    console.log('clearing previous groups');
     ls.remove('groupings');
     ls.remove('data');
     ls.remove('studentArr');
