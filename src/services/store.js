@@ -16,7 +16,7 @@ const store = {
     categoryTypes: ['qualitative', 'qualitative'],
     categoryNames: ["Book Study Preference", "Personality Type"],
     categoryVals: [`The Giver\nWatership Down\nTuck Everlasting\nThe Giver\nTuck Everlasting\nTuck Everlasting\nThe Giver\nWatership Down\nTuck Everlasting\nWatership Down\nThe Giver\nWatership Down\nTuck Everlasting\nWatership Down\nWatership Down\nThe Giver\nTuck Everlasting\nTuck Everlasting\nWatership Down\nThe Giver\nWatership Down\nTuck Everlasting\nWatership Down\nThe Giver\nWatership Down\nTuck Everlasting`, `Introvert\nExtrovert\nIntrovert\nExtrovert\nExtrovert\nExtrovert\nIntrovert\nExtrovert\nExtrovert\nIntrovert\nIntrovert\nExtrovert\nIntrovert\nExtrovert\nExtrovert\nIntrovert\nIntrovert\nExtrovert\nIntrovert\nIntrovert\nIntrovert\nExtrovert\nIntrovert\nIntrovert\nExtrovert\nIntrovert\n`],
-    aliases: `Sven\nViolet\nEthan\nAidan\nSofia\nGabriel\nAstrid\nEmilia\nJasper\nCaleb\nOlivia\nEli\nKen\nAurora\nFelix\nWyatt\nIsabella\nJordan\nElla\nJewel\nOliver\nCharlotte\nFinn\nHusdon\nLiam\nAva`,
+    aliases: `Sven\nViolet\nEthan\nAidan\nSofia\nGabriel\nAstrid\nEmilia\nJasper\nCaleb\nOlivia\nEli\nKen\nAurora\nFelix\nWyatt\nIsabella\nJordan\nElla\nJewel\nOliver\nCharlotte\nFinn\nHudson\nLiam\nAva`,
   },
   sampleData3: {
     groupSize: 2,
