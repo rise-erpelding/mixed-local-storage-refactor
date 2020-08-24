@@ -12,27 +12,40 @@ class UserOnboarding extends Component {
           <h3>MixEd lets teachers generate groups based on data.</h3>
         </div>
         <div className="user-onboarding__data-entry">
-          <h3>
-            Enter the data into the group generator
+          <div className="user-onboarding__flex-child--left user-onboarding__text">
+            <h3>
+              Enter the data into the group generator
           </h3>
-          <img
-            src={GroupGeneratorScreen}
-            className="user-onboarding__data-entry--img"
-            alt="screen shot of group generator"
-          />
-          <p>First, enter the data for grouping students. At a minimum, you need to provide a student alias (such as a name, number, etc.) to identify the student. You may also add categories that you want to be taken into account when making groups--for example, student grades, personality types, learning styles, topics of interest--any value that you might want to use to categorize students.</p>
-          <p>Put one value on each line. The order of the values MUST correspond to the order in which students are inputted. We recommend saving your categories on a spreadsheet and copying/pasting from a spreadsheet.</p>
+            <p>First, enter the data for grouping students. You'll need to provide a name and any
+            categories to be taken into account when creating the groups--student grades,
+            personality types, learning styles, etc.</p>
+            <p>Put one value on each line. The order of the values must correspond to the order
+            in which students are inputted. We recommend saving your categories on a spreadsheet
+            and copying/pasting from a spreadsheet.</p>
+          </div>
+          <div className="user-onboarding__flex-child--right">
+            <img
+              src={GroupGeneratorScreen}
+              className="user-onboarding__data-entry--img"
+              alt="screen shot of group generator"
+            />
+          </div>
         </div>
         <div className="user-onboarding__saved-groups">
-          <h3>
-            Organize groupings by class
+          <div className="user-onboarding__flex-child--right user-onboarding__text">
+            <h3>
+              Organize groupings by class
           </h3>
-          <img
-            src={SavedGroupsScreen}
-            className="user-onboarding__saved-groups--img"
-            alt="screen shot of group generator"
-          />
-          <p>You can save your groups to an existing class or create a new class for the grouping to belong to, then view your groupings organized by class.</p>
+            <p>You can save your groups to an existing class or create a new class for the grouping
+            to belong to, then view your groupings organized by class.</p>
+          </div>
+          <div className="user-onboarding__flex-child--left">
+            <img
+              src={SavedGroupsScreen}
+              className="user-onboarding__saved-groups--img"
+              alt="screen shot of group generator"
+            />
+          </div>
         </div>
         <div className="user-onboarding__buttons">
           <button

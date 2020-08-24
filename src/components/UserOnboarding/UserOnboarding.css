@@ -1,5 +1,4 @@
 .user-onboarding__intro {
-  /* background-color: #FF0054; */
   background: #8633B4;
   background: -webkit-linear-gradient(to bottom, #4A00E0, #8633B4);
   background: linear-gradient(to bottom, #4A00E0, #8633B4);
@@ -10,36 +9,33 @@
 .user-onboarding__intro > h3 {
   font-size: 3em;
   position: relative;
+  color: white;
   top: 40%;
 }
 
 .user-onboarding__data-entry {
-  /* background-color: #9E0059; */
   background: #C36788;
   background: -webkit-linear-gradient(to bottom, #8633B4, #C36788);
   background: linear-gradient(to bottom, #8633B4, #C36788);
-  padding: 30px 30px;
+  padding: 30px 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.user-onboarding__data-entry > h3 {
-  font-size: 2em;
-  padding: 10px 30px 20px 30px;
-}
-
-.user-onboarding__data-entry > p {
-  font-size: 1.2em;
-}
-
-.user-onboarding__data-entry--img {
-  height: 60vh;
+.user-onboarding__data-entry--img,
+.user-onboarding__saved-groups--img {
+  width: 80vw;
 }
 
 .user-onboarding__saved-groups {
-  /* background-color: #FFBD00; */
   background: #FF9A5C;
   background: -webkit-linear-gradient(to bottom, #C36788, #FF9A5C);
   background: linear-gradient(to bottom, #C36788, #FF9A5C);
-  padding: 30px 30px;
+  padding: 30px 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .user-onboarding__saved-groups > h3 {
@@ -47,16 +43,9 @@
   padding: 10px 30px 20px 30px;
 }
 
-.user-onboarding__saved-groups--img {
-  height: 40vh;
-}
-
 .user-onboarding__buttons {
   padding: 40px 0px;
   background-color: #FF9A5C;
-  /* background: #4A00E0;
-  background: -webkit-linear-gradient(to bottom, #A52A70, #4A00E0);
-  background: linear-gradient(to bottom, #A52A70, #4A00E0); */
 }
 
 .user-onboarding__buttons > button {
@@ -76,4 +65,52 @@
   background-color: #FBE8A6;
   color: #2C3763;
   transition: 0.2s ease-in;
+}
+
+.user-onboarding__flex-child--left,
+.user-onboarding__flex-child--right {
+  padding: 60px;
+}
+
+.user-onboarding__flex-child--left > h3,
+.user-onboarding__flex-child--right > h3 {
+  font-size: 1.8em;
+  color: white;
+}
+
+.user-onboarding__flex-child--left {
+  margin-left: 30px;
+}
+
+.user-onboarding__flex-child--right {
+  margin-right: 30px;
+}
+
+.user-onboarding__flex-child--left > p,
+.user-onboarding__flex-child--right > p {
+  font-size: 1.2em;
+  color: white;
+}
+
+@media screen and (min-width: 800px) {
+  .user-onboarding__data-entry {
+    flex-direction: row;
+  }
+
+  .user-onboarding__saved-groups {
+    flex-direction: row-reverse;
+  }
+
+  .user-onboarding__text {
+    background-image: 
+    linear-gradient(
+      rgba(74,0,224,0.4),
+      rgba(74,0,224,0.4)
+    );
+  }
+
+  .user-onboarding__saved-groups--img,
+  .user-onboarding__data-entry--img  {
+    width: 40vw;
+  }
 }
