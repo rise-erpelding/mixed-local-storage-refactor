@@ -17,11 +17,11 @@ username: msmith
 password: password
 
 ## Screenshots
-<!-- ![Landing Page](public/Screenshots/Farmpicks-Landing-Page.png)
+![Landing Page](public/screenshots/Landing-Desktop.png)
 
-![Results Page](public/Screenshots/Farmpicks-Search-Results.png)
+![Group Generator](public/screenshots/Generator.png)
 
-![Farm Information Page](public/Screenshots/Farmpicks-Farm-Page.png) -->
+![Saved Groups Page](public/screenshots/My-Groups-Desktop.png)
 
 ## Built with
 - [Create React App](https://github.com/facebook/create-react-app)
