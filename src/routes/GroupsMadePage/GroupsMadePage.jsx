@@ -7,6 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ls from 'local-storage';
 import './GroupsMadePage.css';
 
+// TODO: something is wrong here
+// ComponentWillUnMount
+
 class GroupsMadePage extends Component {
   constructor(props) {
     super(props);
@@ -88,6 +91,7 @@ class GroupsMadePage extends Component {
       MixedApiService.insertNewClass(className)
         .then((res) => {
           classId = res.id;
+          console.log(classId);
         })
         .catch((error) => {
           this.setState({ error });

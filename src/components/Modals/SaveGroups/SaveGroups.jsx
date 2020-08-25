@@ -60,13 +60,13 @@ class SaveGroups extends Component {
                 {classOptions}
               </select>
               <br />
-              <label htmlFor="grouping-new-class">Or create new class:</label><br />
+              {/* <label htmlFor="grouping-new-class">Or create new class:</label><br />
               <input
                 name="grouping-new-class"
                 id="grouping-new-class"
                 type="text"
                 onChange={this.updateClass}
-                /><br />
+                /><br /> */}
     
             <button type="button" onClick={handleClose}>Cancel</button>
             <button type="submit">Save</button>
