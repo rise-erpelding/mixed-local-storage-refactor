@@ -195,7 +195,7 @@
 }
 
 .saved-groups-page__groups > h1 {
-  padding: 10px 210px;
+  padding: 10px;
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -315,5 +315,9 @@
     text-align: right;
     top: -40px;
     height: 0px;
+  }
+
+  .saved-groups-page__groups > h1 {
+    padding: 10px 210px;
   }
 }
