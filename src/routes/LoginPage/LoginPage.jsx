@@ -99,8 +99,19 @@ class LoginPage extends Component {
                 />
               </div>
             </div>
-            <button type="button" onClick={this.handleClickCancel}>Cancel</button>
-            <button type="submit">Login</button>
+            <button
+              type="button"
+              onClick={this.handleClickCancel}
+              className="login-page__buttons--outline"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="login-page__buttons--fill"
+            >
+              Login
+            </button>
           </form>
         </div>
         <DemoLoginInfo />

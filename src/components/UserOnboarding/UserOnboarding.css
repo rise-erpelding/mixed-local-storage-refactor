@@ -68,7 +68,7 @@
 .user-onboarding__buttons--fill {
   background-color: #4A00E0;
   color: #FBE8A6;
-  border: none;
+  border: 2px solid #2C3763;
 }
 
 .user-onboarding__buttons > button:hover {

@@ -48,7 +48,7 @@
 .landing__buttons--fill {
   background-color: #FF9A5C;
   color: #2C3763;
-  border: none;
+  border: 2px solid #2C3763;
 }
 
 .landing__buttons > button:hover {

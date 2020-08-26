@@ -29,10 +29,29 @@
 
 .login-page__form > button {
   font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 30px;
+  padding: 2px 8px;
+  margin: 5px 3px;
+  margin-bottom: 10px;
 }
 
-@media screen and (min-width: 800px) {
-  .login-page__form > button {
-    font-size: 14px;
-  }
+.login-page__form > button:hover {
+  background-color: #FBE8A6;
+  color: #2C3763;
+  transition: 0.2s ease-in;
+}
+
+.login-page__buttons--outline {
+  background-color: transparent;
+  color: #2C3763;
+  border: 2px solid #2C3763;
+}
+
+.login-page__buttons--fill {
+  background-color: #4A00E0;
+  color: #FBE8A6;
+  border: 2px solid #4A00E0;
 }

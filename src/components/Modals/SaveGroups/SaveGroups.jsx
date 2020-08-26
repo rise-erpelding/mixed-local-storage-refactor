@@ -68,8 +68,19 @@ class SaveGroups extends Component {
               onChange={this.updateClass}
             /><br />
             <div className="modal__buttons">
-              <button type="button" onClick={handleClose}>Cancel</button>
-              <button type="submit">Save</button>
+              <button 
+                type="button"
+                onClick={handleClose}
+                className="modal__buttons--outline"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="modal__buttons--fill"
+              >
+                Save
+              </button>
             </div>
           </form>
         </main>
