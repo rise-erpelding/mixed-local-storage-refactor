@@ -15,8 +15,9 @@
   
 }
 
-.nav-bar > a:hover {
-  /* text-decoration: underline; */
+.nav-bar > a:hover,
+.nav-bar__selected {
+  text-decoration: underline;
   color: #FBE8A6;
   transition: 0.2s ease-in;
 }

@@ -18,19 +18,18 @@ class NavBar extends Component {
     return (
       <nav className="nav-bar">
         <NavLink
-          activeClassName="selected"
           to="/"
         >
           Home
         </NavLink>
         <NavLink 
-          activeClassName="selected"
+          activeClassName="nav-bar__selected"
           to="/make-groups"
         >
           Generate Groups
         </NavLink>
         <NavLink 
-          activeClassName="selected"
+          activeClassName="nav-bar__selected"
           to="/my-groups"
         >
           My Classes
