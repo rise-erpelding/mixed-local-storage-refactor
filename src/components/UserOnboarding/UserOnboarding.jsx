@@ -50,12 +50,14 @@ class UserOnboarding extends Component {
         </div>
         <div className="user-onboarding__buttons">
           <button
+            className="user-onboarding__buttons--outline"
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
             Back to top
           </button>
           <button 
+            className="user-onboarding__buttons--fill"
             type="button"
             onClick={() => window.scrollTo({ top: 0 })}
           >

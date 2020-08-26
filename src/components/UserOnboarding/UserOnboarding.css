@@ -49,9 +49,6 @@
 }
 
 .user-onboarding__buttons > button {
-  background-color: #4A00E0;
-  color: #FBE8A6;
-  border: none;
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -60,6 +57,18 @@
   margin: 0px 20px;
   margin-bottom: 10px;
   transition: 0.2s ease-out;
+}
+
+.user-onboarding__buttons--outline {
+  background-color: transparent;
+  color: #2C3763;
+  border: 2px solid #2C3763;
+}
+
+.user-onboarding__buttons--fill {
+  background-color: #4A00E0;
+  color: #FBE8A6;
+  border: none;
 }
 
 .user-onboarding__buttons > button:hover {
