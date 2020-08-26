@@ -55,7 +55,10 @@ class UserOnboarding extends Component {
           >
             Back to top
           </button>
-          <button type="button">
+          <button 
+            type="button"
+            onClick={() => window.scrollTo({ top: 0 })}
+          >
           <Link to={`/make-groups`}>Make some groups</Link>
           </button>
         </div>

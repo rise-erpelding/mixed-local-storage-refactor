@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-boolean-cast */
 import React, { Component } from 'react';
 import ValidationError from '../../components/ValidationError/ValidationError';
 import FirstVisitModal from '../../components/Modals/FirstVisitModal/FirstVisitModal';
@@ -7,6 +8,7 @@ import createSimilarGroups from '../../services/groupingAlgorithms/similarGroups
 import MakeGroupsService from '../../services/make-groups-service';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import store from '../../services/store';
+import propTypes from 'prop-types';
 import './MakeGroupsPage.css';
 import ls from 'local-storage';
 
@@ -24,7 +26,7 @@ class MakeGroupsPage extends Component {
       categoryVals: [''],
       savedData: '',
       showPopUp: true,
-    }
+    };
   }
 
   /**
@@ -64,7 +66,7 @@ class MakeGroupsPage extends Component {
 
 
 
-    /**
+    /*
      * Next, prepare data for the sorting function to get the groups:
      * -Keep track of which indexes in categories arrays are qualitative vs quantitative
      * -Turn a set of quantitative category vals into a number array, turn a set of qualitative
@@ -89,7 +91,7 @@ class MakeGroupsPage extends Component {
       else {
         qualitativeIndexes.push(index);
       }
-    })
+    });
 
     // categoryValsArr will become an array containing arrays instead of strings
     const aliasesArr = this.createTrimmedArr(aliases);
@@ -106,7 +108,7 @@ class MakeGroupsPage extends Component {
     categoryValsArr.forEach(
       (valArr, index) => MakeGroupsService.addEachToObj(studentArr, valArr, categoryNames[index])
     );
-    const categoryNamesLevels = [...categoryNames]
+    const categoryNamesLevels = [...categoryNames];
     for (let i = 0; i < quantitativeIndexes.length; i++) {
       categoryValsArr[quantitativeIndexes[i]] = MakeGroupsService.getLevel(categoryValsArr[quantitativeIndexes[i]], groupSize);
       MakeGroupsService.addEachToObj(studentArr, categoryValsArr[quantitativeIndexes[i]], `${categoryNames[quantitativeIndexes[i]]} Level`);
@@ -119,11 +121,12 @@ class MakeGroupsPage extends Component {
     if (groupingType === 'similar') {
       this.handleSimilarGroups(studentArr, groupSize, categoryNamesLevels, categoryNames);
     }
+    window.scrollTo({ top: 0 });
     history.push('/groups-made');
   }
 
   useSampleData = (datasetNum) => {
-    this.setState(store['sampleData' + datasetNum])
+    this.setState(store['sampleData' + datasetNum]);
   }
 
   handleClickCancel = () => {
@@ -155,9 +158,9 @@ class MakeGroupsPage extends Component {
           if (student.alias === groupMember.alias) {
             student.groupNum = index + 1;
           }
-        })
-      })
-    })
+        });
+      });
+    });
   }
 
   // METHODS FOR BUTTONS THAT CONTROL CATEGORIES
@@ -266,7 +269,7 @@ class MakeGroupsPage extends Component {
     const { aliases } = this.state;
     const aliasesArray = this.createTrimmedArr(aliases);
     if (aliasesArray.length < 3) {
-      return 'At least 3 aliases are required in order to generate groups.'
+      return 'At least 3 aliases are required in order to generate groups.';
     }
   }
 
@@ -276,7 +279,7 @@ class MakeGroupsPage extends Component {
     const uniqueAliasesSet = new Set(aliasesArray);
     const uniqueAliasesArray = [...uniqueAliasesSet];
     if (uniqueAliasesArray.length !== aliasesArray.length) {
-      return 'No duplicate aliases allowed.'
+      return 'No duplicate aliases allowed.';
     }
   }
 
@@ -294,7 +297,7 @@ class MakeGroupsPage extends Component {
     const aliasesArray = this.createTrimmedArr(aliases);
     const valsArrays = categoryVals.map((category) => this.createTrimmedArr(category).length);
     if (!valsArrays.every((length) => length === aliasesArray.length)) {
-      return `Alias values and category values must all have the same number of lines.`
+      return `Alias values and category values must all have the same number of lines.`;
     }
   }
 
@@ -305,12 +308,12 @@ class MakeGroupsPage extends Component {
       if (type === 'quantitative') {
         quantitativeIndexes.push(index);
       }
-    })
+    });
     for (let i = 0; i < quantitativeIndexes.length; i++) {
       const categoryArr = this.createTrimmedArr(categoryVals[quantitativeIndexes[i]]);
       const numbersArr = this.numberizeArr(categoryArr);
       if (numbersArr.includes(NaN)) {
-        return 'Quantitative data can only consist of numbers.'
+        return 'Quantitative data can only consist of numbers.';
       }
     }
   }
@@ -350,7 +353,7 @@ class MakeGroupsPage extends Component {
                   value="quantitative"
                   type="radio"
                   checked={this.state.categoryTypes[i] === 'quantitative'}
-                  onChange={(event) => { this.updateCategoryType(event, i) }}
+                  onChange={(event) => { this.updateCategoryType(event, i); }}
                   required
                 />
                 <label htmlFor={`cat${i}-quantitative`}>Quantitative (numbers)</label>
@@ -362,7 +365,7 @@ class MakeGroupsPage extends Component {
                   value="qualitative"
                   type="radio"
                   checked={this.state.categoryTypes[i] === 'qualitative'}
-                  onChange={(event) => { this.updateCategoryType(event, i) }}
+                  onChange={(event) => { this.updateCategoryType(event, i); }}
                   required
                 />
                 <label htmlFor={`cat${i}-qualitative`}>Qualitative (words)</label>
@@ -375,7 +378,7 @@ class MakeGroupsPage extends Component {
                 id={`cat${i}-name`}
                 type="text"
                 value={this.state.categoryNames[i]}
-                onChange={(event) => { this.updateCategoryName(event, i) }}
+                onChange={(event) => { this.updateCategoryName(event, i); }}
                 required
               />
             </div>
@@ -392,14 +395,14 @@ class MakeGroupsPage extends Component {
               columns="20"
               placeholder="Enter values here, one on each line."
               value={this.state.categoryVals[i]}
-              onChange={(event) => { this.updateCategoryVals(event, i) }}
+              onChange={(event) => { this.updateCategoryVals(event, i); }}
             />
           </div>
           <div className="make-groups-page__form--after-textarea">
             {i === 0 ? '' : (
               <button
                 type="button"
-                onClick={(event) => { this.shiftCategoryLeft(event, i) }}
+                onClick={(event) => { this.shiftCategoryLeft(event, i); }}
               >
                 <div className="make-groups-page__button--container">
                     <div>
@@ -417,7 +420,7 @@ class MakeGroupsPage extends Component {
             {i === categoriesLength - 1 ? '' : (
               <button
                 type="button"
-                onClick={(event) => { this.shiftCategoryRight(event, i) }}
+                onClick={(event) => { this.shiftCategoryRight(event, i); }}
               >
                 <div className="make-groups-page__button--container">
                     <div>
@@ -434,7 +437,7 @@ class MakeGroupsPage extends Component {
             )}
           </div>
         </fieldset>
-      )
+      );
     }
     return (
       <main className="make-groups-page">
@@ -655,10 +658,29 @@ class MakeGroupsPage extends Component {
         />
         </div>
       </main>
-    )
+    );
   }
 }
 export default MakeGroupsPage;
 
-MakeGroupsPage.contextType = MixEdContext;
+MakeGroupsPage.defaultProps = {
+  history: {},
+};
 
+MakeGroupsPage.propTypes = {
+  history: propTypes.shape({
+    action: propTypes.string,
+    block: propTypes.func,
+    createHref: propTypes.func,
+    go: propTypes.func,
+    goBack: propTypes.func,
+    goForward: propTypes.func,
+    length: propTypes.number,
+    listen: propTypes.func,
+    location: propTypes.object,
+    push: propTypes.func,
+    replace: propTypes.func,
+  }),
+};
+
+MakeGroupsPage.contextType = MixEdContext;

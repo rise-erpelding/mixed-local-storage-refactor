@@ -58,6 +58,7 @@ class GroupsMadePage extends Component {
 
   handleClickCancel = () => {
     const { history } = this.props;
+    window.scrollTo({ top: 0 });
     history.push('/');
   }
 
@@ -109,6 +110,7 @@ class GroupsMadePage extends Component {
         const { addStudentArr } = this.context;
         const { history } = this.props;
         addStudentArr(students);
+        window.scrollTo({ top: 0 });
         history.push('/my-groups');
       })
       .catch((error) => {

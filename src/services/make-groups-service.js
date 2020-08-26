@@ -6,7 +6,7 @@ const MakeGroupsService = {
     return objArr;
   },
   getLevel(numArr, groupSize) {
-    const sortedArr = [...numArr]
+    const sortedArr = [...numArr];
     sortedArr.sort((a, b) => a - b);
     const cutoffIndex = Math.ceil(sortedArr.length / groupSize);
     const cutoffScores = [sortedArr[0]];
@@ -21,7 +21,7 @@ const MakeGroupsService = {
     for (let i = 0; i < numArr.length; i++) {
       for (let j = cutoffScores.length - 1; j >= 0; j--) {
         if (numArr[i] < cutoffScores[j] && numArr[i] >= cutoffScores[j - 1]) {
-          studentScoreLevel.push(j)
+          studentScoreLevel.push(j);
         }
       }
     }
@@ -51,7 +51,7 @@ const MakeGroupsService = {
 
     return reorderedData.flat();
   },
-}
+};
 
 export default MakeGroupsService;
 
