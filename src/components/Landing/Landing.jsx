@@ -21,10 +21,15 @@ const Landing = (props) => {
           <span className="landing__yellow">classroom groups</span>
         </h2>
         <div className="landing__buttons">
-          <button type="button" onClick={props.handleOnboarding}>
+          <button
+            className="landing__buttons--outline"
+            type="button"
+            onClick={props.handleOnboarding}
+          >
             See how it works
           </button>
           <button
+            className="landing__buttons--fill"
             type="button"
             onClick={props.handleMakeGroupsButton}
           >

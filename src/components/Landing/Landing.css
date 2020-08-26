@@ -30,9 +30,6 @@
 }
 
 .landing__buttons > button {
-  background-color: #FF9A5C;
-  color: #2C3763;
-  border: none;
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -40,6 +37,18 @@
   padding: 8px 20px;
   margin: 10px 20px;
   transition: 0.2s ease-out;
+}
+
+.landing__buttons--outline {
+  background-color: transparent;
+  color: #FF9A5C;
+  border: 2px solid #FF9A5C;
+}
+
+.landing__buttons--fill {
+  background-color: #FF9A5C;
+  color: #2C3763;
+  border: none;
 }
 
 .landing__buttons > button:hover {
