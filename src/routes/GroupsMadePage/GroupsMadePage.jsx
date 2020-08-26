@@ -94,6 +94,24 @@ class GroupsMadePage extends Component {
         .then((res) => {
           classId = res.id;
           console.log(classId);
+          newGrouping = {
+            ...newGrouping,
+            class_id: classId,
+          };
+          console.log(newGrouping);
+          MixedApiService.insertNewGrouping(newGrouping)
+            .then(() => {
+              // const { addStudentArr } = this.context;
+              const { history } = this.props;
+              // addStudentArr(students);
+              window.scrollTo({ top: 0 });
+              removePrevData();
+              history.push('/my-groups');
+            })
+            .catch((error) => {
+              this.setState({ error });
+            });
+          
         })
         .catch((error) => {
           this.setState({ error });
@@ -101,16 +119,17 @@ class GroupsMadePage extends Component {
     }
     else {
       classId = allClasses[selectedClassIndex].id;
-    }
-    newGrouping = {
+          newGrouping = {
       ...newGrouping,
       class_id: classId,
     };
+    console.log(newGrouping);
     MixedApiService.insertNewGrouping(newGrouping)
       .then(() => {
-        const { addStudentArr } = this.context;
+        // TODO: I don't even know why I had this here
+        // const { addStudentArr } = this.context;
         const { history } = this.props;
-        addStudentArr(students);
+        // addStudentArr(students);
         window.scrollTo({ top: 0 });
         removePrevData();
         history.push('/my-groups');
@@ -118,6 +137,8 @@ class GroupsMadePage extends Component {
       .catch((error) => {
         this.setState({ error });
       });
+    }
+
   }
 
   // METHODS FOR DRAG AND DROP NAMES
