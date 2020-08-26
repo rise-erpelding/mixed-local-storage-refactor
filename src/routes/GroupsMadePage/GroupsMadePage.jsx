@@ -79,6 +79,7 @@ class GroupsMadePage extends Component {
   }
 
   saveGroups = (groupingName, className) => {
+    const { removePrevData } = this.context;
     const { students, allClasses } = this.state;
     const data = ls.get('data');
     const selectedClassIndex = allClasses.findIndex((classObj) => classObj.class_name === className);
@@ -111,6 +112,7 @@ class GroupsMadePage extends Component {
         const { history } = this.props;
         addStudentArr(students);
         window.scrollTo({ top: 0 });
+        removePrevData();
         history.push('/my-groups');
       })
       .catch((error) => {
