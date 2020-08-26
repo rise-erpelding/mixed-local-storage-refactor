@@ -451,8 +451,10 @@ class MakeGroupsPage extends Component {
             className="make-groups-page__form--grouping-characteristics"
           >
             <legend>Grouping characteristics:</legend>
-            <div>
-              <label htmlFor="group-size">Group size (minimum):</label>
+              <div className="make-groups-page__form--explanation">
+                Choose minimum group size (slightly larger groups will be made as needed).
+              </div>
+              <label htmlFor="group-size">Group size:</label>
               <input
                 name="group-size"
                 id="group-size"
@@ -462,6 +464,10 @@ class MakeGroupsPage extends Component {
                 value={this.state.groupSize}
                 onChange={this.updateGroupSize}
               />
+              <div className="make-groups-page__form--explanation">
+                Choose whether members within a group should have similar 
+                traits or differing traits.
+              </div>
               <div className="make-groups-page__form--radio-buttons">
                 <input
                   name="grouping-type"
@@ -474,7 +480,6 @@ class MakeGroupsPage extends Component {
                 />
                 <label htmlFor="grouping-similar">Group members are similar</label>
               </div>
-            </div>
             <div className="make-groups-page__form--radio-buttons">
               <input
                 name="grouping-type"
