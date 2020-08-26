@@ -556,7 +556,8 @@ class SavedGroupsPage extends Component {
           <section className="saved-groups-page__groups">
             <h1>
               {currentClassName}
-              <div className="saved-groups-page__class--buttons">
+            </h1>
+            <div className="saved-groups-page__class--buttons">
                 <button
                   type="button"
                   onClick={() => this.handleShowModal('showUpdateClassModal')}
@@ -590,7 +591,6 @@ class SavedGroupsPage extends Component {
                   </div>
                 </button>
               </div>
-            </h1>
             {groupingHeading}
             <form>
               <div className="saved-groups-page__groupings">
