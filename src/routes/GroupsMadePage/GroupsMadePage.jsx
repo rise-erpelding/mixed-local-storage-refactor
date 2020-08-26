@@ -92,9 +92,7 @@ class GroupsMadePage extends Component {
           };
           MixedApiService.insertNewGrouping(newGrouping)
             .then(() => {
-              // const { addStudentArr } = this.context;
               const { history } = this.props;
-              // addStudentArr(students);
               window.scrollTo({ top: 0 });
               removePrevData();
               history.push('/my-groups');
