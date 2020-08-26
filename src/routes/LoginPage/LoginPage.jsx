@@ -76,7 +76,7 @@ class LoginPage extends Component {
             onSubmit={this.handleSubmitJwtAuth}
           >
             <div className="login-page__username">
-              <label htmlFor="teacher_name">User name</label>
+              <label htmlFor="teacher_name">Username</label>
               <div>
                 <input
                   required
