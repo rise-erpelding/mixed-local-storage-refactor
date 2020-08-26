@@ -26,6 +26,12 @@
   letter-spacing: 1px;
 }
 
+/* prevents drag and drop instruction from being shown on smaller screens,
+  which are more likely to be mobile */
+.groups-made-page__body-container > p {
+  display: none;
+}
+
 .groups-made-page__groupings {
   margin: 0px 10px;
   display: flex;
@@ -128,5 +134,11 @@
 
   .groups-made-page__group {
     width: 120px;
+  }
+
+  /* prevents drag and drop instruction from being shown on smaller screens,
+  which are more likely to be mobile */
+  .groups-made-page__body-container > p {
+    display: block;
   }
 }

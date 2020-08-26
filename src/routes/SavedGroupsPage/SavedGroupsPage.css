@@ -255,8 +255,10 @@
   letter-spacing: 1px;
 }
 
+/* prevents drag and drop instruction from being shown on smaller screens,
+  which are more likely to be mobile */
 .saved-groups-page__grouping-heading > p {
-  padding: 0px 10px;
+  display: none;
 }
 
 .saved-groups-page__grouping-heading {
@@ -319,5 +321,12 @@
 
   .saved-groups-page__groups > h1 {
     padding: 10px 210px;
+  }
+
+  /* prevents drag and drop instruction from being shown on smaller screens,
+  which are more likely to be mobile */
+  .saved-groups-page__grouping-heading > p {
+    padding: 0px 10px;
+    display: block;
   }
 }
