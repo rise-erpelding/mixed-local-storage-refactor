@@ -167,10 +167,14 @@ class SavedGroupsPage extends Component {
   }
 
   createNewGroup = () => {
+    const { currentGrouping } = this.state;
     const { history } = this.props;
-    const { removePrevData } = this.context;
+    const { removePrevData, addData } = this.context;
+    const namesOnlyData = { aliases: currentGrouping.data.aliases };
+    console.log(namesOnlyData);
     history.push('/make-groups');
     removePrevData();
+    addData(namesOnlyData);
   }
 
   // used when user clicks on grouping other than currently selected
