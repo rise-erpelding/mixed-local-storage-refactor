@@ -171,10 +171,9 @@ class SavedGroupsPage extends Component {
     const { history } = this.props;
     const { removePrevData, addData } = this.context;
     const namesOnlyData = { aliases: currentGrouping.data.aliases };
-    console.log(namesOnlyData);
     history.push('/make-groups');
     removePrevData();
-    addData(namesOnlyData);
+    addData(namesOnlyData); // Populates group generator with alias names from current class
   }
 
   // used when user clicks on grouping other than currently selected
