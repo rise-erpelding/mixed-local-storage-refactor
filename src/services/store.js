@@ -1,3 +1,4 @@
+// For sample datasets seen in group generator
 const store = {
   sampleData1: {
     groupSize: 3,

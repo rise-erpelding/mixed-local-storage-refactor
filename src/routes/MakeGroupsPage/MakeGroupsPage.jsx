@@ -48,6 +48,21 @@ class MakeGroupsPage extends Component {
   }
 
   // METHODS FOR FORM BUTTONS ONCLICK
+  /**
+   * handleSubmit preps data for the sorting function to get the groups:
+   * -Keeps track of which indexes in categories arrays are qualitative vs quantitative
+   * -Turns a set of quantitative category vals into a number array, turn a set of qualitative
+   * category vals into an array of strings, and turn aliases into an array (of strings).
+   * -Combines categoryTypes, categoryNames, categoryVals, and aliases into an array of objects,
+   * one object with info for each student.
+   * -Also adds a level to each object for any quantitative variables--only as many levels as
+   * number of people in a group, which is most helpful for making mixed groups. Levels are
+   * assigned by sorting array, designating a number of cutoff points corresponding to number
+   * of levels, the interval between each set of cutoff points corresponds to a level.
+   * -Then send array of objects to grouping algorithm according to whether we want mixed
+   * or similar groups.
+   * -Then navigates to /groups-made
+   */
   handleSubmit = (e) => {
     e.preventDefault();
     const { addData } = this.context;
@@ -60,27 +75,8 @@ class MakeGroupsPage extends Component {
       categoryNames,
       categoryVals
     } = this.state;
-
-    // add data to local storage so it will be there if we navigate back to this page
+    // adds data to local storage so it will be there if we navigate back to this page
     addData(this.state);
-
-
-
-    /*
-     * Next, prepare data for the sorting function to get the groups:
-     * -Keep track of which indexes in categories arrays are qualitative vs quantitative
-     * -Turn a set of quantitative category vals into a number array, turn a set of qualitative
-     * category vals into an array of strings, and turn aliases into an array (of strings).
-     * -Combine categoryTypes, categoryNames, categoryVals, and aliases into an array of objects,
-     * one object with info for each student.
-     * -Also add a level to each object for any quantitative variables--only as many levels as
-     * number of people in a group, which is most helpful for making mixed groups. Levels are
-     * assigned by sorting array, designating a number of cutoff points corresponding to number
-     * of levels, the interval between each set of cutoff points corresponds to a level.
-     * -Then send array of objects to grouping algorithm according to whether we want mixed
-     * or similar groups.
-     * -Then navigate to /groups-made
-     */
 
     const quantitativeIndexes = [];
     const qualitativeIndexes = [];
@@ -264,7 +260,6 @@ class MakeGroupsPage extends Component {
 
 
   // METHODS FOR VALIDATING FORM VALUES
-
   validateAliases = () => {
     const { aliases } = this.state;
     const aliasesArray = this.createTrimmedArr(aliases);
@@ -324,7 +319,6 @@ class MakeGroupsPage extends Component {
   }
 
   // HELPER METHODS
-
   // creates array, trimming excess whitespace
   createTrimmedArr = (vals) => vals.split(`\n`).filter((val) => !!val.trim().length);
 

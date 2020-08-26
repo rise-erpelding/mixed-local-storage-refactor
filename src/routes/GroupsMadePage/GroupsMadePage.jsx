@@ -7,9 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ls from 'local-storage';
 import './GroupsMadePage.css';
 
-// TODO: something is wrong here
-// ComponentWillUnMount
-
 class GroupsMadePage extends Component {
   constructor(props) {
     super(props);
@@ -33,9 +30,7 @@ class GroupsMadePage extends Component {
       .catch((error) => {
         this.setState({ error });
       });
-
   }
-
 
   getGroupNumbers = (studentsArr) => {
     const groupNums = [];
@@ -50,7 +45,6 @@ class GroupsMadePage extends Component {
   }
 
   // METHODS FOR BUTTONS
-
   handleSubmit = (e) => {
     e.preventDefault();
     this.showSaveModal();
@@ -68,7 +62,6 @@ class GroupsMadePage extends Component {
   }
 
   // METHODS FOR SAVE MODAL
-
   showSaveModal = () => {
     const { login, history } = this.props;
     login ? this.setState({ show: true }) : history.push('/login');
@@ -93,12 +86,10 @@ class GroupsMadePage extends Component {
       MixedApiService.insertNewClass(className)
         .then((res) => {
           classId = res.id;
-          console.log(classId);
           newGrouping = {
             ...newGrouping,
             class_id: classId,
           };
-          console.log(newGrouping);
           MixedApiService.insertNewGrouping(newGrouping)
             .then(() => {
               // const { addStudentArr } = this.context;
@@ -123,13 +114,9 @@ class GroupsMadePage extends Component {
       ...newGrouping,
       class_id: classId,
     };
-    console.log(newGrouping);
     MixedApiService.insertNewGrouping(newGrouping)
       .then(() => {
-        // TODO: I don't even know why I had this here
-        // const { addStudentArr } = this.context;
         const { history } = this.props;
-        // addStudentArr(students);
         window.scrollTo({ top: 0 });
         removePrevData();
         history.push('/my-groups');
@@ -138,11 +125,9 @@ class GroupsMadePage extends Component {
         this.setState({ error });
       });
     }
-
   }
 
   // METHODS FOR DRAG AND DROP NAMES
-
   handleDragStart = (event, student) => {
     event.dataTransfer.setData("student", student);
   }
@@ -154,7 +139,6 @@ class GroupsMadePage extends Component {
   handleDrop = (event, newGroup) => {
     const { students } = this.state;
     const draggedStudent = event.dataTransfer.getData("student");
-    // then set state for students
     let updatedStudent = students.filter((student) => {
       if (draggedStudent === student.alias) {
         student.groupNum = newGroup;

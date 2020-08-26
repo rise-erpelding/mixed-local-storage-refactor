@@ -10,9 +10,11 @@ import ls from 'local-storage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './SavedGroupsPage.css';
 
-// TO CLARIFY
-// 'Grouping' refers to a class of students that has been broken into groups
-// 'Group' refers to the group within a class
+/**
+ * For clarification:
+ * 'Grouping' refers to a class of students that has been broken into groups
+ * 'Group' refers to the group within a class
+ */
 
 class SavedGroupsPage extends Component {
   constructor(props) {
@@ -38,7 +40,7 @@ class SavedGroupsPage extends Component {
   componentDidMount() {
     MixedApiService.getClassesAndGroupingsForTeacher()
       .then(([classes, groupings]) => {
-        // sort classes & groupings to put most recent at front, to render most recent first
+        // sort classes & groupings (below) to put most recent at front, to render most recent first
         const sortedClasses = classes.sort((a, b) => b.id - a.id);
         this.setState({ allClasses: sortedClasses });
         let sortedGroupings = [];
@@ -151,13 +153,13 @@ class SavedGroupsPage extends Component {
     );
     const currentClass = allClasses.find((classObj) => classObj.id === classId);
     this.setState({ currentClass });
-    if (!!currentClassGroupings.length) {   // if there are groupings in the class
+    if (!!currentClassGroupings.length) { // if there are groupings in the class
       const currentGrouping = currentClassGroupings[currentClassGroupings.length - 1];
       this.setState({ currentClassGroupings });
       this.updateCurrentGrouping(currentGrouping);
       this.getCurrentClassGroupingsList(classId, allGroupings);
     }
-    else {                                // if there are no groupings in the class
+    else { // if there are no groupings in the class
       this.setState({
         currentClassGroupings: [],
         currentGrouping: {},

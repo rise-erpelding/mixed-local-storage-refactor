@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
-
 import MixEdContext from '../../context/MixEdContext';
-
 import LandingPage from '../../routes/LandingPage/LandingPage';
 import MakeGroupsPage from '../../routes/MakeGroupsPage/MakeGroupsPage';
 import GroupsMadePage from '../../routes/GroupsMadePage/GroupsMadePage';
@@ -15,7 +13,6 @@ import NavBar from '../NavBar/NavBar';
 import Footer from '../Footer/Footer';
 import TokenService from '../../services/token-service';
 import ls from 'local-storage';
-
 import './App.css';
 
 class App extends Component {
@@ -29,12 +26,12 @@ class App extends Component {
     this.toggleLogin = this.toggleLogin.bind(this);
   }
 
-  addData = (data) => {
+  addData = (data) => { // adds generator data to local storage so it will persist until saved
     this.setState({ data: data });
     ls.set('data', data);
   }
 
-  removePrevData = () => {
+  removePrevData = () => { // clears local storage data
     ls.remove('groupings');
     ls.remove('data');
     ls.remove('studentArr');

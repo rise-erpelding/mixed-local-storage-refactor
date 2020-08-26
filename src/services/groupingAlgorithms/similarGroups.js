@@ -49,13 +49,13 @@ function createSimilarGroups(arr, groupSize, priorities) {
       let currGroup = groups[groups.length - 1];
       let groupPriorities = [];
       priorities.forEach((priority) => {
-        groupPriorities.push({ [priority]: [] })
-      })
+        groupPriorities.push({ [priority]: [] });
+      });
       currGroup.forEach((student) => {
         groupPriorities.forEach((priority, index) => {
           const priorityName = Object.keys(priority)[0];
           groupPriorities[index][priorityName].push(student[priorityName]);
-        })
+        });
       });
       addNextToGroup(pool, groups, groupPriorities, groupNumber);
     } 
@@ -68,6 +68,7 @@ function createSimilarGroups(arr, groupSize, priorities) {
  * @param {array} groups - nested arrays of students who have already been put into groups
  * @param {number} groupNumber - current number of group being added to
  */
+// eslint-disable-next-line no-unused-vars
 function addFirstToGroup(pool, groups, groupNumber) {
   groups.push([pool[0]]);
   pool.splice(0, 1);
