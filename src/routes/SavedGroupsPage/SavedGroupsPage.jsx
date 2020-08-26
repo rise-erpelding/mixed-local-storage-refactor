@@ -29,6 +29,7 @@ class SavedGroupsPage extends Component {
       showUpdateClassModal: false,
       showDeleteClassModal: false,
       showDeleteGroupingModal: false,
+      showUpdateGroupingModal: false,
       groupingUpdated: false,
       error: null,
     };
@@ -239,6 +240,33 @@ class SavedGroupsPage extends Component {
       });
   }
 
+  updateGroupingName = (newGroupingName) => {
+    const { currentGrouping, allGroupings, currentClassGroupings } = this.state;
+    const updatedGrouping = {
+      ...currentGrouping,
+      grouping_name: newGroupingName,
+    };
+    MixedApiService.editGrouping(updatedGrouping)
+      .then(() => {
+        const updatedAllGroupingsIndex = allGroupings.findIndex(
+          (groupingObj) => groupingObj.id === currentGrouping.id
+        );
+        const updatedCurrentClassGroupingsIndex = currentClassGroupings.findIndex(
+          (groupingObj) => groupingObj.id === currentGrouping.id
+        );
+        allGroupings[updatedAllGroupingsIndex] = updatedGrouping;
+        currentClassGroupings[updatedCurrentClassGroupingsIndex] = updatedGrouping;
+        this.setState({
+          allGroupings: allGroupings,
+          currentClassGroupings: currentClassGroupings,
+          currentGrouping: updatedGrouping,
+        });
+      })
+      .catch((error) => {
+        this.setState({ error });
+      });
+  }
+
   updateClassName = (newClassName) => {
     const { allClasses, currentClass } = this.state;
     const updatedClass = {
@@ -368,6 +396,7 @@ class SavedGroupsPage extends Component {
       groupingUpdated,
       showNewClassModal,
       showUpdateClassModal,
+      showUpdateGroupingModal,
       showDeleteClassModal,
       showDeleteGroupingModal,
     } = this.state;
@@ -585,6 +614,22 @@ class SavedGroupsPage extends Component {
                 </button>
                 <button
                   type="button"
+                  onClick={() => this.handleShowModal('showUpdateGroupingModal')}
+                >
+                  <div className="saved-groups-page__button--container">
+                    <div>
+                      Edit Grouping Name
+                    </div>
+                    <div>
+                      <FontAwesomeIcon
+                        className="saved-groups-page__button--icon"
+                        icon="edit"
+                      />
+                    </div>
+                  </div>
+                </button>
+                <button
+                  type="button"
                   onClick={() => this.handleShowModal('showDeleteGroupingModal')}
                 >
                   <div className="saved-groups-page__button--container">
@@ -631,6 +676,12 @@ class SavedGroupsPage extends Component {
           title="Update Class Name"
           handleClose={() => this.handleHideModal('showUpdateClassModal')}
           handleUpdate={this.updateClassName}
+        />
+        <AddUpdateClass
+          show={showUpdateGroupingModal}
+          title="Update Grouping Name"
+          handleClose={() => this.handleHideModal('showUpdateGroupingModal')}
+          handleUpdate={this.updateGroupingName}
         />
         <DeleteClassGrouping
           show={showDeleteGroupingModal}

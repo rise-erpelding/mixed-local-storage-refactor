@@ -34,7 +34,7 @@ class AddUpdateClass extends Component {
         <main className="modal__main">
           <h1>{title}</h1>
           <form onSubmit={this.handleSubmit}>
-              <label htmlFor="name-of-class">Class Name:</label><br />
+              <label htmlFor="name-of-class">Name:</label><br />
               <input
                 name="name-of-class"
                 id="class-name"
