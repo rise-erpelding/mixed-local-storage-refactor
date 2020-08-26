@@ -37,8 +37,8 @@ class UserOnboarding extends Component {
             <h3>
               Organize groupings by class
           </h3>
-            <p>You can save your groups to an existing class or create a new class for the grouping
-            to belong to, then view your groupings organized by class.</p>
+            <p>You can save your groups to an existing class or create a new class for the
+              grouping, then view your groupings organized by class.</p>
           </div>
           <div className="user-onboarding__flex-child--left">
             <img
