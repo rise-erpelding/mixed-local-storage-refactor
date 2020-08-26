@@ -26,3 +26,13 @@
 .login-page__login-error {
   color: red;
 }
+
+.login-page__form > button {
+  font-size: 16px;
+}
+
+@media screen and (min-width: 800px) {
+  .login-page__form > button {
+    font-size: 14px;
+  }
+}

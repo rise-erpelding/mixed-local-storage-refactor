@@ -41,6 +41,10 @@
   font-size: 22px;
 }
 
+.modal__buttons > button {
+  font-size: 16px;
+}
+
 @media screen and (min-width: 800px) {
   .modal__main {
     width: 400px;
@@ -48,5 +52,9 @@
 
   .modal__main--first-visit {
     width: 70%;
+  }
+
+  .modal__buttons > button {
+    font-size: 14px;
   }
 }

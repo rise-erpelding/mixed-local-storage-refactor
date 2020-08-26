@@ -12,8 +12,10 @@ const DeleteClassGrouping = (props) => {
         <main className="modal__main">
           <h1>{props.title}</h1>
           <p>{props.message}</p>
+          <div className="modal__buttons">
             <button type="button" onClick={props.handleClose}>Cancel</button>
             <button type="submit" onClick={props.handleDelete}>{props.title}</button>
+          </div>
         </main>
       </div>
     );

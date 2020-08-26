@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import '../Modals.css';
 
-
+// Updates class OR grouping name, also can add a new class with specified name
 class AddUpdateClass extends Component {
   constructor(props) {
     super(props);
@@ -42,9 +42,10 @@ class AddUpdateClass extends Component {
                 value={className}
                 onChange={this.updateClass}
                 /><br />
-    
-            <button type="button" onClick={handleClose}>Cancel</button>
-            <button type="submit">Save</button>
+            <div className="modal__buttons">
+              <button type="button" onClick={handleClose}>Cancel</button>
+              <button type="submit">Save</button>
+            </div>
           </form>
         </main>
       </div>
