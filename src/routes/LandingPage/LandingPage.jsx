@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Landing from '../../components/Landing/Landing';
 import UserOnboarding from '../../components/UserOnboarding/UserOnboarding';
+import DemoLoginInfo from '../../components/DemoLoginInfo/DemoLoginInfo';
 import MixEdContext from '../../context/MixEdContext';
 
 class LandingPage extends Component {
@@ -25,6 +26,7 @@ class LandingPage extends Component {
           handleMakeGroupsButton={removePrevData}
         />
         <UserOnboarding passRef={this.scrollRef} />
+        <DemoLoginInfo />
       </main>
     );
   }
