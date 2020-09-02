@@ -108,9 +108,9 @@ class GroupsMadePage extends Component {
     }
     else {
       classId = allClasses[selectedClassIndex].id;
-          newGrouping = {
-      ...newGrouping,
-      class_id: classId,
+      newGrouping = {
+        ...newGrouping,
+        class_id: classId,
     };
     MixedApiService.insertNewGrouping(newGrouping)
       .then(() => {
