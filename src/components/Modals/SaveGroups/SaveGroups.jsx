@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import '../Modals.css';
+import SimpleModal from 'simple-modal';
+import 'simple-modal/dist/index.css';
 
 class SaveGroups extends Component {
   constructor(props) {
@@ -42,7 +44,7 @@ class SaveGroups extends Component {
     ));
 
     return (
-      <div className={modalClassName}>
+      <SimpleModal show={this.props.show}>
         <main className="modal__main">
           <h1>Save Grouping</h1>
           <form onSubmit={this.handleSubmit}>
@@ -84,7 +86,7 @@ class SaveGroups extends Component {
             </div>
           </form>
         </main>
-      </div>
+        </SimpleModal>
     );
   }
 }
