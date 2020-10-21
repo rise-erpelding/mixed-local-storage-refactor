@@ -1,16 +1,15 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import SimpleModal from 'simple-modal';
 import propTypes from 'prop-types';
 import '../Modals.css';
+import 'simple-modal/dist/index.css'
+// import SimpleModal from '../SimpleModal';
 
 
 const FirstVisitModal = (props) => {
   return (
-    <div className={
-      props.show 
-      ? 'modal modal__display-block' 
-      : 'modal modal__display-none'
-      }>
+    <SimpleModal show={props.show}>
       <main className="modal__main--first-visit">
         <div className="modal__close">
           <button type="button" onClick={props.handleClose}>
@@ -31,7 +30,7 @@ const FirstVisitModal = (props) => {
           </p>
         </div>
       </main>
-    </div>
+    </SimpleModal>
   );
 };
 

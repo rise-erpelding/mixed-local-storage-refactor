@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
+// import SimpleModal from 'simple-modal';
 import '../Modals.css';
 
 // Updates class OR grouping name, also can add a new class with specified name
