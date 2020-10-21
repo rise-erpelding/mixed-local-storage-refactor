@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
+import SimpleModal from 'simple-modal';
+import 'simple-modal/dist/index.css';
 import '../Modals.css';
 
 // Updates class OR grouping name, also can add a new class with specified name
@@ -27,10 +29,9 @@ class AddUpdateClass extends Component {
   render() {
     const { className } = this.state;
     const { handleClose, show, title } = this.props;
-    const modalClassName = show ? 'modal modal__display-block' : 'modal modal__display-none';
 
     return (
-      <div className={modalClassName}>
+      <SimpleModal show={show}>
         <main className="modal__main">
           <h1>{title}</h1>
           <form onSubmit={this.handleSubmit}>
@@ -59,7 +60,7 @@ class AddUpdateClass extends Component {
             </div>
           </form>
         </main>
-      </div>
+      </SimpleModal>
     );
   }
 }

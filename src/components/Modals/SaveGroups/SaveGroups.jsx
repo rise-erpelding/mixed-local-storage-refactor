@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import '../Modals.css';
+import SimpleModal from 'simple-modal';
+import 'simple-modal/dist/index.css';
 
 class SaveGroups extends Component {
   constructor(props) {
@@ -29,9 +31,6 @@ class SaveGroups extends Component {
 
   render() {
     const { handleClose, show, classes } = this.props;
-    const modalClassName = show
-      ? 'modal modal__display-block'
-      : 'modal modal__display-none';
     const classOptions = classes.map((classObj) => (
       <option
         key={classObj.id}
@@ -42,7 +41,7 @@ class SaveGroups extends Component {
     ));
 
     return (
-      <div className={modalClassName}>
+      <SimpleModal show={show}>
         <main className="modal__main">
           <h1>Save Grouping</h1>
           <form onSubmit={this.handleSubmit}>
@@ -84,7 +83,7 @@ class SaveGroups extends Component {
             </div>
           </form>
         </main>
-      </div>
+        </SimpleModal>
     );
   }
 }

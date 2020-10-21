@@ -19,14 +19,6 @@
   border: 2px solid #FF9A5C;
 }
 
-.modal__display-block {
-  display: block;
-}
-
-.modal__display-none {
-  display: none;
-}
-
 .modal__text {
   padding: 15px;
 }
