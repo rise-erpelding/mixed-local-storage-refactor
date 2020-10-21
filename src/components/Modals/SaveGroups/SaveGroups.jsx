@@ -31,9 +31,6 @@ class SaveGroups extends Component {
 
   render() {
     const { handleClose, show, classes } = this.props;
-    const modalClassName = show
-      ? 'modal modal__display-block'
-      : 'modal modal__display-none';
     const classOptions = classes.map((classObj) => (
       <option
         key={classObj.id}
@@ -44,7 +41,7 @@ class SaveGroups extends Component {
     ));
 
     return (
-      <SimpleModal show={this.props.show}>
+      <SimpleModal show={show}>
         <main className="modal__main">
           <h1>Save Grouping</h1>
           <form onSubmit={this.handleSubmit}>

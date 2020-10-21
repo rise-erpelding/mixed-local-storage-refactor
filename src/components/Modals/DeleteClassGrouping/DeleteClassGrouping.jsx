@@ -1,14 +1,12 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import '../Modals.css';
+import SimpleModal from 'simple-modal';
+import 'simple-modal/dist/index.css';
 
 const DeleteClassGrouping = (props) => {
     return (
-      <div className={
-        props.show 
-        ? 'modal modal__display-block'
-        : 'modal modal__display-none'
-      }>
+      <SimpleModal show={props.show}>
         <main className="modal__main">
           <h1>{props.title}</h1>
           <p>{props.message}</p>
@@ -29,7 +27,7 @@ const DeleteClassGrouping = (props) => {
             </button>
           </div>
         </main>
-      </div>
+      </SimpleModal>
     );
 };
 

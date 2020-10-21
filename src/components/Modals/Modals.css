@@ -1,11 +1,3 @@
-.modal__show {
-  display: block;
-}
-
-.modal__hide {
-  display: none;
-}
-
 .modal {
   position: fixed;
   top: 0;
@@ -25,14 +17,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   border: 2px solid #FF9A5C;
-}
-
-.modal__display-block {
-  display: block;
-}
-
-.modal__display-none {
-  display: none;
 }
 
 .modal__text {

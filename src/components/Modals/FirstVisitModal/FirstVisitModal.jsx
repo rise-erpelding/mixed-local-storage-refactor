@@ -1,10 +1,9 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SimpleModal from 'simple-modal';
+import 'simple-modal/dist/index.css';
 import propTypes from 'prop-types';
 import '../Modals.css';
-import 'simple-modal/dist/index.css'
-// import SimpleModal from '../SimpleModal';
 
 
 const FirstVisitModal = (props) => {
