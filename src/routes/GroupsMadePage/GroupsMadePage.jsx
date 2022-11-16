@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SaveGroups from '../../components/Modals/SaveGroups/SaveGroups';
 import MixEdContext from '../../context/MixEdContext';
-import MixedApiService from '../../services/mixed-api-service';
+// import MixedApiService from '../../services/mixed-api-service';
 import propTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ls from 'local-storage';
@@ -23,13 +23,13 @@ class GroupsMadePage extends Component {
     const students = ls.get('studentArr');
     this.setState({ students: students });
     this.getGroupNumbers(students);
-    MixedApiService.getClassesForTeacher()
-      .then((classes) => {
-        this.setState({ allClasses: classes });
-      })
-      .catch((error) => {
-        this.setState({ error });
-      });
+    // MixedApiService.getClassesForTeacher()
+    //   .then((classes) => {
+    //     this.setState({ allClasses: classes });
+    //   })
+    //   .catch((error) => {
+    //     this.setState({ error });
+    //   });
   }
 
   getGroupNumbers = (studentsArr) => {
@@ -63,8 +63,9 @@ class GroupsMadePage extends Component {
 
   // METHODS FOR SAVE MODAL
   showSaveModal = () => {
-    const { login, history } = this.props;
-    login ? this.setState({ show: true }) : history.push('/login');
+    // const { login, history } = this.props;
+    // login ? this.setState({ show: true }) : history.push('/login');
+    this.setState({ show: true });
   }
 
   hideSaveModal = () => {
@@ -72,57 +73,59 @@ class GroupsMadePage extends Component {
   }
 
   saveGroups = (groupingName, className) => {
-    const { removePrevData } = this.context;
-    const { students, allClasses } = this.state;
+    // const { removePrevData } = this.context;
+    const { students } = this.state;
+    // const { students, allClasses } = this.state;
     const data = ls.get('data');
-    const selectedClassIndex = allClasses.findIndex((classObj) => classObj.class_name === className);
+    // const selectedClassIndex = allClasses.findIndex((classObj) => classObj.class_name === className);
     let newGrouping = {
       grouping_name: groupingName,
       groupings: students,
       data: data,
     };
-    let classId;
-    if (selectedClassIndex === -1) {
-      MixedApiService.insertNewClass(className)
-        .then((res) => {
-          classId = res.id;
-          newGrouping = {
-            ...newGrouping,
-            class_id: classId,
-          };
-          MixedApiService.insertNewGrouping(newGrouping)
-            .then(() => {
-              const { history } = this.props;
-              window.scrollTo({ top: 0 });
-              removePrevData();
-              history.push('/my-groups');
-            })
-            .catch((error) => {
-              this.setState({ error });
-            });
+    // let classId;
+    console.log('newGrouping', newGrouping);
+    // if (selectedClassIndex === -1) {
+    //   MixedApiService.insertNewClass(className)
+    //     .then((res) => {
+    //       classId = res.id;
+    //       newGrouping = {
+    //         ...newGrouping,
+    //         class_id: classId,
+    //       };
+    //       MixedApiService.insertNewGrouping(newGrouping)
+    //         .then(() => {
+    //           const { history } = this.props;
+    //           window.scrollTo({ top: 0 });
+    //           removePrevData();
+    //           history.push('/my-groups');
+    //         })
+    //         .catch((error) => {
+    //           this.setState({ error });
+    //         });
           
-        })
-        .catch((error) => {
-          this.setState({ error });
-        });
-    }
-    else {
-      classId = allClasses[selectedClassIndex].id;
-      newGrouping = {
-        ...newGrouping,
-        class_id: classId,
-    };
-    MixedApiService.insertNewGrouping(newGrouping)
-      .then(() => {
-        const { history } = this.props;
-        window.scrollTo({ top: 0 });
-        removePrevData();
-        history.push('/my-groups');
-      })
-      .catch((error) => {
-        this.setState({ error });
-      });
-    }
+    //     })
+    //     .catch((error) => {
+    //       this.setState({ error });
+    //     });
+    // }
+    // else {
+    //   classId = allClasses[selectedClassIndex].id;
+    //   newGrouping = {
+    //     ...newGrouping,
+    //     class_id: classId,
+    // };
+    // MixedApiService.insertNewGrouping(newGrouping)
+    //   .then(() => {
+    //     const { history } = this.props;
+    //     window.scrollTo({ top: 0 });
+    //     removePrevData();
+    //     history.push('/my-groups');
+    //   })
+    //   .catch((error) => {
+    //     this.setState({ error });
+    //   });
+    // }
   }
 
   // METHODS FOR DRAG AND DROP NAMES
