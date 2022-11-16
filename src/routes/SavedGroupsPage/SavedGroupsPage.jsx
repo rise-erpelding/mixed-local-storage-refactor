@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import AddUpdateClass from '../../components/Modals/AddUpdateClass/AddUpdateClass';
 import DeleteClassGrouping from '../../components/Modals/DeleteClassGrouping/DeleteClassGrouping';
-import MixedApiService from '../../services/mixed-api-service';
+// import MixedApiService from '../../services/mixed-api-service';
 import MixEdContext from '../../context/MixEdContext';
 import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -37,38 +37,38 @@ class SavedGroupsPage extends Component {
     };
   }
 
-  componentDidMount() {
-    MixedApiService.getClassesAndGroupingsForTeacher()
-      .then(([classes, groupings]) => {
-        // sort classes & groupings (below) to put most recent at front, to render most recent first
-        const sortedClasses = classes.sort((a, b) => b.id - a.id);
-        this.setState({ allClasses: sortedClasses });
-        let sortedGroupings = [];
-        let currentClass;
-        if (!!groupings.length) {
-          // in most cases there should be groupings
-          sortedGroupings = groupings.sort((a, b) => b.id - a.id);
-          const currentGrouping = sortedGroupings[0];
-          this.updateCurrentGrouping(currentGrouping);
-          currentClass = classes.find((classObj) => classObj.id === currentGrouping.class_id);
-        }
-        else {
-          // in the edge case that there are classes but not groupings
-          currentClass = sortedClasses[0];
-        }
-        this.setState({
-          allClasses: sortedClasses,
-          allGroupings: sortedGroupings,
-          currentClass: currentClass,
-        });
-        /* below methods will set state for currentGroupingGroupNumbers, 
-        currentGroupingCategoryNames, currentClassGroupings, respectively */
-        this.getCurrentClassGroupingsList(currentClass.id, groupings);
-      })
-      .catch((error) => {
-        this.setState({ error });
-      });
-  }
+  // componentDidMount() {
+  //   MixedApiService.getClassesAndGroupingsForTeacher()
+  //     .then(([classes, groupings]) => {
+  //       // sort classes & groupings (below) to put most recent at front, to render most recent first
+  //       const sortedClasses = classes.sort((a, b) => b.id - a.id);
+  //       this.setState({ allClasses: sortedClasses });
+  //       let sortedGroupings = [];
+  //       let currentClass;
+  //       if (!!groupings.length) {
+  //         // in most cases there should be groupings
+  //         sortedGroupings = groupings.sort((a, b) => b.id - a.id);
+  //         const currentGrouping = sortedGroupings[0];
+  //         this.updateCurrentGrouping(currentGrouping);
+  //         currentClass = classes.find((classObj) => classObj.id === currentGrouping.class_id);
+  //       }
+  //       else {
+  //         // in the edge case that there are classes but not groupings
+  //         currentClass = sortedClasses[0];
+  //       }
+  //       this.setState({
+  //         allClasses: sortedClasses,
+  //         allGroupings: sortedGroupings,
+  //         currentClass: currentClass,
+  //       });
+  //       /* below methods will set state for currentGroupingGroupNumbers, 
+  //       currentGroupingCategoryNames, currentClassGroupings, respectively */
+  //       this.getCurrentClassGroupingsList(currentClass.id, groupings);
+  //     })
+  //     .catch((error) => {
+  //       this.setState({ error });
+  //     });
+  // }
 
   // METHODS TO SET INFO ABOUT CURRENT GROUPING IN STATE
   updateCurrentGrouping = (currentGrouping) => {
@@ -200,19 +200,19 @@ class SavedGroupsPage extends Component {
 
   handleSave = (currentGrouping) => {
     let { allGroupings } = this.state;
-    MixedApiService.editGrouping(currentGrouping)
-      .then(() => {
-        // Update allGroupings to include changes in currentGrouping
+    // MixedApiService.editGrouping(currentGrouping)
+    //   .then(() => {
+    //     // Update allGroupings to include changes in currentGrouping
         allGroupings = allGroupings.filter((grouping) => grouping.id !== currentGrouping.id);
         allGroupings = [...allGroupings, currentGrouping];
         this.setState({
           allGroupings,
           groupingUpdated: true,
         });
-      })
-      .catch((error) => {
-        this.setState({ error });
-      });
+      // })
+      // .catch((error) => {
+      //   this.setState({ error });
+      // });
   }
 
   // METHODS FOR MODALS
@@ -226,20 +226,20 @@ class SavedGroupsPage extends Component {
 
   addNewClassName = (newClassName) => {
     const { allClasses } = this.state;
-    MixedApiService.insertNewClass(newClassName)
-      .then((newClass) => {
+    // MixedApiService.insertNewClass(newClassName)
+      // .then((newClass) => {
         this.setState({
-          allClasses: [...allClasses, newClass],
-          currentClass: newClass,
+          allClasses: [...allClasses, newClassName],
+          currentClass: newClassName,
           currentClassGroupings: [],
           currentGrouping: {},
           currentGroupingCategoryNames: [],
           currentGroupingGroupNumbers: [],
         });
-      })
-      .catch((error) => {
-        this.setState({ error });
-      });
+      // })
+      // .catch((error) => {
+      //   this.setState({ error });
+      // });
   }
 
   updateGroupingName = (newGroupingName) => {
@@ -248,8 +248,8 @@ class SavedGroupsPage extends Component {
       ...currentGrouping,
       grouping_name: newGroupingName,
     };
-    MixedApiService.editGrouping(updatedGrouping)
-      .then(() => {
+    // MixedApiService.editGrouping(updatedGrouping)
+      // .then(() => {
         const updatedAllGroupingsIndex = allGroupings.findIndex(
           (groupingObj) => groupingObj.id === currentGrouping.id
         );
@@ -263,10 +263,10 @@ class SavedGroupsPage extends Component {
           currentClassGroupings: currentClassGroupings,
           currentGrouping: updatedGrouping,
         });
-      })
-      .catch((error) => {
-        this.setState({ error });
-      });
+      // })
+      // .catch((error) => {
+      //   this.setState({ error });
+      // });
   }
 
   updateClassName = (newClassName) => {
@@ -279,8 +279,8 @@ class SavedGroupsPage extends Component {
       id: currentClass.id,
       class_name: newClassName
     };
-    MixedApiService.editClass(currentClass.id, newClassName)
-      .then(() => {
+    // MixedApiService.editClass(currentClass.id, newClassName)
+      // .then(() => {
         const updatedIndex = allClasses.findIndex(
           (classObj) => classObj.id === currentClass.id
         );
@@ -289,26 +289,27 @@ class SavedGroupsPage extends Component {
           allClasses: allClasses,
           currentClass: updatedClass,
         });
-      })
-      .catch((error) => {
-        this.setState({ error });
-      });
+      // })
+      // .catch((error) => {
+      //   this.setState({ error });
+      // });
   }
 
   deleteClass = () => {
     // this also deletes any classes within the group
-    const { currentClassGroupings, currentClass, allClasses, allGroupings, } = this.state;
-    this.handleHideModal('showDeleteClassModal');
-    currentClassGroupings.forEach((grouping) => {
-      MixedApiService.deleteGrouping(grouping.id)
-        .catch((error) => {
-          this.setState({ error });
-        });
-    });
-    MixedApiService.deleteClass(currentClass.id)
-      .catch((error) => {
-        this.setState({ error });
-      });
+    const { currentClass, allClasses, allGroupings, } = this.state;
+    // const { currentClassGroupings, currentClass, allClasses, allGroupings, } = this.state;
+    // this.handleHideModal('showDeleteClassModal');
+    // currentClassGroupings.forEach((grouping) => {
+    //   MixedApiService.deleteGrouping(grouping.id)
+    //     .catch((error) => {
+    //       this.setState({ error });
+    //     });
+    // });
+    // MixedApiService.deleteClass(currentClass.id)
+    //   .catch((error) => {
+    //     this.setState({ error });
+    //   });
 
     const updatedAllClasses = allClasses.filter(
       (classObj) => classObj.id !== currentClass.id
@@ -359,10 +360,10 @@ class SavedGroupsPage extends Component {
   deleteGrouping = () => {
     const { allGroupings, currentClassGroupings, currentGrouping } = this.state;
     this.handleHideModal('showDeleteGroupingModal');
-    MixedApiService.deleteGrouping(currentGrouping.id)
-      .catch((error) => {
-        this.setState({ error });
-      });
+    // MixedApiService.deleteGrouping(currentGrouping.id)
+    //   .catch((error) => {
+    //     this.setState({ error });
+    //   });
     const updatedAllGroupings = allGroupings.filter(
       (grouping) => grouping.id !== currentGrouping.id
     );

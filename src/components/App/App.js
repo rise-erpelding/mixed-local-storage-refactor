@@ -6,12 +6,12 @@ import MakeGroupsPage from '../../routes/MakeGroupsPage/MakeGroupsPage';
 import GroupsMadePage from '../../routes/GroupsMadePage/GroupsMadePage';
 import SavedGroupsPage from '../../routes/SavedGroupsPage/SavedGroupsPage';
 import NotFoundPage from '../../routes/NotFoundPage/NotFoundPage';
-import LoginPage from '../../routes/LoginPage/LoginPage';
-import PrivateRoute from '../../Utils/PrivateRoute';
-import PublicOnlyRoute from '../../Utils/PublicOnlyRoute';
+// import LoginPage from '../../routes/LoginPage/LoginPage';
+// import PrivateRoute from '../../Utils/PrivateRoute';
+// import PublicOnlyRoute from '../../Utils/PublicOnlyRoute';
 import NavBar from '../NavBar/NavBar';
 import Footer from '../Footer/Footer';
-import TokenService from '../../services/token-service';
+// import TokenService from '../../services/token-service';
 import ls from 'local-storage';
 import './App.css';
 
@@ -21,9 +21,9 @@ class App extends Component {
     this.state = {
       data: {},
       studentArr: [],
-      isLoggedIn: TokenService.hasAuthToken(),
+      // isLoggedIn: TokenService.hasAuthToken(),
     };
-    this.toggleLogin = this.toggleLogin.bind(this);
+    // this.toggleLogin = this.toggleLogin.bind(this);
   }
 
   addData = (data) => { // adds generator data to local storage so it will persist until saved
@@ -47,13 +47,13 @@ class App extends Component {
     ls.set('categoryNames', catNamesArr);
   }
 
-  toggleLogin() {
-    const { isLoggedIn } = this.state;
-    this.setState({ isLoggedIn: !isLoggedIn });
-  }
+  // toggleLogin() {
+  //   const { isLoggedIn } = this.state;
+  //   this.setState({ isLoggedIn: !isLoggedIn });
+  // }
 
   render() {
-    const { data, groupings, isLoggedIn } = this.state;
+    const { data, groupings } = this.state;
 
     const contextValue = {
       data,
@@ -62,13 +62,12 @@ class App extends Component {
       removePrevData: this.removePrevData,
       addStudentArr: this.addStudentArr,
       addCatNames: this.addCatNames,
-      toggleLogin: this.toggleLogin,
     };
 
     return (
       <div className="app">
         <MixEdContext.Provider value={contextValue}>
-        <NavBar login={isLoggedIn} />
+        <NavBar />
         <Switch>
           <Route 
             exact
@@ -81,16 +80,16 @@ class App extends Component {
           />
           <Route
             path="/groups-made"
-            component={(props) => <GroupsMadePage login={isLoggedIn} {...props} />}
+            component={(props) => <GroupsMadePage {...props} />}
           />
-          <PrivateRoute
+          <Route
             path="/my-groups"
             component={SavedGroupsPage}
           />
-          <PublicOnlyRoute
+          {/* <PublicOnlyRoute
             path="/login"
             component={LoginPage}
-          />
+          /> */}
           <Route
             component={NotFoundPage}
           />
