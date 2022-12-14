@@ -190,6 +190,7 @@ class MakeGroupsPage extends Component {
     });
   }
 
+  // shiftCategoryLeft and shiftCategoryRight can be more dynamic, set up a shiftCategory method instead
   shiftCategoryLeft(event, index) {
     const { categoryTypes, categoryNames, categoryVals } = this.state;
     const catTypeArr = [...categoryTypes];
@@ -436,11 +437,15 @@ class MakeGroupsPage extends Component {
     return (
       <main className="make-groups-page">
         <div className="make-groups-page__body-container">
+          {/* create a separate h1 component here */}
         <h1>Group Generator</h1>
+        {/* create a separate form component, pass in classname and onSubmit as props */}
         <form
           className="make-groups-page__form"
           onSubmit={this.handleSubmit}
         >
+          {/* break out grouping characteristics component */}
+          {/* note that the value here gets saved to state, this is going to have to be moved to context i think if we need to pass it to a parent */}
           <fieldset
             className="make-groups-page__form--grouping-characteristics"
           >
@@ -486,6 +491,7 @@ class MakeGroupsPage extends Component {
               <label htmlFor="grouping-mixed">Group members are diverse</label>
             </div>
           </fieldset>
+          {/* break out student data */}
           <div className="make-groups-page__form--student-data">
             <fieldset
               className="make-groups-page__form--fieldset"
@@ -523,11 +529,13 @@ class MakeGroupsPage extends Component {
             <ValidationError message={this.validateTextareaLines()} />
             <ValidationError message={this.validateCatNumbers()} />
           </div>
+          {/* break this out into something called form controls or something */}
           <div className="make-groups-page__form--buttons">
               <button
                 type="button"
                 onClick={this.addCategory}
               >
+                {/* this button container definitely can be broken out */}
                 <div className="make-groups-page__button--container">
                     <div>
                     Add Category
@@ -588,6 +596,7 @@ class MakeGroupsPage extends Component {
                   </div>
             </button>
           </div>
+          {/* break this out into a component or reuse the one for the form controls if it makes sense to do so */}
           <div className="make-groups-page__sampledata--buttons">
             <button
               type="button"
