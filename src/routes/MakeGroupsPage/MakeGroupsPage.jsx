@@ -6,6 +6,8 @@ import MixEdContext from '../../context/MixEdContext';
 import createDifferentGroups from '../../services/groupingAlgorithms/differentGroups';
 import createSimilarGroups from '../../services/groupingAlgorithms/similarGroups';
 import MakeGroupsService from '../../services/make-groups-service';
+// import { MakeGroupsForm } from '../../components/MakeGroupsForm/MakeGroupsForm';
+import { ButtonTextIcon } from '../../components/ButtonTextIcon/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import store from '../../services/store';
 import propTypes from 'prop-types';
@@ -403,9 +405,8 @@ class MakeGroupsPage extends Component {
                     <div>
                     Increase Priority
                     </div>
-                    <div>
+                    <div className="make-groups-page__button--icon-container">
                       <FontAwesomeIcon
-                        className="make-groups-page__button--icon"
                         icon="plus"
                       />
                     </div>
@@ -421,9 +422,8 @@ class MakeGroupsPage extends Component {
                     <div>
                     Decrease Priority
                     </div>
-                    <div>
+                    <div className="make-groups-page__button--icon-container">
                       <FontAwesomeIcon
-                        className="make-groups-page__button--icon"
                         icon="minus"
                       />
                     </div>
@@ -437,7 +437,6 @@ class MakeGroupsPage extends Component {
     return (
       <main className="make-groups-page">
         <div className="make-groups-page__body-container">
-          {/* create a separate h1 component here */}
         <h1>Group Generator</h1>
         {/* create a separate form component, pass in classname and onSubmit as props */}
         <form
@@ -531,70 +530,28 @@ class MakeGroupsPage extends Component {
           </div>
           {/* break this out into something called form controls or something */}
           <div className="make-groups-page__form--buttons">
-              <button
-                type="button"
-                onClick={this.addCategory}
-              >
-                {/* this button container definitely can be broken out */}
-                <div className="make-groups-page__button--container">
-                    <div>
-                    Add Category
-                    </div>
-                    <div>
-                      <FontAwesomeIcon
-                        className="make-groups-page__button--icon"
-                        icon="plus"
-                      />
-                    </div>
-                  </div>
-              </button>
-              <button
-                type="button"
-                onClick={this.removeCategory}
-              >
-                <div className="make-groups-page__button--container">
-                    <div>
-                    Remove Category
-                    </div>
-                    <div>
-                      <FontAwesomeIcon
-                        className="make-groups-page__button--icon"
-                        icon="minus"
-                      />
-                    </div>
-                  </div>
-              </button>
-            <button
-              type="button"
-              onClick={this.handleClickCancel}
-            >
-              <div className="make-groups-page__button--container">
-                    <div>
-                    Cancel Generator
-                    </div>
-                    <div>
-                      <FontAwesomeIcon
-                        className="make-groups-page__button--icon"
-                        icon="window-close"
-                      />
-                    </div>
-                  </div>
-            </button>
-            <button type="submit">
-            <div
-              className="make-groups-page__button--container
-              make-groups-page__button--generate-groups">
-                    <div>
-                    Generate Groups
-                    </div>
-                    <div>
-                      <FontAwesomeIcon
-                        className="make-groups-page__button--icon"
-                        icon="arrow-right"
-                      />
-                    </div>
-                  </div>
-            </button>
+            <ButtonTextIcon
+              buttonIcon={<FontAwesomeIcon icon="plus"/>}
+              buttonText='Add Category'
+              handleClick={this.addCategory}
+            />
+            <ButtonTextIcon
+              buttonIcon={<FontAwesomeIcon icon="minus"/>}
+              buttonText='Remove Category'
+              handleClick={this.removeCategory}
+            />
+            <ButtonTextIcon
+              buttonIcon={<FontAwesomeIcon icon="window-close" />}
+              buttonText='Cancel Generator'
+              handleClick={this.handleClickCancel}
+            />
+            <ButtonTextIcon
+              buttonIcon={<FontAwesomeIcon icon="arrow-right" />}
+              buttonText='Generate Groups'
+              customContainerClass='bold'
+              handleClick={null}
+              type='submit'
+            />
           </div>
           {/* break this out into a component or reuse the one for the form controls if it makes sense to do so */}
           <div className="make-groups-page__sampledata--buttons">
@@ -606,8 +563,8 @@ class MakeGroupsPage extends Component {
                     <div>
                     See sample dataset
                     </div>
-                    <div>
-                      <span className="make-groups-page__button--icon">
+                    <div className="make-groups-page__button--icon-container">
+                      <span>
                         1
                       </span>
                     </div>
@@ -621,8 +578,8 @@ class MakeGroupsPage extends Component {
                     <div>
                     See sample dataset
                     </div>
-                    <div>
-                      <span className="make-groups-page__button--icon">
+                    <div className="make-groups-page__button--icon-container">
+                      <span>
                         2
                       </span>
                     </div>
@@ -636,8 +593,8 @@ class MakeGroupsPage extends Component {
                     <div>
                     See sample dataset
                     </div>
-                    <div>
-                      <span className="make-groups-page__button--icon">
+                    <div className="make-groups-page__button--icon-container">
+                      <span>
                         3
                       </span>
                     </div>
@@ -651,7 +608,7 @@ class MakeGroupsPage extends Component {
                     <div>
                     See sample dataset
                     </div>
-                    <div>
+                    <div className="make-groups-page__button--icon-container">
                       <span className="make-groups-page__button--icon">
                         4
                       </span>
