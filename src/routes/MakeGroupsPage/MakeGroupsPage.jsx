@@ -16,6 +16,7 @@ import ls from "local-storage";
 import { NumberInputSection } from "../../components/MakeGroupsForm/src/form-inputs/number-input";
 import { RadioInputSection } from "../../components/MakeGroupsForm/src/form-inputs/radio-input";
 import { TextAreaInputSection } from "../../components/MakeGroupsForm/src/form-inputs/textarea-input";
+import { TextInputSection } from "../../components/MakeGroupsForm/src/form-inputs/text-input";
 
 class MakeGroupsPage extends Component {
   constructor(props) {
@@ -418,19 +419,14 @@ class MakeGroupsPage extends Component {
               required
               values={["quantitative", "qualitative"]}
             />
-            <div className="make-groups-page__form--category-name">
-              <label htmlFor={`cat${i}-name`}>Category name:</label>{" "}
-              <input
-                name={`cat${i}-name`}
-                id={`cat${i}-name`}
-                type="text"
-                value={this.state.categoryNames[i]}
-                onChange={(event) => {
-                  this.updateCategoryName(event, i);
-                }}
-                required
-              />
-            </div>
+            <TextInputSection
+              className="make-groups-page__form--category-name"
+              label="Category name:"
+              name={`cat${i}-name`}
+              onChange={(event) => this.updateCategoryName(event, i)}
+              required
+              value={this.state.categoryNames[i]}
+            />
           </div>
           <TextAreaInputSection
             label="Values:"
