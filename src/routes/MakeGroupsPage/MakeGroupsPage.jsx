@@ -13,6 +13,8 @@ import store from '../../services/store';
 import propTypes from 'prop-types';
 import './MakeGroupsPage.css';
 import ls from 'local-storage';
+import { NumberInputSection } from '../../components/MakeGroupsForm/src/form-inputs/number-input';
+import { RadioInputSection } from '../../components/MakeGroupsForm/src/form-inputs/radio-input';
 
 class MakeGroupsPage extends Component {
   constructor(props) {
@@ -229,6 +231,7 @@ class MakeGroupsPage extends Component {
     if (isNaN(groupSize)) {
       groupSize = '';
     }
+    console.log(typeof groupSize)
     this.setState({ groupSize });
   }
 
@@ -339,43 +342,29 @@ class MakeGroupsPage extends Component {
         >
           <legend>{`Category ${i + 1}:`}</legend>
           <div className="make-groups-page__form--before-textarea">
-            <div className="make-groups-page__form--explanation">
-              Values corresponding to a category.
-            </div>
-            <div className="make-groups-page__form--radio-buttons">
-              <div>
-                <input
-                  name={`cat${i}-type`}
-                  id={`cat${i}-quantitative`}
-                  value="quantitative"
-                  type="radio"
-                  checked={this.state.categoryTypes[i] === 'quantitative'}
-                  onChange={(event) => { this.updateCategoryType(event, i); }}
-                  required
-                />
-                <label htmlFor={`cat${i}-quantitative`}>Quantitative (numbers)</label>
-              </div>
-              <div>
-                <input
-                  name={`cat${i}-type`}
-                  id={`cat${i}-qualitative`}
-                  value="qualitative"
-                  type="radio"
-                  checked={this.state.categoryTypes[i] === 'qualitative'}
-                  onChange={(event) => { this.updateCategoryType(event, i); }}
-                  required
-                />
-                <label htmlFor={`cat${i}-qualitative`}>Qualitative (words)</label>
-              </div>
-            </div>
+            <RadioInputSection
+              checkedStatuses={[
+                this.state.categoryTypes[i] === 'quantitative',
+                this.state.categoryTypes[i] === 'qualitative',
+              ]}
+              explanation='Values corresponding to a category.'
+              labels={['Quantitative (numbers)', 'Qualitative (words)']}
+              inputGroupName={`cat${i}-type`}
+              inputIds={[`cat${i}-quantitative`, `cat${i}-qualitative`]}
+              onChangeFunc={(event) => {this.updateCategoryType(event, i)}}
+              required
+              values={['quantitative', 'qualitative']}
+            />
             <div className="make-groups-page__form--category-name">
-              <label htmlFor={`cat${i}-name`}>Category name:</label>{' '}
+              <label htmlFor={`cat${i}-name`}>Category name:</label>{" "}
               <input
                 name={`cat${i}-name`}
                 id={`cat${i}-name`}
                 type="text"
                 value={this.state.categoryNames[i]}
-                onChange={(event) => { this.updateCategoryName(event, i); }}
+                onChange={(event) => {
+                  this.updateCategoryName(event, i);
+                }}
                 required
               />
             </div>
@@ -392,42 +381,44 @@ class MakeGroupsPage extends Component {
               columns="20"
               placeholder="Enter values here, one on each line."
               value={this.state.categoryVals[i]}
-              onChange={(event) => { this.updateCategoryVals(event, i); }}
+              onChange={(event) => {
+                this.updateCategoryVals(event, i);
+              }}
             />
           </div>
           <div className="make-groups-page__form--after-textarea">
-            {i === 0 ? '' : (
+            {i === 0 ? (
+              ""
+            ) : (
               <button
                 type="button"
-                onClick={(event) => { this.shiftCategoryLeft(event, i); }}
+                onClick={(event) => {
+                  this.shiftCategoryLeft(event, i);
+                }}
               >
                 <div className="make-groups-page__button--container">
-                    <div>
-                    Increase Priority
-                    </div>
-                    <div className="make-groups-page__button--icon-container">
-                      <FontAwesomeIcon
-                        icon="plus"
-                      />
-                    </div>
+                  <div>Increase Priority</div>
+                  <div className="make-groups-page__button--icon-container">
+                    <FontAwesomeIcon icon="plus" />
                   </div>
+                </div>
               </button>
             )}
-            {i === categoriesLength - 1 ? '' : (
+            {i === categoriesLength - 1 ? (
+              ""
+            ) : (
               <button
                 type="button"
-                onClick={(event) => { this.shiftCategoryRight(event, i); }}
+                onClick={(event) => {
+                  this.shiftCategoryRight(event, i);
+                }}
               >
                 <div className="make-groups-page__button--container">
-                    <div>
-                    Decrease Priority
-                    </div>
-                    <div className="make-groups-page__button--icon-container">
-                      <FontAwesomeIcon
-                        icon="minus"
-                      />
-                    </div>
+                  <div>Decrease Priority</div>
+                  <div className="make-groups-page__button--icon-container">
+                    <FontAwesomeIcon icon="minus" />
                   </div>
+                </div>
               </button>
             )}
           </div>
@@ -444,51 +435,30 @@ class MakeGroupsPage extends Component {
           onSubmit={this.handleSubmit}
         >
           {/* break out grouping characteristics component */}
-          {/* note that the value here gets saved to state, this is going to have to be moved to context i think if we need to pass it to a parent */}
           <fieldset
             className="make-groups-page__form--grouping-characteristics"
           >
             <legend>Grouping characteristics:</legend>
-              <div className="make-groups-page__form--explanation">
-                Choose minimum group size (slightly larger groups will be made as needed).
-              </div>
-              <label htmlFor="group-size">Group size:</label>
-              <input
-                name="group-size"
-                id="group-size"
-                type="number"
-                min="2"
-                max="20"
-                value={this.state.groupSize}
+              <NumberInputSection
+                explanation='Choose minimum group size (slightly larger groups will be made as needed).'
+                label='Group size:'
+                max={20}
+                min={2}
+                name='group-size'
                 onChange={this.updateGroupSize}
+                value={this.state.groupSize}
               />
-              <div className="make-groups-page__form--explanation">
-                Choose whether members within a group should have similar 
-                traits or differing traits.
-              </div>
-              <div className="make-groups-page__form--radio-buttons">
-                <input
-                  name="grouping-type"
-                  id="grouping-similar"
-                  value="similar"
-                  type="radio"
-                  checked={this.state.groupingType === 'similar'}
-                  onChange={this.updateGroupingType}
-                  required
-                />
-                <label htmlFor="grouping-similar">Group members are similar</label>
-              </div>
-            <div className="make-groups-page__form--radio-buttons">
-              <input
-                name="grouping-type"
-                id="grouping-mixed"
-                value="mixed"
-                type="radio"
-                checked={this.state.groupingType === 'mixed'}
-                onChange={this.updateGroupingType}
+              <RadioInputSection
+                checkedStatuses={[this.state.groupingType === 'similar', this.state.groupingType === 'mixed']}
+                explanation='Choose whether members within a group should have similar 
+                traits or differing traits.'
+                labels={['Group members are similar', 'Group members are diverse']}
+                inputGroupName='grouping-type'
+                inputIds={['grouping-similar', 'grouping-mixed']}
+                onChangeFunc={this.updateGroupingType}
+                required
+                values={['similar', 'mixed']}
               />
-              <label htmlFor="grouping-mixed">Group members are diverse</label>
-            </div>
           </fieldset>
           {/* break out student data */}
           <div className="make-groups-page__form--student-data">
