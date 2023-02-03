@@ -1,20 +1,20 @@
 /* eslint-disable no-extra-boolean-cast */
-import React, { Component } from 'react';
-import ValidationError from '../../components/ValidationError/ValidationError';
-import FirstVisitModal from '../../components/Modals/FirstVisitModal/FirstVisitModal';
-import MixEdContext from '../../context/MixEdContext';
-import createDifferentGroups from '../../services/groupingAlgorithms/differentGroups';
-import createSimilarGroups from '../../services/groupingAlgorithms/similarGroups';
-import MakeGroupsService from '../../services/make-groups-service';
+import React, { Component } from "react";
+import ValidationError from "../../components/ValidationError/ValidationError";
+import FirstVisitModal from "../../components/Modals/FirstVisitModal/FirstVisitModal";
+import MixEdContext from "../../context/MixEdContext";
+import createDifferentGroups from "../../services/groupingAlgorithms/differentGroups";
+import createSimilarGroups from "../../services/groupingAlgorithms/similarGroups";
+import MakeGroupsService from "../../services/make-groups-service";
 // import { MakeGroupsForm } from '../../components/MakeGroupsForm/MakeGroupsForm';
-import { ButtonTextIcon } from '../../components/ButtonTextIcon/index';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import store from '../../services/store';
-import propTypes from 'prop-types';
-import './MakeGroupsPage.css';
-import ls from 'local-storage';
-import { NumberInputSection } from '../../components/MakeGroupsForm/src/form-inputs/number-input';
-import { RadioInputSection } from '../../components/MakeGroupsForm/src/form-inputs/radio-input';
+import { ButtonTextIcon } from "../../components/ButtonTextIcon/index";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import store from "../../services/store";
+import propTypes from "prop-types";
+import "./MakeGroupsPage.css";
+import ls from "local-storage";
+import { NumberInputSection } from "../../components/MakeGroupsForm/src/form-inputs/number-input";
+import { RadioInputSection } from "../../components/MakeGroupsForm/src/form-inputs/radio-input";
 
 class MakeGroupsPage extends Component {
   constructor(props) {
@@ -22,13 +22,13 @@ class MakeGroupsPage extends Component {
     this.state = {
       error: null,
       groupSize: 2,
-      groupingType: '',
-      aliases: '',
+      groupingType: "",
+      aliases: "",
       categoriesLength: 1,
-      categoryTypes: [''],
-      categoryNames: [''],
-      categoryVals: [''],
-      savedData: '',
+      categoryTypes: [""],
+      categoryNames: [""],
+      categoryVals: [""],
+      savedData: "",
       showPopUp: true,
     };
   }
@@ -38,14 +38,13 @@ class MakeGroupsPage extends Component {
    * Also, if it is the first visit, do a pop up here.
    */
   componentDidMount() {
-    const visited = ls.get('alreadyVisited');
+    const visited = ls.get("alreadyVisited");
     if (!!visited) {
       this.setState({ showPopUp: false });
+    } else {
+      ls.set("alreadyVisited", true);
     }
-    else {
-      ls.set('alreadyVisited', true);
-    }
-    const savedData = ls.get('data');
+    const savedData = ls.get("data");
     if (!!savedData) {
       this.setState(savedData);
     }
@@ -77,7 +76,7 @@ class MakeGroupsPage extends Component {
       aliases,
       categoryTypes,
       categoryNames,
-      categoryVals
+      categoryVals,
     } = this.state;
     // adds data to local storage so it will be there if we navigate back to this page
     addData(this.state);
@@ -85,10 +84,9 @@ class MakeGroupsPage extends Component {
     const quantitativeIndexes = [];
     const qualitativeIndexes = [];
     categoryTypes.forEach((type, index) => {
-      if (type === 'quantitative') {
+      if (type === "quantitative") {
         quantitativeIndexes.push(index);
-      }
-      else {
+      } else {
         qualitativeIndexes.push(index);
       }
     });
@@ -97,59 +95,100 @@ class MakeGroupsPage extends Component {
     const aliasesArr = this.createTrimmedArr(aliases);
     const categoryValsArr = [...categoryVals];
     for (let i = 0; i < quantitativeIndexes.length; i++) {
-      categoryValsArr[quantitativeIndexes[i]] = this.numberizeArr(this.createTrimmedArr(categoryValsArr[quantitativeIndexes[i]]));
+      categoryValsArr[quantitativeIndexes[i]] = this.numberizeArr(
+        this.createTrimmedArr(categoryValsArr[quantitativeIndexes[i]])
+      );
     }
     for (let i = 0; i < qualitativeIndexes.length; i++) {
-      categoryValsArr[qualitativeIndexes[i]] = this.createTrimmedArr(categoryValsArr[qualitativeIndexes[i]]);
+      categoryValsArr[qualitativeIndexes[i]] = this.createTrimmedArr(
+        categoryValsArr[qualitativeIndexes[i]]
+      );
     }
 
     const studentArr = [];
     aliasesArr.forEach((alias) => studentArr.push({ alias: alias }));
-    categoryValsArr.forEach(
-      (valArr, index) => MakeGroupsService.addEachToObj(studentArr, valArr, categoryNames[index])
+    categoryValsArr.forEach((valArr, index) =>
+      MakeGroupsService.addEachToObj(studentArr, valArr, categoryNames[index])
     );
     const categoryNamesLevels = [...categoryNames];
     for (let i = 0; i < quantitativeIndexes.length; i++) {
-      categoryValsArr[quantitativeIndexes[i]] = MakeGroupsService.getLevel(categoryValsArr[quantitativeIndexes[i]], groupSize);
-      MakeGroupsService.addEachToObj(studentArr, categoryValsArr[quantitativeIndexes[i]], `${categoryNames[quantitativeIndexes[i]]} Level`);
-      categoryNamesLevels[quantitativeIndexes[i]] = `${categoryNames[quantitativeIndexes[i]]} Level`;
+      categoryValsArr[quantitativeIndexes[i]] = MakeGroupsService.getLevel(
+        categoryValsArr[quantitativeIndexes[i]],
+        groupSize
+      );
+      MakeGroupsService.addEachToObj(
+        studentArr,
+        categoryValsArr[quantitativeIndexes[i]],
+        `${categoryNames[quantitativeIndexes[i]]} Level`
+      );
+      categoryNamesLevels[quantitativeIndexes[i]] = `${
+        categoryNames[quantitativeIndexes[i]]
+      } Level`;
     }
 
-    if (groupingType === 'mixed') {
-      this.handleMixedGroups(studentArr, groupSize, categoryNamesLevels, categoryNames);
+    if (groupingType === "mixed") {
+      this.handleMixedGroups(
+        studentArr,
+        groupSize,
+        categoryNamesLevels,
+        categoryNames
+      );
     }
-    if (groupingType === 'similar') {
-      this.handleSimilarGroups(studentArr, groupSize, categoryNamesLevels, categoryNames);
+    if (groupingType === "similar") {
+      this.handleSimilarGroups(
+        studentArr,
+        groupSize,
+        categoryNamesLevels,
+        categoryNames
+      );
     }
     window.scrollTo({ top: 0 });
-    history.push('/groups-made');
-  }
+    history.push("/groups-made");
+  };
 
   useSampleData = (data) => {
     this.setState(data);
-  }
+  };
 
   handleClickCancel = () => {
     const { history } = this.props;
     history.goBack();
-  }
+  };
 
   // METHODS RELATED TO HANDLESUBMIT
-  handleMixedGroups = (studentArr, groupSize, categoryNamesLevels, categoryNames) => {
+  handleMixedGroups = (
+    studentArr,
+    groupSize,
+    categoryNamesLevels,
+    categoryNames
+  ) => {
     const { addStudentArr, addCatNames } = this.context;
-    const groups = createDifferentGroups(studentArr, groupSize, categoryNamesLevels);
+    const groups = createDifferentGroups(
+      studentArr,
+      groupSize,
+      categoryNamesLevels
+    );
     this.addGroupNumber(groups, studentArr);
     addStudentArr(studentArr);
     addCatNames(categoryNames);
-  }
+  };
 
-  handleSimilarGroups = (studentArr, groupSize, categoryNamesLevels, categoryNames) => {
+  handleSimilarGroups = (
+    studentArr,
+    groupSize,
+    categoryNamesLevels,
+    categoryNames
+  ) => {
     const { addStudentArr, addCatNames } = this.context;
-    const groups = createSimilarGroups(studentArr, groupSize, categoryNamesLevels);
+    const groups = createSimilarGroups(
+      studentArr,
+      groupSize,
+      categoryNamesLevels
+    );
     this.addGroupNumber(groups, studentArr);
     addStudentArr(studentArr);
     addCatNames(categoryNames);
-  }
+  };
 
   addGroupNumber = (groups, students) => {
     groups.forEach((group, index) => {
@@ -161,7 +200,7 @@ class MakeGroupsPage extends Component {
         });
       });
     });
-  }
+  };
 
   // METHODS FOR BUTTONS THAT CONTROL CATEGORIES
   addCategory = () => {
@@ -170,11 +209,11 @@ class MakeGroupsPage extends Component {
     this.setState({ categoriesLength });
     const { categoryTypes, categoryNames, categoryVals } = this.state;
     this.setState({
-      categoryTypes: [...categoryTypes, ''],
-      categoryNames: [...categoryNames, ''],
-      categoryVals: [...categoryVals, ''],
+      categoryTypes: [...categoryTypes, ""],
+      categoryNames: [...categoryNames, ""],
+      categoryVals: [...categoryVals, ""],
     });
-  }
+  };
 
   removeCategory = () => {
     let { categoriesLength } = this.state;
@@ -190,9 +229,9 @@ class MakeGroupsPage extends Component {
     this.setState({
       categoryTypes: catTypeArr,
       categoryNames: catNameArr,
-      categoryVals: catValArr
+      categoryVals: catValArr,
     });
-  }
+  };
 
   // shiftCategoryLeft and shiftCategoryRight can be more dynamic, set up a shiftCategory method instead
   shiftCategoryLeft(event, index) {
@@ -200,13 +239,22 @@ class MakeGroupsPage extends Component {
     const catTypeArr = [...categoryTypes];
     const catNameArr = [...categoryNames];
     const catValArr = [...categoryVals];
-    [catTypeArr[index - 1], catTypeArr[index]] = [catTypeArr[index], catTypeArr[index - 1]];
-    [catNameArr[index - 1], catNameArr[index]] = [catNameArr[index], catNameArr[index - 1]];
-    [catValArr[index - 1], catValArr[index]] = [catValArr[index], catValArr[index - 1]];
+    [catTypeArr[index - 1], catTypeArr[index]] = [
+      catTypeArr[index],
+      catTypeArr[index - 1],
+    ];
+    [catNameArr[index - 1], catNameArr[index]] = [
+      catNameArr[index],
+      catNameArr[index - 1],
+    ];
+    [catValArr[index - 1], catValArr[index]] = [
+      catValArr[index],
+      catValArr[index - 1],
+    ];
     this.setState({
       categoryTypes: catTypeArr,
       categoryNames: catNameArr,
-      categoryVals: catValArr
+      categoryVals: catValArr,
     });
   }
 
@@ -215,13 +263,22 @@ class MakeGroupsPage extends Component {
     const catTypeArr = [...categoryTypes];
     const catNameArr = [...categoryNames];
     const catValArr = [...categoryVals];
-    [catTypeArr[index], catTypeArr[index + 1]] = [catTypeArr[index + 1], catTypeArr[index]];
-    [catNameArr[index], catNameArr[index + 1]] = [catNameArr[index + 1], catNameArr[index]];
-    [catValArr[index], catValArr[index + 1]] = [catValArr[index + 1], catValArr[index]];
+    [catTypeArr[index], catTypeArr[index + 1]] = [
+      catTypeArr[index + 1],
+      catTypeArr[index],
+    ];
+    [catNameArr[index], catNameArr[index + 1]] = [
+      catNameArr[index + 1],
+      catNameArr[index],
+    ];
+    [catValArr[index], catValArr[index + 1]] = [
+      catValArr[index + 1],
+      catValArr[index],
+    ];
     this.setState({
       categoryTypes: catTypeArr,
       categoryNames: catNameArr,
-      categoryVals: catValArr
+      categoryVals: catValArr,
     });
   }
 
@@ -229,50 +286,48 @@ class MakeGroupsPage extends Component {
   updateGroupSize = (e) => {
     let groupSize = parseInt(e.target.value);
     if (isNaN(groupSize)) {
-      groupSize = '';
+      groupSize = "";
     }
-    console.log(typeof groupSize)
     this.setState({ groupSize });
-  }
+  };
 
   updateGroupingType = (e) => {
     this.setState({ groupingType: e.target.value });
-  }
+  };
 
   updateAliases = (e) => {
     this.setState({ aliases: e.target.value });
-  }
+  };
 
   updateCategoryType = (event, index) => {
     const { categoryTypes } = this.state;
     const catTypeArr = [...categoryTypes];
     catTypeArr.splice(index, 1, event.target.value);
     this.setState({ categoryTypes: catTypeArr });
-  }
+  };
 
   updateCategoryName = (event, index) => {
     const { categoryNames } = this.state;
     const catNameArr = [...categoryNames];
     catNameArr.splice(index, 1, event.target.value);
     this.setState({ categoryNames: catNameArr });
-  }
+  };
 
   updateCategoryVals = (event, index) => {
     const { categoryVals } = this.state;
     const catValArr = [...categoryVals];
     catValArr.splice(index, 1, event.target.value);
     this.setState({ categoryVals: catValArr });
-  }
-
+  };
 
   // METHODS FOR VALIDATING FORM VALUES
   validateAliases = () => {
     const { aliases } = this.state;
     const aliasesArray = this.createTrimmedArr(aliases);
     if (aliasesArray.length < 3) {
-      return 'At least 3 aliases are required in order to generate groups.';
+      return "At least 3 aliases are required in order to generate groups.";
     }
-  }
+  };
 
   validateAliasUniqueness = () => {
     const { aliases } = this.state;
@@ -280,53 +335,58 @@ class MakeGroupsPage extends Component {
     const uniqueAliasesSet = new Set(aliasesArray);
     const uniqueAliasesArray = [...uniqueAliasesSet];
     if (uniqueAliasesArray.length !== aliasesArray.length) {
-      return 'No duplicate aliases allowed.';
+      return "No duplicate aliases allowed.";
     }
-  }
+  };
 
   validateDataSize = () => {
     const { aliases, groupSize } = this.state;
     const aliasesArray = this.createTrimmedArr(aliases);
-    if ((aliasesArray.length / groupSize) < 2) {
+    if (aliasesArray.length / groupSize < 2) {
       return `More aliases required in order to make groups of size ${groupSize}.`;
     }
-  }
+  };
 
   validateTextareaLines = () => {
     // check that each textarea has the same number of lines
     const { aliases, categoryVals } = this.state;
     const aliasesArray = this.createTrimmedArr(aliases);
-    const valsArrays = categoryVals.map((category) => this.createTrimmedArr(category).length);
+    const valsArrays = categoryVals.map(
+      (category) => this.createTrimmedArr(category).length
+    );
     if (!valsArrays.every((length) => length === aliasesArray.length)) {
       return `Alias values and category values must all have the same number of lines.`;
     }
-  }
+  };
 
   validateCatNumbers = () => {
     const { categoryTypes, categoryVals } = this.state;
     const quantitativeIndexes = [];
     categoryTypes.forEach((type, index) => {
-      if (type === 'quantitative') {
+      if (type === "quantitative") {
         quantitativeIndexes.push(index);
       }
     });
     for (let i = 0; i < quantitativeIndexes.length; i++) {
-      const categoryArr = this.createTrimmedArr(categoryVals[quantitativeIndexes[i]]);
+      const categoryArr = this.createTrimmedArr(
+        categoryVals[quantitativeIndexes[i]]
+      );
       const numbersArr = this.numberizeArr(categoryArr);
       if (numbersArr.includes(NaN)) {
-        return 'Quantitative data can only consist of numbers.';
+        return "Quantitative data can only consist of numbers.";
       }
     }
-  }
+  };
 
   // FIRST VISIT POP UP
   handleHidePopUp = () => {
     this.setState({ showPopUp: false });
-  }
+  };
 
   // HELPER METHODS
   // creates array, trimming excess whitespace
-  createTrimmedArr = (vals) => vals.split(`\n`).filter((val) => !!val.trim().length);
+  createTrimmedArr = (vals) =>
+    vals.split(`\n`).filter((val) => !!val.trim().length);
 
   // turns quantitative category values to numbers
   numberizeArr = (arr) => arr.map((val) => Number(val));
@@ -344,16 +404,18 @@ class MakeGroupsPage extends Component {
           <div className="make-groups-page__form--before-textarea">
             <RadioInputSection
               checkedStatuses={[
-                this.state.categoryTypes[i] === 'quantitative',
-                this.state.categoryTypes[i] === 'qualitative',
+                this.state.categoryTypes[i] === "quantitative",
+                this.state.categoryTypes[i] === "qualitative",
               ]}
-              explanation='Values corresponding to a category.'
-              labels={['Quantitative (numbers)', 'Qualitative (words)']}
+              explanation="Values corresponding to a category."
+              labels={["Quantitative (numbers)", "Qualitative (words)"]}
               inputGroupName={`cat${i}-type`}
               inputIds={[`cat${i}-quantitative`, `cat${i}-qualitative`]}
-              onChangeFunc={(event) => {this.updateCategoryType(event, i)}}
+              onChangeFunc={(event) => {
+                this.updateCategoryType(event, i);
+              }}
               required
-              values={['quantitative', 'qualitative']}
+              values={["quantitative", "qualitative"]}
             />
             <div className="make-groups-page__form--category-name">
               <label htmlFor={`cat${i}-name`}>Category name:</label>{" "}
@@ -428,116 +490,114 @@ class MakeGroupsPage extends Component {
     return (
       <main className="make-groups-page">
         <div className="make-groups-page__body-container">
-        <h1>Group Generator</h1>
-        {/* create a separate form component, pass in classname and onSubmit as props */}
-        <form
-          className="make-groups-page__form"
-          onSubmit={this.handleSubmit}
-        >
-          {/* break out grouping characteristics component */}
-          <fieldset
-            className="make-groups-page__form--grouping-characteristics"
-          >
-            <legend>Grouping characteristics:</legend>
+          <h1>Group Generator</h1>
+          {/* create a separate form component, pass in classname and onSubmit as props */}
+          <form className="make-groups-page__form" onSubmit={this.handleSubmit}>
+            {/* break out grouping characteristics component */}
+            <fieldset className="make-groups-page__form--grouping-characteristics">
+              <legend>Grouping characteristics:</legend>
               <NumberInputSection
-                explanation='Choose minimum group size (slightly larger groups will be made as needed).'
-                label='Group size:'
+                explanation="Choose minimum group size (slightly larger groups will be made as needed)."
+                label="Group size:"
                 max={20}
                 min={2}
-                name='group-size'
+                name="group-size"
                 onChange={this.updateGroupSize}
                 value={this.state.groupSize}
               />
               <RadioInputSection
-                checkedStatuses={[this.state.groupingType === 'similar', this.state.groupingType === 'mixed']}
-                explanation='Choose whether members within a group should have similar 
-                traits or differing traits.'
-                labels={['Group members are similar', 'Group members are diverse']}
-                inputGroupName='grouping-type'
-                inputIds={['grouping-similar', 'grouping-mixed']}
+                checkedStatuses={[
+                  this.state.groupingType === "similar",
+                  this.state.groupingType === "mixed",
+                ]}
+                explanation="Choose whether members within a group should have similar 
+                traits or differing traits."
+                labels={[
+                  "Group members are similar",
+                  "Group members are diverse",
+                ]}
+                inputGroupName="grouping-type"
+                inputIds={["grouping-similar", "grouping-mixed"]}
                 onChangeFunc={this.updateGroupingType}
                 required
-                values={['similar', 'mixed']}
+                values={["similar", "mixed"]}
               />
-          </fieldset>
-          {/* break out student data */}
-          <div className="make-groups-page__form--student-data">
-            <fieldset
-              className="make-groups-page__form--fieldset"
-            >
-              <legend>Aliases:</legend>
-              <div className="make-groups-page__form--before-textarea">
-                <div className="make-groups-page__form--explanation">
-                  List of names or other identifier.
-                </div>
-                <ValidationError message={this.validateAliases()} />
-                <ValidationError message={this.validateAliasUniqueness()} />
-                <ValidationError message={this.validateDataSize()} />
-              </div>
-              <div>
-                <div>
-                  <label htmlFor="aliases">Values:</label>
-                </div>
-                <textarea
-                  className="make-groups-page__form--textarea"
-                  id="aliases"
-                  name="aliases"
-                  rows="26"
-                  columns="20"
-                  placeholder="Enter aliases here, one on each line."
-                  value={this.state.aliases}
-                  onChange={this.updateAliases}
-                />
-              </div>
-              <div className="make-groups-page__form--after-textarea"></div>
             </fieldset>
-            {categories}
-            
-          </div>
-          <div>
-            <ValidationError message={this.validateTextareaLines()} />
-            <ValidationError message={this.validateCatNumbers()} />
-          </div>
-          {/* break this out into something called form controls or something */}
-          <div className="make-groups-page__form--buttons">
-            <ButtonTextIcon
-              buttonIcon={<FontAwesomeIcon icon="plus"/>}
-              buttonText='Add Category'
-              handleClick={this.addCategory}
-            />
-            <ButtonTextIcon
-              buttonIcon={<FontAwesomeIcon icon="minus"/>}
-              buttonText='Remove Category'
-              handleClick={this.removeCategory}
-            />
-            <ButtonTextIcon
-              buttonIcon={<FontAwesomeIcon icon="window-close" />}
-              buttonText='Cancel Generator'
-              handleClick={this.handleClickCancel}
-            />
-            <ButtonTextIcon
-              buttonIcon={<FontAwesomeIcon icon="arrow-right" />}
-              buttonText='Generate Groups'
-              customContainerClass='bold'
-              handleClick={null}
-              type='submit'
-            />
-          </div>
-          <div className="make-groups-page__sampledata--buttons">
-            {store.map((dataset, index) => (
+            {/* break out student data */}
+            <div className="make-groups-page__form--student-data">
+              <fieldset className="make-groups-page__form--fieldset">
+                <legend>Aliases:</legend>
+                <div className="make-groups-page__form--before-textarea">
+                  <div className="make-groups-page__form--explanation">
+                    List of names or other identifier.
+                  </div>
+                  <ValidationError message={this.validateAliases()} />
+                  <ValidationError message={this.validateAliasUniqueness()} />
+                  <ValidationError message={this.validateDataSize()} />
+                </div>
+                <div>
+                  <div>
+                    <label htmlFor="aliases">Values:</label>
+                  </div>
+                  <textarea
+                    className="make-groups-page__form--textarea"
+                    id="aliases"
+                    name="aliases"
+                    rows="26"
+                    columns="20"
+                    placeholder="Enter aliases here, one on each line."
+                    value={this.state.aliases}
+                    onChange={this.updateAliases}
+                  />
+                </div>
+                <div className="make-groups-page__form--after-textarea"></div>
+              </fieldset>
+              {categories}
+            </div>
+            <div>
+              <ValidationError message={this.validateTextareaLines()} />
+              <ValidationError message={this.validateCatNumbers()} />
+            </div>
+            {/* break this out into something called form controls or something */}
+            <div className="make-groups-page__form--buttons">
               <ButtonTextIcon
-                key={index}
-                buttonIcon={<span>{index + 1}</span>}
-                buttonText='See sample dataset'
-                handleClick={() => this.useSampleData(dataset)}
+                buttonIcon={<FontAwesomeIcon icon="plus" />}
+                buttonText="Add Category"
+                handleClick={this.addCategory}
               />
-            ))}
-          </div>
-        </form>
-        <FirstVisitModal
-          show={showPopUp}
-          handleClose={this.handleHidePopUp}
-        />
+              <ButtonTextIcon
+                buttonIcon={<FontAwesomeIcon icon="minus" />}
+                buttonText="Remove Category"
+                handleClick={this.removeCategory}
+              />
+              <ButtonTextIcon
+                buttonIcon={<FontAwesomeIcon icon="window-close" />}
+                buttonText="Cancel Generator"
+                handleClick={this.handleClickCancel}
+              />
+              <ButtonTextIcon
+                buttonIcon={<FontAwesomeIcon icon="arrow-right" />}
+                buttonText="Generate Groups"
+                customContainerClass="bold"
+                handleClick={null}
+                type="submit"
+              />
+            </div>
+            <div className="make-groups-page__sampledata--buttons">
+              {store.map((dataset, index) => (
+                <ButtonTextIcon
+                  key={index}
+                  buttonIcon={<span>{index + 1}</span>}
+                  buttonText="See sample dataset"
+                  handleClick={() => this.useSampleData(dataset)}
+                />
+              ))}
+            </div>
+          </form>
+          <FirstVisitModal
+            show={showPopUp}
+            handleClose={this.handleHidePopUp}
+          />
         </div>
       </main>
     );
