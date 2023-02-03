@@ -17,6 +17,7 @@ import { NumberInputSection } from "../../components/MakeGroupsForm/src/form-inp
 import { RadioInputSection } from "../../components/MakeGroupsForm/src/form-inputs/radio-input";
 import { TextAreaInputSection } from "../../components/MakeGroupsForm/src/form-inputs/textarea-input";
 import { TextInputSection } from "../../components/MakeGroupsForm/src/form-inputs/text-input";
+import { swapArrItems } from "../../services/helpers/swap";
 
 class MakeGroupsPage extends Component {
   constructor(props) {
@@ -235,52 +236,13 @@ class MakeGroupsPage extends Component {
     });
   };
 
-  // shiftCategoryLeft and shiftCategoryRight can be more dynamic, set up a shiftCategory method instead
-  shiftCategoryLeft(event, index) {
+  shiftCategory(index, direction = 'left') {
     const { categoryTypes, categoryNames, categoryVals } = this.state;
-    const catTypeArr = [...categoryTypes];
-    const catNameArr = [...categoryNames];
-    const catValArr = [...categoryVals];
-    [catTypeArr[index - 1], catTypeArr[index]] = [
-      catTypeArr[index],
-      catTypeArr[index - 1],
-    ];
-    [catNameArr[index - 1], catNameArr[index]] = [
-      catNameArr[index],
-      catNameArr[index - 1],
-    ];
-    [catValArr[index - 1], catValArr[index]] = [
-      catValArr[index],
-      catValArr[index - 1],
-    ];
+    const desiredIndex = direction === 'right' ? index + 1 : index - 1;
     this.setState({
-      categoryTypes: catTypeArr,
-      categoryNames: catNameArr,
-      categoryVals: catValArr,
-    });
-  }
-
-  shiftCategoryRight(event, index) {
-    const { categoryTypes, categoryNames, categoryVals } = this.state;
-    const catTypeArr = [...categoryTypes];
-    const catNameArr = [...categoryNames];
-    const catValArr = [...categoryVals];
-    [catTypeArr[index], catTypeArr[index + 1]] = [
-      catTypeArr[index + 1],
-      catTypeArr[index],
-    ];
-    [catNameArr[index], catNameArr[index + 1]] = [
-      catNameArr[index + 1],
-      catNameArr[index],
-    ];
-    [catValArr[index], catValArr[index + 1]] = [
-      catValArr[index + 1],
-      catValArr[index],
-    ];
-    this.setState({
-      categoryTypes: catTypeArr,
-      categoryNames: catNameArr,
-      categoryVals: catValArr,
+      categoryTypes: swapArrItems(categoryTypes, index, desiredIndex),
+      categoryNames: swapArrItems(categoryNames, index, desiredIndex),
+      categoryVals: swapArrItems(categoryVals, index, desiredIndex),
     });
   }
 
@@ -442,7 +404,7 @@ class MakeGroupsPage extends Component {
               <ButtonTextIcon
                 buttonText="Increase Priority"
                 buttonIcon={<FontAwesomeIcon icon="plus" />}
-                handleClick={(event) => this.shiftCategoryLeft(event, i)}
+                handleClick={() => this.shiftCategory(i, 'left')}
               />
             )}
             {i === categoriesLength - 1 ? (
@@ -451,7 +413,7 @@ class MakeGroupsPage extends Component {
               <ButtonTextIcon
                 buttonText="Decrease Priority"
                 buttonIcon={<FontAwesomeIcon icon="minus" />}
-                handleClick={(event) => this.shiftCategoryRight(event, i)}
+                handleClick={() => this.shiftCategory(i, 'right')}
               />
             )}
           </div>
