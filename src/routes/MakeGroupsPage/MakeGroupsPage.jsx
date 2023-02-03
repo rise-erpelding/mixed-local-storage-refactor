@@ -15,6 +15,7 @@ import "./MakeGroupsPage.css";
 import ls from "local-storage";
 import { NumberInputSection } from "../../components/MakeGroupsForm/src/form-inputs/number-input";
 import { RadioInputSection } from "../../components/MakeGroupsForm/src/form-inputs/radio-input";
+import { TextAreaInputSection } from "../../components/MakeGroupsForm/src/form-inputs/textarea-input";
 
 class MakeGroupsPage extends Component {
   constructor(props) {
@@ -431,23 +432,13 @@ class MakeGroupsPage extends Component {
               />
             </div>
           </div>
-          <div>
-            <div>
-              <label htmlFor={`cat${i}-vals`}>Values:</label>
-            </div>
-            <textarea
-              className="make-groups-page__form--textarea"
-              id={`cat${i}-vals`}
-              name={`cat${i}-vals`}
-              rows="26"
-              columns="20"
-              placeholder="Enter values here, one on each line."
-              value={this.state.categoryVals[i]}
-              onChange={(event) => {
-                this.updateCategoryVals(event, i);
-              }}
-            />
-          </div>
+          <TextAreaInputSection
+            label="Values:"
+            name={`cat${i}-vals`}
+            onChange={(event) => this.updateCategoryVals(event, i)}
+            placeholderText="Enter values here, one on each line."
+            value={this.state.categoryVals[i]}
+          />
           <div className="make-groups-page__form--after-textarea">
             {i === 0 ? (
               ""
