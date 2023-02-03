@@ -439,36 +439,20 @@ class MakeGroupsPage extends Component {
             {i === 0 ? (
               ""
             ) : (
-              <button
-                type="button"
-                onClick={(event) => {
-                  this.shiftCategoryLeft(event, i);
-                }}
-              >
-                <div className="make-groups-page__button--container">
-                  <div>Increase Priority</div>
-                  <div className="make-groups-page__button--icon-container">
-                    <FontAwesomeIcon icon="plus" />
-                  </div>
-                </div>
-              </button>
+              <ButtonTextIcon
+                buttonText="Increase Priority"
+                buttonIcon={<FontAwesomeIcon icon="plus" />}
+                handleClick={(event) => this.shiftCategoryLeft(event, i)}
+              />
             )}
             {i === categoriesLength - 1 ? (
               ""
             ) : (
-              <button
-                type="button"
-                onClick={(event) => {
-                  this.shiftCategoryRight(event, i);
-                }}
-              >
-                <div className="make-groups-page__button--container">
-                  <div>Decrease Priority</div>
-                  <div className="make-groups-page__button--icon-container">
-                    <FontAwesomeIcon icon="minus" />
-                  </div>
-                </div>
-              </button>
+              <ButtonTextIcon
+                buttonText="Decrease Priority"
+                buttonIcon={<FontAwesomeIcon icon="minus" />}
+                handleClick={(event) => this.shiftCategoryRight(event, i)}
+              />
             )}
           </div>
         </fieldset>

@@ -22,7 +22,3 @@ ButtonTextIcon.propTypes = {
   customContainerClass: propTypes.string,
   type: propTypes.string,
 };
-
-// const buttonIcons = {
-//   plus: 
-// }
