@@ -123,8 +123,8 @@ class MakeGroupsPage extends Component {
     history.push('/groups-made');
   }
 
-  useSampleData = (datasetNum) => {
-    this.setState(store['sampleData' + datasetNum]);
+  useSampleData = (data) => {
+    this.setState(data);
   }
 
   handleClickCancel = () => {
@@ -553,68 +553,15 @@ class MakeGroupsPage extends Component {
               type='submit'
             />
           </div>
-          {/* break this out into a component or reuse the one for the form controls if it makes sense to do so */}
           <div className="make-groups-page__sampledata--buttons">
-            <button
-              type="button"
-              onClick={() => this.useSampleData(1)}
-            >
-              <div className="make-groups-page__button--container">
-                    <div>
-                    See sample dataset
-                    </div>
-                    <div className="make-groups-page__button--icon-container">
-                      <span>
-                        1
-                      </span>
-                    </div>
-                  </div>
-          </button>
-            <button
-              type="button"
-              onClick={() => this.useSampleData(2)}
-            >
-              <div className="make-groups-page__button--container">
-                    <div>
-                    See sample dataset
-                    </div>
-                    <div className="make-groups-page__button--icon-container">
-                      <span>
-                        2
-                      </span>
-                    </div>
-                  </div>
-          </button>
-            <button
-              type="button"
-              onClick={() => this.useSampleData(3)}
-            >
-              <div className="make-groups-page__button--container">
-                    <div>
-                    See sample dataset
-                    </div>
-                    <div className="make-groups-page__button--icon-container">
-                      <span>
-                        3
-                      </span>
-                    </div>
-                  </div>
-          </button>
-            <button
-              type="button"
-              onClick={() => this.useSampleData(4)}
-            >
-              <div className="make-groups-page__button--container">
-                    <div>
-                    See sample dataset
-                    </div>
-                    <div className="make-groups-page__button--icon-container">
-                      <span className="make-groups-page__button--icon">
-                        4
-                      </span>
-                    </div>
-                  </div>
-          </button>
+            {store.map((dataset, index) => (
+              <ButtonTextIcon
+                key={index}
+                buttonIcon={<span>{index + 1}</span>}
+                buttonText='See sample dataset'
+                handleClick={() => this.useSampleData(dataset)}
+              />
+            ))}
           </div>
         </form>
         <FirstVisitModal
