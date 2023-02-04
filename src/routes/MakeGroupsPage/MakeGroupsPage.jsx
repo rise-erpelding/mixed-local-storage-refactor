@@ -18,6 +18,7 @@ import { RadioInputSection } from "../../components/MakeGroupsForm/src/form-inpu
 import { TextAreaInputSection } from "../../components/MakeGroupsForm/src/form-inputs/textarea-input";
 import { TextInputSection } from "../../components/MakeGroupsForm/src/form-inputs/text-input";
 import { createTrimmedArr, numberizeArr, swapArrItems } from "../../services/helpers/helperFunctions";
+import { validateAliases, validateAliasUniqueness, validateDataSize, validateTextareaLines, validateCatNumbers } from "../../services/helpers/formValidationFunctions";
 
 class MakeGroupsPage extends Component {
   constructor(props) {
@@ -284,64 +285,6 @@ class MakeGroupsPage extends Component {
     this.setState({ categoryVals: catValArr });
   };
 
-  // METHODS FOR VALIDATING FORM VALUES
-  validateAliases = () => {
-    const { aliases } = this.state;
-    const aliasesArray = createTrimmedArr(aliases);
-    if (aliasesArray.length < 3) {
-      return "At least 3 aliases are required in order to generate groups.";
-    }
-  };
-
-  validateAliasUniqueness = () => {
-    const { aliases } = this.state;
-    const aliasesArray = createTrimmedArr(aliases);
-    const uniqueAliasesSet = new Set(aliasesArray);
-    const uniqueAliasesArray = [...uniqueAliasesSet];
-    if (uniqueAliasesArray.length !== aliasesArray.length) {
-      return "No duplicate aliases allowed.";
-    }
-  };
-
-  validateDataSize = () => {
-    const { aliases, groupSize } = this.state;
-    const aliasesArray = createTrimmedArr(aliases);
-    if (aliasesArray.length / groupSize < 2) {
-      return `More aliases required in order to make groups of size ${groupSize}.`;
-    }
-  };
-
-  validateTextareaLines = () => {
-    // check that each textarea has the same number of lines
-    const { aliases, categoryVals } = this.state;
-    const aliasesArray = createTrimmedArr(aliases);
-    const valsArrays = categoryVals.map(
-      (category) => createTrimmedArr(category).length
-    );
-    if (!valsArrays.every((length) => length === aliasesArray.length)) {
-      return `Alias values and category values must all have the same number of lines.`;
-    }
-  };
-
-  validateCatNumbers = () => {
-    const { categoryTypes, categoryVals } = this.state;
-    const quantitativeIndexes = [];
-    categoryTypes.forEach((type, index) => {
-      if (type === "quantitative") {
-        quantitativeIndexes.push(index);
-      }
-    });
-    for (let i = 0; i < quantitativeIndexes.length; i++) {
-      const categoryArr = createTrimmedArr(
-        categoryVals[quantitativeIndexes[i]]
-      );
-      const numbersArr = numberizeArr(categoryArr);
-      if (numbersArr.includes(NaN)) {
-        return "Quantitative data can only consist of numbers.";
-      }
-    }
-  };
-
   // FIRST VISIT POP UP
   handleHidePopUp = () => {
     this.setState({ showPopUp: false });
@@ -456,9 +399,9 @@ class MakeGroupsPage extends Component {
                   <div className="make-groups-page__form--explanation">
                     List of names or other identifier.
                   </div>
-                  <ValidationError message={this.validateAliases()} />
-                  <ValidationError message={this.validateAliasUniqueness()} />
-                  <ValidationError message={this.validateDataSize()} />
+                  <ValidationError message={validateAliases(this.state.aliases)} />
+                  <ValidationError message={validateAliasUniqueness(this.state.aliases)} />
+                  <ValidationError message={validateDataSize(this.state.aliases, this.state.groupSize)} />
                 </div>
                 <div>
                   <div>
@@ -480,8 +423,8 @@ class MakeGroupsPage extends Component {
               {categories}
             </div>
             <div>
-              <ValidationError message={this.validateTextareaLines()} />
-              <ValidationError message={this.validateCatNumbers()} />
+              <ValidationError message={validateTextareaLines(this.state.aliases, this.state.categoryVals)} />
+              <ValidationError message={validateCatNumbers(this.state.categoryTypes,this.state.categoryVals)} />
             </div>
             {/* break this out into something called form controls or something */}
             <div className="make-groups-page__form--buttons">
