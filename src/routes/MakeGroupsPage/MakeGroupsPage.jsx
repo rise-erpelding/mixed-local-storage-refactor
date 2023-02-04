@@ -17,7 +17,7 @@ import { NumberInputSection } from "../../components/MakeGroupsForm/src/form-inp
 import { RadioInputSection } from "../../components/MakeGroupsForm/src/form-inputs/radio-input";
 import { TextAreaInputSection } from "../../components/MakeGroupsForm/src/form-inputs/textarea-input";
 import { TextInputSection } from "../../components/MakeGroupsForm/src/form-inputs/text-input";
-import { swapArrItems } from "../../services/helpers/swap";
+import { createTrimmedArr, numberizeArr, swapArrItems } from "../../services/helpers/helperFunctions";
 
 class MakeGroupsPage extends Component {
   constructor(props) {
@@ -95,15 +95,15 @@ class MakeGroupsPage extends Component {
     });
 
     // categoryValsArr will become an array containing arrays instead of strings
-    const aliasesArr = this.createTrimmedArr(aliases);
+    const aliasesArr = createTrimmedArr(aliases);
     const categoryValsArr = [...categoryVals];
     for (let i = 0; i < quantitativeIndexes.length; i++) {
-      categoryValsArr[quantitativeIndexes[i]] = this.numberizeArr(
-        this.createTrimmedArr(categoryValsArr[quantitativeIndexes[i]])
+      categoryValsArr[quantitativeIndexes[i]] = numberizeArr(
+        createTrimmedArr(categoryValsArr[quantitativeIndexes[i]])
       );
     }
     for (let i = 0; i < qualitativeIndexes.length; i++) {
-      categoryValsArr[qualitativeIndexes[i]] = this.createTrimmedArr(
+      categoryValsArr[qualitativeIndexes[i]] = createTrimmedArr(
         categoryValsArr[qualitativeIndexes[i]]
       );
     }
@@ -287,7 +287,7 @@ class MakeGroupsPage extends Component {
   // METHODS FOR VALIDATING FORM VALUES
   validateAliases = () => {
     const { aliases } = this.state;
-    const aliasesArray = this.createTrimmedArr(aliases);
+    const aliasesArray = createTrimmedArr(aliases);
     if (aliasesArray.length < 3) {
       return "At least 3 aliases are required in order to generate groups.";
     }
@@ -295,7 +295,7 @@ class MakeGroupsPage extends Component {
 
   validateAliasUniqueness = () => {
     const { aliases } = this.state;
-    const aliasesArray = this.createTrimmedArr(aliases);
+    const aliasesArray = createTrimmedArr(aliases);
     const uniqueAliasesSet = new Set(aliasesArray);
     const uniqueAliasesArray = [...uniqueAliasesSet];
     if (uniqueAliasesArray.length !== aliasesArray.length) {
@@ -305,7 +305,7 @@ class MakeGroupsPage extends Component {
 
   validateDataSize = () => {
     const { aliases, groupSize } = this.state;
-    const aliasesArray = this.createTrimmedArr(aliases);
+    const aliasesArray = createTrimmedArr(aliases);
     if (aliasesArray.length / groupSize < 2) {
       return `More aliases required in order to make groups of size ${groupSize}.`;
     }
@@ -314,9 +314,9 @@ class MakeGroupsPage extends Component {
   validateTextareaLines = () => {
     // check that each textarea has the same number of lines
     const { aliases, categoryVals } = this.state;
-    const aliasesArray = this.createTrimmedArr(aliases);
+    const aliasesArray = createTrimmedArr(aliases);
     const valsArrays = categoryVals.map(
-      (category) => this.createTrimmedArr(category).length
+      (category) => createTrimmedArr(category).length
     );
     if (!valsArrays.every((length) => length === aliasesArray.length)) {
       return `Alias values and category values must all have the same number of lines.`;
@@ -332,10 +332,10 @@ class MakeGroupsPage extends Component {
       }
     });
     for (let i = 0; i < quantitativeIndexes.length; i++) {
-      const categoryArr = this.createTrimmedArr(
+      const categoryArr = createTrimmedArr(
         categoryVals[quantitativeIndexes[i]]
       );
-      const numbersArr = this.numberizeArr(categoryArr);
+      const numbersArr = numberizeArr(categoryArr);
       if (numbersArr.includes(NaN)) {
         return "Quantitative data can only consist of numbers.";
       }
@@ -351,9 +351,6 @@ class MakeGroupsPage extends Component {
   // creates array, trimming excess whitespace
   createTrimmedArr = (vals) =>
     vals.split(`\n`).filter((val) => !!val.trim().length);
-
-  // turns quantitative category values to numbers
-  numberizeArr = (arr) => arr.map((val) => Number(val));
 
   render() {
     const { categoriesLength, showPopUp } = this.state;
