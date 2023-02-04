@@ -347,11 +347,6 @@ class MakeGroupsPage extends Component {
     this.setState({ showPopUp: false });
   };
 
-  // HELPER METHODS
-  // creates array, trimming excess whitespace
-  createTrimmedArr = (vals) =>
-    vals.split(`\n`).filter((val) => !!val.trim().length);
-
   render() {
     const { categoriesLength, showPopUp } = this.state;
     let categories = [];
