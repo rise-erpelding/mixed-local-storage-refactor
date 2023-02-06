@@ -73,7 +73,7 @@ class GroupsMadePage extends Component {
   }
 
   saveGroups = (groupingName, className) => {
-    // const { removePrevData } = this.context;
+    // const { clearDataInLocalStorage } = this.context;
     const { students } = this.state;
     // const { students, allClasses } = this.state;
     const data = ls.get('data');
@@ -97,7 +97,7 @@ class GroupsMadePage extends Component {
     //         .then(() => {
     //           const { history } = this.props;
     //           window.scrollTo({ top: 0 });
-    //           removePrevData();
+    //           clearDataInLocalStorage();
     //           history.push('/my-groups');
     //         })
     //         .catch((error) => {
@@ -119,7 +119,7 @@ class GroupsMadePage extends Component {
     //   .then(() => {
     //     const { history } = this.props;
     //     window.scrollTo({ top: 0 });
-    //     removePrevData();
+    //     clearDataInLocalStorage();
     //     history.push('/my-groups');
     //   })
     //   .catch((error) => {

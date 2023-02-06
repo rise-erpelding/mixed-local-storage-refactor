@@ -72,7 +72,7 @@ class MakeGroupsPage extends Component {
    */
   handleSubmit = (e) => {
     e.preventDefault();
-    const { addData } = this.context;
+    const { setDataInLocalStorage } = this.context;
     const { history } = this.props;
     const {
       groupSize,
@@ -83,7 +83,7 @@ class MakeGroupsPage extends Component {
       categoryVals,
     } = this.state;
     // adds data to local storage so it will be there if we navigate back to this page
-    addData(this.state);
+    setDataInLocalStorage(this.state);
 
     const quantitativeIndexes = [];
     const qualitativeIndexes = [];
@@ -166,15 +166,15 @@ class MakeGroupsPage extends Component {
     categoryNamesLevels,
     categoryNames
   ) => {
-    const { addStudentArr, addCatNames } = this.context;
+    const { setStudentArrInLocalStorage, setCatNamesInLocalStorage } = this.context;
     const groups = createDifferentGroups(
       studentArr,
       groupSize,
       categoryNamesLevels
     );
     this.addGroupNumber(groups, studentArr);
-    addStudentArr(studentArr);
-    addCatNames(categoryNames);
+    setStudentArrInLocalStorage(studentArr);
+    setCatNamesInLocalStorage(categoryNames);
   };
 
   handleSimilarGroups = (
@@ -183,15 +183,15 @@ class MakeGroupsPage extends Component {
     categoryNamesLevels,
     categoryNames
   ) => {
-    const { addStudentArr, addCatNames } = this.context;
+    const { setStudentArrInLocalStorage, setCatNamesInLocalStorage } = this.context;
     const groups = createSimilarGroups(
       studentArr,
       groupSize,
       categoryNamesLevels
     );
     this.addGroupNumber(groups, studentArr);
-    addStudentArr(studentArr);
-    addCatNames(categoryNames);
+    setStudentArrInLocalStorage(studentArr);
+    setCatNamesInLocalStorage(categoryNames);
   };
 
   addGroupNumber = (groups, students) => {

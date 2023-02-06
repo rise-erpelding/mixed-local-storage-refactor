@@ -26,24 +26,24 @@ class App extends Component {
     // this.toggleLogin = this.toggleLogin.bind(this);
   }
 
-  addData = (data) => { // adds generator data to local storage so it will persist until saved
+  setDataInLocalStorage = (data) => { // adds generator data to local storage so it will persist until saved
     this.setState({ data: data });
     ls.set('data', data);
   }
 
-  removePrevData = () => { // clears local storage data
+  clearDataInLocalStorage = () => { // clears local storage data
     ls.remove('groupings');
     ls.remove('data');
     ls.remove('studentArr');
     ls.remove('categoryNames');
   }
 
-  addStudentArr = (studentArr) => {
+  setStudentArrInLocalStorage = (studentArr) => {
     this.setState({ studentArr: studentArr });
     ls.set('studentArr', studentArr);
   }
   
-  addCatNames = (catNamesArr) => {
+  setCatNamesInLocalStorage = (catNamesArr) => {
     ls.set('categoryNames', catNamesArr);
   }
 
@@ -58,10 +58,10 @@ class App extends Component {
     const contextValue = {
       data,
       groupings,
-      addData: this.addData,
-      removePrevData: this.removePrevData,
-      addStudentArr: this.addStudentArr,
-      addCatNames: this.addCatNames,
+      setDataInLocalStorage: this.setDataInLocalStorage,
+      clearDataInLocalStorage: this.clearDataInLocalStorage,
+      setStudentArrInLocalStorage: this.setStudentArrInLocalStorage,
+      setCatNamesInLocalStorage: this.setCatNamesInLocalStorage,
     };
 
     return (
