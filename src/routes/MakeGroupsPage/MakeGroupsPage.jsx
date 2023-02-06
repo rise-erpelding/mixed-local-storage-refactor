@@ -37,21 +37,11 @@ class MakeGroupsPage extends Component {
     };
   }
 
-  /**
-   * Get any previous unsaved data from local storage.
-   * Also, if it is the first visit, do a pop up here.
-   */
   componentDidMount() {
     const visited = ls.get("alreadyVisited");
-    if (!!visited) {
-      this.setState({ showPopUp: false });
-    } else {
-      ls.set("alreadyVisited", true);
-    }
-    const savedData = ls.get("data");
-    if (!!savedData) {
-      this.setState(savedData);
-    }
+    !!visited ? this.setState({ showPopUp: false }) : ls.set("alreadyVisited", true); // shows pop up on first visit and sets it so that it will not pop up next time
+    const savedData = ls.get("data"); // get any data saved from last time
+    !!savedData && this.setState(savedData);
   }
 
   // METHODS FOR FORM BUTTONS ONCLICK
