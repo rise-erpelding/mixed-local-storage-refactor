@@ -17,12 +17,12 @@ class LandingPage extends Component {
   }
 
   render() {
-    const { removePrevData } = this.context;
+    const { clearDataInLocalStorage } = this.context;
     return (
       <main>
         <Landing 
           handleOnboarding={this.scrollToRef}
-          handleMakeGroupsButton={removePrevData}
+          handleMakeGroupsButton={clearDataInLocalStorage}
         />
         <UserOnboarding passRef={this.scrollRef} />
       </main>

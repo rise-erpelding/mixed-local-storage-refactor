@@ -8,8 +8,8 @@ import './NavBar.css';
 class NavBar extends Component {
 
   // handleLogoutClick = () => {
-  //   const { toggleLogin, removePrevData } = this.context;
-  //   removePrevData();
+  //   const { toggleLogin, clearDataInLocalStorage } = this.context;
+  //   clearDataInLocalStorage();
   //   toggleLogin();
   //   TokenService.clearAuthToken();
   // }

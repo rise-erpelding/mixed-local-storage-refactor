@@ -3,10 +3,10 @@ import React from 'react';
 const MixEdContext = React.createContext({
   data: {},
   groupings: [],
-  addData: () => {},
-  removePrevData: () => {},
-  addCatNames: () => {},
-  addStudentArr: () => {},
+  setDataInLocalStorage: () => {},
+  clearDataInLocalStorage: () => {},
+  setCatNamesInLocalStorage: () => {},
+  setStudentArrInLocalStorage: () => {},
   toggleLogin: () => {},
 });
 
