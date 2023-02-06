@@ -1,8 +1,8 @@
 const MakeGroupsService = {
   addEachToObj(objArr, arr, keyName) {
-    for (let i = 0; i < objArr.length; i++) {
-      objArr[i][keyName] = arr[i];
-    }
+    objArr.forEach((obj, i) => {
+      obj[keyName] = arr[i];
+    });
     return objArr;
   },
   getLevel(numArr, groupSize) {
