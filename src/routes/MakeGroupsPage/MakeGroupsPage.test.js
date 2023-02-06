@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MakeGroupsPage from './MakeGroupsPage';
+import { MakeGroupsPage } from './index';
 import { BrowserRouter } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
