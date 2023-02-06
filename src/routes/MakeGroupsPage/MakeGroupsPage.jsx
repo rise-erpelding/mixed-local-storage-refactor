@@ -87,17 +87,19 @@ class MakeGroupsPage extends Component {
 
     // categoryValsArr will become an array containing arrays instead of strings
     const aliasesArr = createTrimmedArr(aliases);
+    
     const categoryValsArr = [...categoryVals];
-    for (let i = 0; i < quantitativeIndexes.length; i++) {
-      categoryValsArr[quantitativeIndexes[i]] = numberizeArr(
-        createTrimmedArr(categoryValsArr[quantitativeIndexes[i]])
+
+    quantitativeIndexes.forEach((index) => {
+      categoryValsArr[index] = numberizeArr(
+        createTrimmedArr(categoryValsArr[index])
       );
-    }
-    for (let i = 0; i < qualitativeIndexes.length; i++) {
-      categoryValsArr[qualitativeIndexes[i]] = createTrimmedArr(
-        categoryValsArr[qualitativeIndexes[i]]
+    });
+    qualitativeIndexes.forEach((index) => {
+      categoryValsArr[index] = createTrimmedArr(
+        categoryValsArr[index]
       );
-    }
+    });
 
     const studentArr = [];
     aliasesArr.forEach((alias) => studentArr.push({ alias: alias }));
@@ -105,20 +107,12 @@ class MakeGroupsPage extends Component {
       MakeGroupsService.addEachToObj(studentArr, valArr, categoryNames[index])
     );
     const categoryNamesLevels = [...categoryNames];
-    for (let i = 0; i < quantitativeIndexes.length; i++) {
-      categoryValsArr[quantitativeIndexes[i]] = MakeGroupsService.getLevel(
-        categoryValsArr[quantitativeIndexes[i]],
-        groupSize
-      );
-      MakeGroupsService.addEachToObj(
-        studentArr,
-        categoryValsArr[quantitativeIndexes[i]],
-        `${categoryNames[quantitativeIndexes[i]]} Level`
-      );
-      categoryNamesLevels[quantitativeIndexes[i]] = `${
-        categoryNames[quantitativeIndexes[i]]
-      } Level`;
-    }
+
+    quantitativeIndexes.forEach((index) => {
+      categoryValsArr[index] = MakeGroupsService.getLevel(categoryValsArr[index], groupSize);
+      MakeGroupsService.addEachToObj(studentArr, categoryValsArr[index], `${categoryNames[index]} Level`);
+      categoryNamesLevels[index] = `${categoryNames[index]} Level`;
+    });
 
     if (groupingType === "mixed") {
       this.handleMixedGroups(
