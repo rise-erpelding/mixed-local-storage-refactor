@@ -17,8 +17,9 @@ import { NumberInputSection } from "../../components/MakeGroupsForm/src/form-inp
 import { RadioInputSection } from "../../components/MakeGroupsForm/src/form-inputs/radio-input";
 import { TextAreaInputSection } from "../../components/MakeGroupsForm/src/form-inputs/textarea-input";
 import { TextInputSection } from "../../components/MakeGroupsForm/src/form-inputs/text-input";
-import { createTrimmedArr, numberizeArr, swapArrItems } from "../../services/helpers/helperFunctions";
+import { swapArrItems } from "../../services/helpers/helperFunctions";
 import { validateAliases, validateAliasUniqueness, validateDataSize, validateTextareaLines, validateCatNumbers } from "../../services/helpers/formValidationFunctions";
+import { adaptGroupData } from "../../services/helpers/adaptGroupData";
 
 class MakeGroupsPage extends Component {
   constructor(props) {
@@ -72,47 +73,10 @@ class MakeGroupsPage extends Component {
       categoryNames,
       categoryVals,
     } = this.state;
-    // adds data to local storage so it will be there if we navigate back to this page
+
     setDataInLocalStorage(this.state);
 
-    const quantitativeIndexes = [];
-    const qualitativeIndexes = [];
-    categoryTypes.forEach((type, index) => {
-      if (type === "quantitative") {
-        quantitativeIndexes.push(index);
-      } else {
-        qualitativeIndexes.push(index);
-      }
-    });
-
-    // categoryValsArr will become an array containing arrays instead of strings
-    const aliasesArr = createTrimmedArr(aliases);
-    
-    const categoryValsArr = [...categoryVals];
-
-    quantitativeIndexes.forEach((index) => {
-      categoryValsArr[index] = numberizeArr(
-        createTrimmedArr(categoryValsArr[index])
-      );
-    });
-    qualitativeIndexes.forEach((index) => {
-      categoryValsArr[index] = createTrimmedArr(
-        categoryValsArr[index]
-      );
-    });
-
-    const studentArr = [];
-    aliasesArr.forEach((alias) => studentArr.push({ alias: alias }));
-    categoryValsArr.forEach((valArr, index) =>
-      MakeGroupsService.addEachToObj(studentArr, valArr, categoryNames[index])
-    );
-    const categoryNamesLevels = [...categoryNames];
-
-    quantitativeIndexes.forEach((index) => {
-      categoryValsArr[index] = MakeGroupsService.getLevel(categoryValsArr[index], groupSize);
-      MakeGroupsService.addEachToObj(studentArr, categoryValsArr[index], `${categoryNames[index]} Level`);
-      categoryNamesLevels[index] = `${categoryNames[index]} Level`;
-    });
+    const { studentArr, categoryNamesLevels} = adaptGroupData(categoryTypes, aliases, categoryVals, categoryNames, groupSize);
 
     if (groupingType === "mixed") {
       this.handleMixedGroups(
