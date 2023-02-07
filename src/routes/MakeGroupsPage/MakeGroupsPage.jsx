@@ -156,7 +156,7 @@ class MakeGroupsPage extends Component {
       groupSize,
       categoryNamesLevels
     );
-    this.addGroupNumber(groups, studentArr);
+    MakeGroupsService.addGroupNumber(groups, studentArr);
     setStudentArrInLocalStorage(studentArr);
     setCatNamesInLocalStorage(categoryNames);
   };
@@ -173,21 +173,9 @@ class MakeGroupsPage extends Component {
       groupSize,
       categoryNamesLevels
     );
-    this.addGroupNumber(groups, studentArr);
+    MakeGroupsService.addGroupNumber(groups, studentArr);
     setStudentArrInLocalStorage(studentArr);
     setCatNamesInLocalStorage(categoryNames);
-  };
-
-  addGroupNumber = (groups, students) => {
-    groups.forEach((group, index) => {
-      group.forEach((groupMember) => {
-        students.forEach((student) => {
-          if (student.alias === groupMember.alias) {
-            student.groupNum = index + 1;
-          }
-        });
-      });
-    });
   };
 
   // METHODS FOR BUTTONS THAT CONTROL CATEGORIES

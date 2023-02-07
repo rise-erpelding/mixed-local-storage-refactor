@@ -27,6 +27,17 @@ const MakeGroupsService = {
     }
     return studentScoreLevel;
   },
+  addGroupNumber(groups, students) {
+    groups.forEach((group, index) => {
+      group.forEach((groupMember) => {
+        students.forEach((student) => {
+          if (student.alias === groupMember.alias) {
+            student.groupNum = index + 1;
+          }
+        });
+      });
+    });
+  },
 };
 
 export default MakeGroupsService;
