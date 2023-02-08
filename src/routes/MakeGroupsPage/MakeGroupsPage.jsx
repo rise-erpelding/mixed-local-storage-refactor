@@ -20,6 +20,7 @@ import { TextInputSection } from "../../components/MakeGroupsForm/src/form-input
 import { swapArrItems } from "../../services/helpers/helperFunctions";
 import { validateAliases, validateAliasUniqueness, validateDataSize, validateTextareaLines, validateCatNumbers } from "../../services/helpers/formValidationFunctions";
 import { adaptGroupData } from "../../services/helpers/adaptGroupData";
+import { FormActions } from "../../components/MakeGroupsForm/button-groups";
 
 class MakeGroupsPage extends Component {
   constructor(props) {
@@ -362,31 +363,11 @@ class MakeGroupsPage extends Component {
               <ValidationError message={validateTextareaLines(this.state.aliases, this.state.categoryVals)} />
               <ValidationError message={validateCatNumbers(this.state.categoryTypes,this.state.categoryVals)} />
             </div>
-            {/* break this out into something called form controls or something */}
-            <div className="make-groups-page__form--buttons">
-              <ButtonTextIcon
-                buttonIcon={<FontAwesomeIcon icon="plus" />}
-                buttonText="Add Category"
-                handleClick={this.addCategory}
-              />
-              <ButtonTextIcon
-                buttonIcon={<FontAwesomeIcon icon="minus" />}
-                buttonText="Remove Category"
-                handleClick={this.removeCategory}
-              />
-              <ButtonTextIcon
-                buttonIcon={<FontAwesomeIcon icon="window-close" />}
-                buttonText="Cancel Generator"
-                handleClick={this.handleClickCancel}
-              />
-              <ButtonTextIcon
-                buttonIcon={<FontAwesomeIcon icon="arrow-right" />}
-                buttonText="Generate Groups"
-                customContainerClass="bold"
-                handleClick={null}
-                type="submit"
-              />
-            </div>
+            <FormActions
+              addCategory={this.addCategory}
+              removeCategory={this.removeCategory}
+              clickCancel={this.handleClickCancel}
+            />
             <div className="make-groups-page__sampledata--buttons">
               {store.map((dataset, index) => (
                 <ButtonTextIcon
