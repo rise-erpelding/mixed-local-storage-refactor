@@ -24,8 +24,6 @@ export const TextAreaInputSection = ({ label, name, onChange, placeholderText, v
 
 TextAreaInputSection.propTypes = {
   label: propTypes.string,
-  max: propTypes.number,
-  min: propTypes.number,
   name: propTypes.string,
   placeholderText: propTypes.string,
   onChange: propTypes.func,
