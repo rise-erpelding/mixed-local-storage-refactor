@@ -123,23 +123,10 @@ export const MakeGroupsPage = (props) => {
     setGroupSize(groupSize);
   };
 
-  // this is pretty repetitive we can probably condense
-  const updateCategoryType = (event, index) => {
-    const catTypeArr = [...categoryTypes];
-    catTypeArr.splice(index, 1, event.target.value);
-    setCategoryTypes(catTypeArr);
-  };
-
-  const updateCategoryName = (event, index) => {
-    const catNameArr = [...categoryNames];
-    catNameArr.splice(index, 1, event.target.value);
-    setCategoryNames(catNameArr);
-  };
-
-  const updateCategoryVals = (event, index) => {
-    const catValArr = [...categoryVals];
-    catValArr.splice(index, 1, event.target.value);
-    setCategoryVals(catValArr);
+  const updateCategoryArr = (event, index, arr, updateFn) => {
+    const arrCopy = [...arr];
+    arrCopy.splice(index, 1, event.target.value);
+    updateFn(arrCopy);
   };
 
   const handleMixedGroups = (
@@ -226,7 +213,7 @@ export const MakeGroupsPage = (props) => {
             inputGroupName={`cat${i}-type`}
             inputIds={[`cat${i}-quantitative`, `cat${i}-qualitative`]}
             onChangeFunc={(event) => {
-              updateCategoryType(event, i);
+              updateCategoryArr(event, i, categoryTypes, setCategoryTypes);
             }}
             required
             values={["quantitative", "qualitative"]}
@@ -235,7 +222,7 @@ export const MakeGroupsPage = (props) => {
             className="make-groups-page__form--category-name"
             label="Category name:"
             name={`cat${i}-name`}
-            onChange={(event) => updateCategoryName(event, i)}
+            onChange={(event) => updateCategoryArr(event, i, categoryNames, setCategoryNames)}
             required
             value={categoryNames[i]}
           />
@@ -243,7 +230,7 @@ export const MakeGroupsPage = (props) => {
         <TextAreaInputSection
           label="Values:"
           name={`cat${i}-vals`}
-          onChange={(event) => updateCategoryVals(event, i)}
+          onChange={(event) => updateCategoryArr(event, i, categoryVals, setCategoryVals)}
           placeholderText="Enter values here, one on each line."
           value={categoryVals[i]}
         />
