@@ -33,7 +33,6 @@ export const MakeGroupsPage = (props) => {
   // const [error, setError] = useState(null);
   const [groupingType, setGroupingType] = useState("");
   const [groupSize, setGroupSize] = useState(2);
-  const [savedData, setSavedData] = useState([""]);
   const [showPopUp, setShowPopUp] = useState(true);
 
   const dataObj = {
@@ -44,7 +43,6 @@ export const MakeGroupsPage = (props) => {
     categoryVals,
     groupingType,
     groupSize,
-    savedData,
     showPopUp,
   };
 
@@ -59,7 +57,16 @@ export const MakeGroupsPage = (props) => {
     // eslint-disable-next-line no-extra-boolean-cast
     !!visited ? setShowPopUp(false) : ls.set("alreadyVisited", true);
     const savedData = ls.get("data");
-    !!savedData && setSavedData(savedData);
+    // eslint-disable-next-line no-extra-boolean-cast
+    if (!!savedData) {
+      setAliases(savedData.aliases);
+      setCategoriesLength(savedData.categoriesLength);
+      setCategoryNames(savedData.categoryNames);
+      setCategoryTypes(savedData.categoryTypes);
+      setCategoryVals(savedData.categoryVals);
+      setGroupSize(savedData.groupSize);
+      setGroupingType(savedData.groupingType);
+    }
   }, []);
 
   const injectSampleData = (data) => {
