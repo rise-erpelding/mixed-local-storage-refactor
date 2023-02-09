@@ -19,6 +19,7 @@ import { ButtonTextIcon } from "../../components/ButtonTextIcon/index";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FirstVisitModal from "../../components/Modals/FirstVisitModal/FirstVisitModal";
 import "./MakeGroupsPage.css";
+import { FieldsetContainer } from "../../components/MakeGroupsForm/fieldsets";
 
 export const MakeGroupsPage = (props) => {
   const {
@@ -264,9 +265,10 @@ export const MakeGroupsPage = (props) => {
         <h1>Group Generator</h1>
         {/* create a separate form component, pass in classname and onSubmit as props */}
         <form className="make-groups-page__form" onSubmit={handleSubmit}>
-          {/* break out grouping characteristics component */}
-          <fieldset className="make-groups-page__form--grouping-characteristics">
-            <legend>Grouping characteristics:</legend>
+          <FieldsetContainer
+            className="make-groups-page__form--grouping-characteristics"
+            legendText="Grouping characteristics:"
+          >
             <NumberInputSection
               explanation="Choose minimum group size (slightly larger groups will be made as needed)."
               label="Group size:"
@@ -293,7 +295,7 @@ export const MakeGroupsPage = (props) => {
               required
               values={["similar", "mixed"]}
             />
-          </fieldset>
+          </FieldsetContainer>
           {/* break out student data */}
           <div className="make-groups-page__form--student-data">
             <fieldset className="make-groups-page__form--fieldset">
