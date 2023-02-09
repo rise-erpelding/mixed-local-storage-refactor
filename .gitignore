@@ -23,3 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 eslintrc.json
+
+# things that aren't ready for prime time yet
+formDataPlanning.txt
