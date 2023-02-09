@@ -32,8 +32,28 @@ export const FormActions = ({ addCategory, removeCategory, clickCancel }) => {
   );
 };
 
+export const SampleDataButtons = ({data, clickFn}) => {
+  return (
+    <div className="make-groups-page__sampledata--buttons">
+      {data.map((dataset, index) => (
+        <ButtonTextIcon
+          key={index}
+          buttonIcon={<span>{index + 1}</span>}
+          buttonText="See sample dataset"
+          handleClick={() => clickFn(dataset)}
+        />
+      ))}
+    </div>
+  );
+};
+
 FormActions.propTypes = {
   addCategory: propTypes.func,
   removeCategory: propTypes.func,
   clickCancel: propTypes.func,
+};
+
+SampleDataButtons.propTypes = {
+  data: propTypes.array,
+  clickFn: propTypes.func,
 };

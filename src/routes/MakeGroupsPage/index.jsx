@@ -13,7 +13,7 @@ import { TextAreaInputSection } from "../../components/MakeGroupsForm/src/form-i
 import { TextInputSection } from "../../components/MakeGroupsForm/src/form-inputs/text-input";
 import ValidationError from "../../components/ValidationError/ValidationError";
 import { validateAliases, validateAliasUniqueness, validateDataSize, validateTextareaLines, validateCatNumbers } from "../../services/helpers/formValidationFunctions";
-import { FormActions } from "../../components/MakeGroupsForm/button-groups";
+import { FormActions, SampleDataButtons } from "../../components/MakeGroupsForm/button-groups";
 import store from "../../services/store";
 import { ButtonTextIcon } from "../../components/ButtonTextIcon/index";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -347,16 +347,10 @@ export const MakeGroupsPage = (props) => {
             removeCategory={removeCategory}
             clickCancel={handleClickCancel}
           />
-          <div className="make-groups-page__sampledata--buttons">
-            {store.map((dataset, index) => (
-              <ButtonTextIcon
-                key={index}
-                buttonIcon={<span>{index + 1}</span>}
-                buttonText="See sample dataset"
-                handleClick={() => injectSampleData(dataset)}
-              />
-            ))}
-          </div>
+          <SampleDataButtons
+            data={store}
+            clickFn={injectSampleData}
+          />
         </form>
         <FirstVisitModal
           show={showPopUp}
