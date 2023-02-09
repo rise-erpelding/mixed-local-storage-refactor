@@ -196,25 +196,25 @@ export const MakeGroupsPage = (props) => {
 
   // this totally needs a refactor
   let categories = [];
-  for (let i = 0; i < categoriesLength; i++) {
+  for (let catIndex = 0; catIndex < categoriesLength; catIndex++) {
     categories.push(
       <fieldset
         className="make-groups-page__form--fieldset"
-        key={`category-index${i}`}
+        key={`category-index${catIndex}`}
       >
-        <legend>{`Category ${i + 1}:`}</legend>
+        <legend>{`Category ${catIndex + 1}:`}</legend>
         <div className="make-groups-page__form--before-textarea">
           <RadioInputSection
             checkedStatuses={[
-              categoryTypes[i] === "quantitative",
-              categoryTypes[i] === "qualitative",
+              categoryTypes[catIndex] === "quantitative",
+              categoryTypes[catIndex] === "qualitative",
             ]}
             explanation="Values corresponding to a category."
             labels={["Quantitative (numbers)", "Qualitative (words)"]}
-            inputGroupName={`cat${i}-type`}
-            inputIds={[`cat${i}-quantitative`, `cat${i}-qualitative`]}
+            inputGroupName={`cat${catIndex}-type`}
+            inputIds={[`cat${catIndex}-quantitative`, `cat${catIndex}-qualitative`]}
             onChangeFunc={(event) => {
-              updateCategoryArr(event, i, categoryTypes, setCategoryTypes);
+              updateCategoryArr(event, catIndex, categoryTypes, setCategoryTypes);
             }}
             required
             values={["quantitative", "qualitative"]}
@@ -222,36 +222,36 @@ export const MakeGroupsPage = (props) => {
           <TextInputSection
             className="make-groups-page__form--category-name"
             label="Category name:"
-            name={`cat${i}-name`}
-            onChange={(event) => updateCategoryArr(event, i, categoryNames, setCategoryNames)}
+            name={`cat${catIndex}-name`}
+            onChange={(event) => updateCategoryArr(event, catIndex, categoryNames, setCategoryNames)}
             required
-            value={categoryNames[i]}
+            value={categoryNames[catIndex]}
           />
         </div>
         <TextAreaInputSection
           label="Values:"
-          name={`cat${i}-vals`}
-          onChange={(event) => updateCategoryArr(event, i, categoryVals, setCategoryVals)}
+          name={`cat${catIndex}-vals`}
+          onChange={(event) => updateCategoryArr(event, catIndex, categoryVals, setCategoryVals)}
           placeholderText="Enter values here, one on each line."
-          value={categoryVals[i]}
+          value={categoryVals[catIndex]}
         />
         <div className="make-groups-page__form--after-textarea">
-          {i === 0 ? (
+          {catIndex === 0 ? (
             ""
           ) : (
             <ButtonTextIcon
               buttonText="Increase Priority"
               buttonIcon={<FontAwesomeIcon icon="plus" />}
-              handleClick={() => shiftCategory(i, 'left')}
+              handleClick={() => shiftCategory(catIndex, 'left')}
             />
           )}
-          {i === categoriesLength - 1 ? (
+          {catIndex === categoriesLength - 1 ? (
             ""
           ) : (
             <ButtonTextIcon
               buttonText="Decrease Priority"
               buttonIcon={<FontAwesomeIcon icon="minus" />}
-              handleClick={() => shiftCategory(i, 'right')}
+              handleClick={() => shiftCategory(catIndex, 'right')}
             />
           )}
         </div>
