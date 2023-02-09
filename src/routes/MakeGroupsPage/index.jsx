@@ -319,21 +319,13 @@ export const MakeGroupsPage = (props) => {
                 <ValidationError message={validateAliasUniqueness(aliases)} />
                 <ValidationError message={validateDataSize(aliases, groupSize)} />
               </div>
-              <div>
-                <div>
-                  <label htmlFor="aliases">Values:</label>
-                </div>
-                <textarea
-                  className="make-groups-page__form--textarea"
-                  id="aliases"
+              <TextAreaInputSection
+                  label="Values:"
                   name="aliases"
-                  rows="26"
-                  columns="20"
-                  placeholder="Enter aliases here, one on each line."
-                  value={aliases}
                   onChange={(e) => setAliases(e.target.value)}
-                />
-              </div>
+                  placeholderText="Enter aliases here, one on each line."
+                  value={aliases}
+              />
               <div className="make-groups-page__form--after-textarea"></div>
             </fieldset>
             {categories}
