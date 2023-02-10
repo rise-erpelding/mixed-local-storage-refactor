@@ -1,7 +1,7 @@
 .user-onboarding__intro {
-  background: #8633B4;
-  background: -webkit-linear-gradient(to bottom, #4A00E0, #8633B4);
-  background: linear-gradient(to bottom, #4A00E0, #8633B4);
+  background: #8633b4;
+  background: -webkit-linear-gradient(to bottom, #4a00e0, #8633b4);
+  background: linear-gradient(to bottom, #4a00e0, #8633b4);
   height: 88vh;
   padding: 0px 30px;
 }
@@ -14,9 +14,9 @@
 }
 
 .user-onboarding__data-entry {
-  background: #C36788;
-  background: -webkit-linear-gradient(to bottom, #8633B4, #C36788);
-  background: linear-gradient(to bottom, #8633B4, #C36788);
+  background: #c36788;
+  background: -webkit-linear-gradient(to bottom, #8633b4, #c36788);
+  background: linear-gradient(to bottom, #8633b4, #c36788);
   padding: 30px 0px;
   display: flex;
   flex-direction: column;
@@ -29,9 +29,9 @@
 }
 
 .user-onboarding__saved-groups {
-  background: #FF9A5C;
-  background: -webkit-linear-gradient(to bottom, #C36788, #FF9A5C);
-  background: linear-gradient(to bottom, #C36788, #FF9A5C);
+  background: #ff9a5c;
+  background: -webkit-linear-gradient(to bottom, #c36788, #ff9a5c);
+  background: linear-gradient(to bottom, #c36788, #ff9a5c);
   padding: 30px 0px;
   display: flex;
   flex-direction: column;
@@ -45,7 +45,7 @@
 
 .user-onboarding__buttons {
   padding: 40px 0px;
-  background-color: #FF9A5C;
+  background-color: #ff9a5c;
 }
 
 .user-onboarding__buttons > button {
@@ -61,19 +61,19 @@
 
 .user-onboarding__buttons--outline {
   background-color: transparent;
-  color: #2C3763;
-  border: 2px solid #2C3763;
+  color: #2c3763;
+  border: 2px solid #2c3763;
 }
 
 .user-onboarding__buttons--fill {
-  background-color: #4A00E0;
-  color: #FBE8A6;
-  border: 2px solid #2C3763;
+  background-color: #4a00e0;
+  color: #fbe8a6;
+  border: 2px solid #2c3763;
 }
 
 .user-onboarding__buttons > button:hover {
-  background-color: #FBE8A6;
-  color: #2C3763;
+  background-color: #fbe8a6;
+  color: #2c3763;
   transition: 0.2s ease-in;
 }
 
@@ -85,7 +85,7 @@
 .user-onboarding__flex-child--left > h3,
 .user-onboarding__flex-child--right > h3 {
   font-size: 1.8em;
-  color: #FBE8A6;
+  color: #fbe8a6;
 }
 
 .user-onboarding__flex-child--left > p,
@@ -108,25 +108,25 @@
   }
 
   .user-onboarding__text {
-    background-color: #4A00E0;
+    background-color: #4a00e0;
     border-radius: 10px;
   }
 
   .user-onboarding__saved-groups--img,
-  .user-onboarding__data-entry--img  {
+  .user-onboarding__data-entry--img {
     width: 40vw;
   }
 
   .user-onboarding__flex-child--left {
     margin-left: 30px;
   }
-  
+
   .user-onboarding__flex-child--right {
     margin-right: 30px;
   }
 
   .user-onboarding__flex-child--left,
   .user-onboarding__flex-child--right {
-  padding: 60px;
+    padding: 60px;
   }
 }

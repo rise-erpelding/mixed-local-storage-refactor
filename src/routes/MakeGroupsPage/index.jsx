@@ -1,31 +1,42 @@
-import React, { useState, useEffect, useContext } from "react";
-import propTypes from "prop-types";
-import ls from "local-storage";
-import MixEdContext from "../../context/MixEdContext";
-import { adaptGroupData } from "../../services/helpers/adaptGroupData";
-import createDifferentGroups from "../../services/groupingAlgorithms/differentGroups";
-import createSimilarGroups from "../../services/groupingAlgorithms/similarGroups";
-import MakeGroupsService from "../../services/make-groups-service";
-import { swapArrItems } from "../../services/helpers/helperFunctions";
-import ValidationError from "../../components/ValidationError/ValidationError";
-import { validateAliases, validateAliasUniqueness, validateDataSize, validateTextareaLines, validateCatNumbers } from "../../services/helpers/formValidationFunctions";
-import { FormActions, SampleDataButtons } from "../../components/MakeGroupsForm/button-groups";
-import store from "../../services/store";
-import FirstVisitModal from "../../components/Modals/FirstVisitModal/FirstVisitModal";
-import "./MakeGroupsPage.css";
-import { AliasesField, CategoryField, GroupingCharacteristicsField } from "../../components/MakeGroupsForm/fieldsets";
+import React, { useState, useEffect, useContext } from 'react';
+import propTypes from 'prop-types';
+import ls from 'local-storage';
+import MixEdContext from '../../context/MixEdContext';
+import { adaptGroupData } from '../../services/helpers/adaptGroupData';
+import createDifferentGroups from '../../services/groupingAlgorithms/differentGroups';
+import createSimilarGroups from '../../services/groupingAlgorithms/similarGroups';
+import MakeGroupsService from '../../services/make-groups-service';
+import { swapArrItems } from '../../services/helpers/helperFunctions';
+import ValidationError from '../../components/ValidationError/ValidationError';
+import {
+  validateAliases,
+  validateAliasUniqueness,
+  validateDataSize,
+  validateTextareaLines,
+  validateCatNumbers,
+} from '../../services/helpers/formValidationFunctions';
+import {
+  FormActions,
+  SampleDataButtons,
+} from '../../components/MakeGroupsForm/button-groups';
+import store from '../../services/store';
+import FirstVisitModal from '../../components/Modals/FirstVisitModal/FirstVisitModal';
+import './MakeGroupsPage.css';
+import {
+  AliasesField,
+  CategoryField,
+  GroupingCharacteristicsField,
+} from '../../components/MakeGroupsForm/fieldsets';
 
 export const MakeGroupsPage = (props) => {
-  const {
-    history,
-  } = props;
+  const { history } = props;
 
-  const [aliases, setAliases] = useState("");
+  const [aliases, setAliases] = useState('');
   const [categoriesLength, setCategoriesLength] = useState(1);
-  const [categoryNames, setCategoryNames] = useState([""]);
-  const [categoryTypes, setCategoryTypes] = useState([""]);
-  const [categoryVals, setCategoryVals] = useState([""]);
-  const [groupingType, setGroupingType] = useState("");
+  const [categoryNames, setCategoryNames] = useState(['']);
+  const [categoryTypes, setCategoryTypes] = useState(['']);
+  const [categoryVals, setCategoryVals] = useState(['']);
+  const [groupingType, setGroupingType] = useState('');
   const [groupSize, setGroupSize] = useState(2);
   const [showPopUp, setShowPopUp] = useState(true);
 
@@ -47,10 +58,10 @@ export const MakeGroupsPage = (props) => {
   } = useContext(MixEdContext);
 
   useEffect(() => {
-    const visited = ls.get("alreadyVisited");
+    const visited = ls.get('alreadyVisited');
     // eslint-disable-next-line no-extra-boolean-cast
-    !!visited ? setShowPopUp(false) : ls.set("alreadyVisited", true);
-    const savedData = ls.get("data");
+    !!visited ? setShowPopUp(false) : ls.set('alreadyVisited', true);
+    const savedData = ls.get('data');
     // eslint-disable-next-line no-extra-boolean-cast
     if (!!savedData) {
       setAliases(savedData.aliases);
@@ -71,7 +82,7 @@ export const MakeGroupsPage = (props) => {
       categoryTypes,
       categoryNames,
       categoryVals,
-      aliases
+      aliases,
     } = data;
     setGroupSize(groupSize);
     setGroupingType(groupingType);
@@ -84,9 +95,9 @@ export const MakeGroupsPage = (props) => {
 
   const addCategory = () => {
     setCategoriesLength(categoriesLength + 1);
-    setCategoryTypes([...categoryTypes, ""]);
-    setCategoryNames([...categoryNames, ""]);
-    setCategoryVals([...categoryVals, ""]);
+    setCategoryTypes([...categoryTypes, '']);
+    setCategoryNames([...categoryNames, '']);
+    setCategoryVals([...categoryVals, '']);
   };
 
   const removeCategory = () => {
@@ -112,7 +123,7 @@ export const MakeGroupsPage = (props) => {
   const updateGroupSize = (e) => {
     let groupSize = parseInt(e.target.value);
     if (isNaN(groupSize)) {
-      groupSize = "";
+      groupSize = '';
     }
     setGroupSize(groupSize);
   };
@@ -161,12 +172,18 @@ export const MakeGroupsPage = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     setDataInLocalStorage(dataObj);
 
-    const { studentArr, categoryNamesLevels} = adaptGroupData(categoryTypes, aliases, categoryVals, categoryNames, groupSize);
+    const { studentArr, categoryNamesLevels } = adaptGroupData(
+      categoryTypes,
+      aliases,
+      categoryVals,
+      categoryNames,
+      groupSize
+    );
 
-    if (groupingType === "mixed") {
+    if (groupingType === 'mixed') {
       handleMixedGroups(
         studentArr,
         groupSize,
@@ -174,7 +191,7 @@ export const MakeGroupsPage = (props) => {
         categoryNames
       );
     }
-    if (groupingType === "similar") {
+    if (groupingType === 'similar') {
       handleSimilarGroups(
         studentArr,
         groupSize,
@@ -184,7 +201,7 @@ export const MakeGroupsPage = (props) => {
     }
 
     window.scrollTo({ top: 0 });
-    history.push("/groups-made");
+    history.push('/groups-made');
   };
 
   let categoriesFields = [];
@@ -194,7 +211,7 @@ export const MakeGroupsPage = (props) => {
         key={`category-index${catIndex}`}
         className="make-groups-page__form--fieldset"
         fieldName={`Category ${catIndex + 1}:`}
-        isQuantitative={categoryTypes[catIndex] === "quantitative"}
+        isQuantitative={categoryTypes[catIndex] === 'quantitative'}
         categoryNumber={catIndex}
         arrUpdateFunc={updateCategoryArr}
         categoryTypes={categoryTypes}
@@ -234,18 +251,19 @@ export const MakeGroupsPage = (props) => {
             {categoriesFields}
           </div>
           <div>
-            <ValidationError message={validateTextareaLines(aliases, categoryVals)} />
-            <ValidationError message={validateCatNumbers(categoryTypes, categoryVals)} />
+            <ValidationError
+              message={validateTextareaLines(aliases, categoryVals)}
+            />
+            <ValidationError
+              message={validateCatNumbers(categoryTypes, categoryVals)}
+            />
           </div>
           <FormActions
             addCategory={addCategory}
             removeCategory={removeCategory}
             clickCancel={handleClickCancel}
           />
-          <SampleDataButtons
-            data={store}
-            clickFn={injectSampleData}
-          />
+          <SampleDataButtons data={store} clickFn={injectSampleData} />
         </form>
         <FirstVisitModal
           show={showPopUp}

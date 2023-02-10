@@ -1,7 +1,7 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import { ButtonTextIcon } from '../ButtonTextIcon';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const FormActions = ({ addCategory, removeCategory, clickCancel }) => {
   return (
@@ -32,7 +32,7 @@ export const FormActions = ({ addCategory, removeCategory, clickCancel }) => {
   );
 };
 
-export const SampleDataButtons = ({data, clickFn}) => {
+export const SampleDataButtons = ({ data, clickFn }) => {
   return (
     <div className="make-groups-page__sampledata--buttons">
       {data.map((dataset, index) => (

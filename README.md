@@ -5,6 +5,7 @@
 See Mix Ed in action here: <https://mixed-app.vercel.app/>
 
 ## Features
+
 - Generate groups
 - Rearrange groups
 - Save generated groups
@@ -17,6 +18,7 @@ username: msmith
 password: password
 
 ## Screenshots
+
 ![Landing Page](public/screenshots/Landing-Desktop.png)
 
 ![Group Generator](public/screenshots/Generator.png)
@@ -24,9 +26,11 @@ password: password
 ![Saved Groups Page](public/screenshots/My-Groups-Desktop.png)
 
 ## Built with
+
 - [Create React App](https://github.com/facebook/create-react-app)
 - [React-Router](https://reacttraining.com/react-router/)
 - CSS
 
 ## API
+
 See the Mix Ed API at <https://github.com/rise-erpelding/mixed-api>

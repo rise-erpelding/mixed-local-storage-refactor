@@ -27,26 +27,28 @@ class App extends Component {
     // this.toggleLogin = this.toggleLogin.bind(this);
   }
 
-  setDataInLocalStorage = (data) => { // adds generator data to local storage so it will persist until saved
+  setDataInLocalStorage = (data) => {
+    // adds generator data to local storage so it will persist until saved
     this.setState({ data: data });
     ls.set('data', data);
-  }
+  };
 
-  clearDataInLocalStorage = () => { // clears local storage data
+  clearDataInLocalStorage = () => {
+    // clears local storage data
     ls.remove('groupings');
     ls.remove('data');
     ls.remove('studentArr');
     ls.remove('categoryNames');
-  }
+  };
 
   setStudentArrInLocalStorage = (studentArr) => {
     this.setState({ studentArr: studentArr });
     ls.set('studentArr', studentArr);
-  }
-  
+  };
+
   setCatNamesInLocalStorage = (catNamesArr) => {
     ls.set('categoryNames', catNamesArr);
-  }
+  };
 
   // toggleLogin() {
   //   const { isLoggedIn } = this.state;
@@ -68,33 +70,21 @@ class App extends Component {
     return (
       <div className="app">
         <MixEdContext.Provider value={contextValue}>
-        <NavBar />
-        <Switch>
-          <Route 
-            exact
-            path="/"
-            component={LandingPage}
-          />
-          <Route 
-            path="/make-groups"
-            component={MakeGroupsPage}
-          />
-          <Route
-            path="/groups-made"
-            component={(props) => <GroupsMadePage {...props} />}
-          />
-          <Route
-            path="/my-groups"
-            component={SavedGroupsPage}
-          />
-          {/* <PublicOnlyRoute
+          <NavBar />
+          <Switch>
+            <Route exact path="/" component={LandingPage} />
+            <Route path="/make-groups" component={MakeGroupsPage} />
+            <Route
+              path="/groups-made"
+              component={(props) => <GroupsMadePage {...props} />}
+            />
+            <Route path="/my-groups" component={SavedGroupsPage} />
+            {/* <PublicOnlyRoute
             path="/login"
             component={LoginPage}
           /> */}
-          <Route
-            component={NotFoundPage}
-          />
-        </Switch>
+            <Route component={NotFoundPage} />
+          </Switch>
         </MixEdContext.Provider>
         <Footer />
       </div>

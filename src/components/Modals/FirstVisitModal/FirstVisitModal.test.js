@@ -15,7 +15,10 @@ import {
   faArrowLeft,
   faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
-import { faSave as faSaveRegular, faEye as faEyeRegular } from '@fortawesome/free-regular-svg-icons';
+import {
+  faSave as faSaveRegular,
+  faEye as faEyeRegular,
+} from '@fortawesome/free-regular-svg-icons';
 
 library.add(
   faTrashAlt,
@@ -33,6 +36,11 @@ library.add(
 
 it('renders without crashing', () => {
   const main = document.createElement('main');
-  ReactDOM.render(<BrowserRouter><FirstVisitModal /></BrowserRouter>, main);
+  ReactDOM.render(
+    <BrowserRouter>
+      <FirstVisitModal />
+    </BrowserRouter>,
+    main
+  );
   ReactDOM.unmountComponentAtNode(main);
 });

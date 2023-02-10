@@ -14,15 +14,19 @@ class UserOnboarding extends Component {
         </div>
         <div className="user-onboarding__data-entry">
           <div className="user-onboarding__flex-child--left user-onboarding__text">
-            <h3>
-              Enter the data into the group generator
-          </h3>
-            <p>First, enter the data for grouping students. You&apos;ll need to provide a name and any
-            categories to be taken into account when creating the groups--student grades,
-            personality types, learning styles, etc.</p>
-            <p>Put one value on each line. The order of the values must correspond to the order
-            in which students are inputted. We recommend saving your categories on a spreadsheet
-            and copying/pasting from a spreadsheet.</p>
+            <h3>Enter the data into the group generator</h3>
+            <p>
+              First, enter the data for grouping students. You&apos;ll need to
+              provide a name and any categories to be taken into account when
+              creating the groups--student grades, personality types, learning
+              styles, etc.
+            </p>
+            <p>
+              Put one value on each line. The order of the values must
+              correspond to the order in which students are inputted. We
+              recommend saving your categories on a spreadsheet and
+              copying/pasting from a spreadsheet.
+            </p>
           </div>
           <div className="user-onboarding__flex-child--right">
             <img
@@ -34,11 +38,12 @@ class UserOnboarding extends Component {
         </div>
         <div className="user-onboarding__saved-groups">
           <div className="user-onboarding__flex-child--right user-onboarding__text">
-            <h3>
-              Organize groupings by class
-          </h3>
-            <p>You can save your groups to an existing class or create a new class for the
-              grouping, then view your groupings organized by class.</p>
+            <h3>Organize groupings by class</h3>
+            <p>
+              You can save your groups to an existing class or create a new
+              class for the grouping, then view your groupings organized by
+              class.
+            </p>
           </div>
           <div className="user-onboarding__flex-child--left">
             <img
@@ -56,18 +61,17 @@ class UserOnboarding extends Component {
           >
             Back to top
           </button>
-          <button 
+          <button
             className="user-onboarding__buttons--fill"
             type="button"
             onClick={() => window.scrollTo({ top: 0 })}
           >
-          <Link to={`/make-groups`}>Make some groups</Link>
+            <Link to={`/make-groups`}>Make some groups</Link>
           </button>
         </div>
       </section>
     );
   }
-    
 }
 
 export default UserOnboarding;

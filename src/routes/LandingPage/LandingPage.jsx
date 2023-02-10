@@ -13,14 +13,15 @@ class LandingPage extends Component {
     window.scrollTo({
       top: this.scrollRef.current.offsetTop,
       left: 0,
-      behavior: 'smooth'});
-  }
+      behavior: 'smooth',
+    });
+  };
 
   render() {
     const { clearDataInLocalStorage } = this.context;
     return (
       <main>
-        <Landing 
+        <Landing
           handleOnboarding={this.scrollToRef}
           handleMakeGroupsButton={clearDataInLocalStorage}
         />

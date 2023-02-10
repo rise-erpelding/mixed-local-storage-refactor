@@ -16,7 +16,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border: 2px solid #FF9A5C;
+  border: 2px solid #ff9a5c;
 }
 
 .modal__text {
@@ -49,21 +49,21 @@
 }
 
 .modal__buttons > button:hover {
-  background-color: #FBE8A6;
-  color: #2C3763;
+  background-color: #fbe8a6;
+  color: #2c3763;
   transition: 0.2s ease-in;
 }
 
 .modal__buttons--outline {
   background-color: transparent;
-  color: #2C3763;
-  border: 2px solid #2C3763;
+  color: #2c3763;
+  border: 2px solid #2c3763;
 }
 
 .modal__buttons--fill {
-  background-color: #4A00E0;
-  color: #FBE8A6;
-  border: 2px solid #4A00E0;
+  background-color: #4a00e0;
+  color: #fbe8a6;
+  border: 2px solid #4a00e0;
 }
 
 @media screen and (min-width: 800px) {

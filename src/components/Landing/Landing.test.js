@@ -5,6 +5,11 @@ import { BrowserRouter } from 'react-router-dom';
 
 it('renders without crashing', () => {
   const section = document.createElement('section');
-  ReactDOM.render(<BrowserRouter><Landing /></BrowserRouter>, section);
+  ReactDOM.render(
+    <BrowserRouter>
+      <Landing />
+    </BrowserRouter>,
+    section
+  );
   ReactDOM.unmountComponentAtNode(section);
 });

@@ -1,11 +1,11 @@
 .login-page {
   height: calc(100vh - 127px - 20vh);
-  background-color: #E2E4F3;
+  background-color: #e2e4f3;
   padding: 20vh 20vw 0vh 20vw;
 }
 
 .login-page__main {
-  border: 3px solid #FF9A5C;
+  border: 3px solid #ff9a5c;
   border-radius: 10px;
   padding: 20px;
   background-color: whitesmoke;
@@ -39,19 +39,19 @@
 }
 
 .login-page__form > button:hover {
-  background-color: #FBE8A6;
-  color: #2C3763;
+  background-color: #fbe8a6;
+  color: #2c3763;
   transition: 0.2s ease-in;
 }
 
 .login-page__buttons--outline {
   background-color: transparent;
-  color: #2C3763;
-  border: 2px solid #2C3763;
+  color: #2c3763;
+  border: 2px solid #2c3763;
 }
 
 .login-page__buttons--fill {
-  background-color: #4A00E0;
-  color: #FBE8A6;
-  border: 2px solid #4A00E0;
+  background-color: #4a00e0;
+  color: #fbe8a6;
+  border: 2px solid #4a00e0;
 }

@@ -1,10 +1,19 @@
 import React from 'react';
 import propTypes from 'prop-types';
 
-export const TextInputSection = ({ className, label, name, onChange, required, value }) => {
+export const TextInputSection = ({
+  className,
+  label,
+  name,
+  onChange,
+  required,
+  value,
+}) => {
   return (
     <section className={className}>
-      <div><label htmlFor={name}>{label}</label></div>
+      <div>
+        <label htmlFor={name}>{label}</label>
+      </div>
       <input
         id={name}
         name={name}
@@ -16,7 +25,6 @@ export const TextInputSection = ({ className, label, name, onChange, required, v
     </section>
   );
 };
-
 
 TextInputSection.propTypes = {
   className: propTypes.string,

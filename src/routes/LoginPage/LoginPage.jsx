@@ -6,7 +6,6 @@
 // import propTypes from 'prop-types';
 // import './LoginPage.css';
 
-
 // class LoginPage extends Component {
 //   _isMounted = false;
 

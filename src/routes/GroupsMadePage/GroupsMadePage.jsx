@@ -42,35 +42,35 @@ class GroupsMadePage extends Component {
     const groupNumbers = Array.from(new Set(groupNums));
     groupNumbers.sort((a, b) => a - b);
     this.setState({ groupNumbers });
-  }
+  };
 
   // METHODS FOR BUTTONS
   handleSubmit = (e) => {
     e.preventDefault();
     this.showSaveModal();
-  }
+  };
 
   handleClickCancel = () => {
     const { history } = this.props;
     window.scrollTo({ top: 0 });
     history.push('/');
-  }
+  };
 
   handleClickBack = () => {
     const { history } = this.props;
     history.goBack();
-  }
+  };
 
   // METHODS FOR SAVE MODAL
   showSaveModal = () => {
     // const { login, history } = this.props;
     // login ? this.setState({ show: true }) : history.push('/login');
     this.setState({ show: true });
-  }
+  };
 
   hideSaveModal = () => {
     this.setState({ show: false });
-  }
+  };
 
   saveGroups = (groupingName, className) => {
     // const { clearDataInLocalStorage } = this.context;
@@ -103,7 +103,7 @@ class GroupsMadePage extends Component {
     //         .catch((error) => {
     //           this.setState({ error });
     //         });
-          
+
     //     })
     //     .catch((error) => {
     //       this.setState({ error });
@@ -126,20 +126,20 @@ class GroupsMadePage extends Component {
     //     this.setState({ error });
     //   });
     // }
-  }
+  };
 
   // METHODS FOR DRAG AND DROP NAMES
   handleDragStart = (event, student) => {
-    event.dataTransfer.setData("student", student);
-  }
+    event.dataTransfer.setData('student', student);
+  };
 
   handleDragOver = (event) => {
     event.preventDefault();
-  }
+  };
 
   handleDrop = (event, newGroup) => {
     const { students } = this.state;
-    const draggedStudent = event.dataTransfer.getData("student");
+    const draggedStudent = event.dataTransfer.getData('student');
     let updatedStudent = students.filter((student) => {
       if (draggedStudent === student.alias) {
         student.groupNum = newGroup;
@@ -147,46 +147,48 @@ class GroupsMadePage extends Component {
       return student;
     });
     this.setState({ ...this.state, updatedStudent });
-  }
+  };
 
   render() {
     const { show, groupNumbers, students, allClasses } = this.state;
     const categoryNames = ls.get('categoryNames');
 
-    const showGroupings = (
-      groupNumbers.map((groupNumber) => (
-        <div
-          key={groupNumber}
-          className="groups-made-page__group"
-          onDragOver={(event) => this.handleDragOver(event)}
-          onDrop={(event) => { this.handleDrop(event, groupNumber); }}
-        >
-          Group {groupNumber}
-          {students.map((student, idx) => {
-            if (student.groupNum === groupNumber) {
-              return (
-                <div
-                  key={idx + 1}
-                  className="groups-made-page__student"
-                  onDragStart={(event) => { this.handleDragStart(event, student.alias); }}
-                  draggable
-                >
-                  {student.alias}
-                  <div className="groups-made-page__tooltip">
-                    {categoryNames.map((category, index) => (
-                      <p key={`category-${index}`}>
-                        {`${category}: ${student[category]}`}
-                      </p>
-                    ))}
-                  </div>
+    const showGroupings = groupNumbers.map((groupNumber) => (
+      <div
+        key={groupNumber}
+        className="groups-made-page__group"
+        onDragOver={(event) => this.handleDragOver(event)}
+        onDrop={(event) => {
+          this.handleDrop(event, groupNumber);
+        }}
+      >
+        Group {groupNumber}
+        {students.map((student, idx) => {
+          if (student.groupNum === groupNumber) {
+            return (
+              <div
+                key={idx + 1}
+                className="groups-made-page__student"
+                onDragStart={(event) => {
+                  this.handleDragStart(event, student.alias);
+                }}
+                draggable
+              >
+                {student.alias}
+                <div className="groups-made-page__tooltip">
+                  {categoryNames.map((category, index) => (
+                    <p key={`category-${index}`}>
+                      {`${category}: ${student[category]}`}
+                    </p>
+                  ))}
                 </div>
-              );
-            }
-            return '';
-          })}
-        </div>
-      )
-      ));
+              </div>
+            );
+          }
+          return '';
+        })}
+      </div>
+    ));
 
     return (
       <main className="groups-made-page">
@@ -194,57 +196,41 @@ class GroupsMadePage extends Component {
           <h1>Groupings</h1>
           <p>Drag and drop students to rearrange groups.</p>
           <form className="groups-made-page__form" onSubmit={this.handleSubmit}>
-            <div className="groups-made-page__groupings">
-              {showGroupings}
-            </div>
+            <div className="groups-made-page__groupings">{showGroupings}</div>
             <div className="groups-made-page__main--buttons">
-              <button
-                type="button"
-                onClick={this.handleClickCancel}
-              >
+              <button type="button" onClick={this.handleClickCancel}>
                 <div className="groups-made-page__button--container">
-                    <div>
-                      Cancel
-                    </div>
-                    <div>
-                      <FontAwesomeIcon
-                        className="groups-made-page__button--icon"
-                        icon="window-close"
-                      />
-                    </div>
-                  </div>
-            </button>
-              <button
-                type="button"
-                onClick={this.handleClickBack}
-              >
-                <div className="groups-made-page__button--container">
-                    <div>
-                      Back
-                    </div>
-                    <div>
-                      <FontAwesomeIcon
-                        className="groups-made-page__button--icon"
-                        icon="arrow-left"
-                      />
-                    </div>
-                  </div>
-            </button>
-              <button
-                type="submit"
-              >
-                <div className="groups-made-page__button--container">
-                    <div>
-                      Save
-                    </div>
-                    <div>
+                  <div>Cancel</div>
+                  <div>
                     <FontAwesomeIcon
-                        className="groups-made-page__button--icon"
-                        icon={['far', 'save']}
-                      />
-                    </div>
+                      className="groups-made-page__button--icon"
+                      icon="window-close"
+                    />
                   </div>
-            </button>
+                </div>
+              </button>
+              <button type="button" onClick={this.handleClickBack}>
+                <div className="groups-made-page__button--container">
+                  <div>Back</div>
+                  <div>
+                    <FontAwesomeIcon
+                      className="groups-made-page__button--icon"
+                      icon="arrow-left"
+                    />
+                  </div>
+                </div>
+              </button>
+              <button type="submit">
+                <div className="groups-made-page__button--container">
+                  <div>Save</div>
+                  <div>
+                    <FontAwesomeIcon
+                      className="groups-made-page__button--icon"
+                      icon={['far', 'save']}
+                    />
+                  </div>
+                </div>
+              </button>
             </div>
           </form>
           <SaveGroups

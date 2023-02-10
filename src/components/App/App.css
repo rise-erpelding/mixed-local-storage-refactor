@@ -8,7 +8,9 @@ a {
   color: inherit;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   padding: 0;
   margin: 0;
 }
@@ -40,8 +42,8 @@ textarea {
   background-repeat: no-repeat;
   padding-left: 35px;
   padding-top: 12px;
-  border-color:#ccc;
-  line-height:16px;
+  border-color: #ccc;
+  line-height: 16px;
 }
 
 input {
@@ -50,7 +52,7 @@ input {
 }
 
 fieldset {
-  border: 2px solid #D3D3D3;
+  border: 2px solid #d3d3d3;
 }
 
 legend {

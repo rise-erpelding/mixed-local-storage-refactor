@@ -10,7 +10,7 @@ it('renders without crashing', () => {
     <BrowserRouter>
       <NotFoundPage />
     </BrowserRouter>,
-    div,
+    div
   );
   ReactDOM.unmountComponentAtNode(div);
 });

@@ -6,7 +6,6 @@ import propTypes from 'prop-types';
 import './NavBar.css';
 
 class NavBar extends Component {
-
   // handleLogoutClick = () => {
   //   const { toggleLogin, clearDataInLocalStorage } = this.context;
   //   clearDataInLocalStorage();
@@ -17,21 +16,11 @@ class NavBar extends Component {
   renderLoggedInLinks() {
     return (
       <nav className="nav-bar">
-        <NavLink
-          to="/"
-        >
-          Home
-        </NavLink>
-        <NavLink 
-          activeClassName="nav-bar__selected"
-          to="/make-groups"
-        >
+        <NavLink to="/">Home</NavLink>
+        <NavLink activeClassName="nav-bar__selected" to="/make-groups">
           Generate Groups
         </NavLink>
-        <NavLink 
-          activeClassName="nav-bar__selected"
-          to="/my-groups"
-        >
+        <NavLink activeClassName="nav-bar__selected" to="/my-groups">
           My Classes
         </NavLink>
         {/* <Link 
@@ -53,13 +42,13 @@ class NavBar extends Component {
   //       >
   //         Home
   //       </NavLink>
-  //       <NavLink 
+  //       <NavLink
   //         activeClassName="selected"
   //         to="/make-groups"
   //       >
   //         Generate Groups
   //       </NavLink>
-  //       <NavLink 
+  //       <NavLink
   //         activeClassName="selected"
   //         to="/login"
   //       >
@@ -73,8 +62,8 @@ class NavBar extends Component {
     // const { login } = this.props;
     return (
       <>
-      {this.renderLoggedInLinks()}
-      {/* { login === true
+        {this.renderLoggedInLinks()}
+        {/* { login === true
       ? this.renderLoggedInLinks()
       : this.renderNotLoggedInLinks() } */}
       </>
