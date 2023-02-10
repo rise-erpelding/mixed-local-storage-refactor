@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './components/App/App';
@@ -32,11 +32,12 @@ library.add(
   faArrowRight
 );
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+root.render(
   <AppError>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </AppError>,
-  document.getElementById('root')
+  </AppError>
 );
