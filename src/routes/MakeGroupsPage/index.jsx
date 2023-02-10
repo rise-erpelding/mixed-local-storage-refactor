@@ -7,19 +7,13 @@ import createDifferentGroups from "../../services/groupingAlgorithms/differentGr
 import createSimilarGroups from "../../services/groupingAlgorithms/similarGroups";
 import MakeGroupsService from "../../services/make-groups-service";
 import { swapArrItems } from "../../services/helpers/helperFunctions";
-import { NumberInputSection } from "../../components/MakeGroupsForm/src/form-inputs/number-input";
-import { RadioInputSection } from "../../components/MakeGroupsForm/src/form-inputs/radio-input";
-import { TextAreaInputSection } from "../../components/MakeGroupsForm/src/form-inputs/textarea-input";
-import { TextInputSection } from "../../components/MakeGroupsForm/src/form-inputs/text-input";
 import ValidationError from "../../components/ValidationError/ValidationError";
 import { validateAliases, validateAliasUniqueness, validateDataSize, validateTextareaLines, validateCatNumbers } from "../../services/helpers/formValidationFunctions";
 import { FormActions, SampleDataButtons } from "../../components/MakeGroupsForm/button-groups";
 import store from "../../services/store";
-import { ButtonTextIcon } from "../../components/ButtonTextIcon/index";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FirstVisitModal from "../../components/Modals/FirstVisitModal/FirstVisitModal";
 import "./MakeGroupsPage.css";
-import { FieldsetContainer } from "../../components/MakeGroupsForm/fieldsets";
+import { AliasesField, CategoryField, GroupingCharacteristicsField } from "../../components/MakeGroupsForm/fieldsets";
 
 export const MakeGroupsPage = (props) => {
   const {
@@ -31,7 +25,6 @@ export const MakeGroupsPage = (props) => {
   const [categoryNames, setCategoryNames] = useState([""]);
   const [categoryTypes, setCategoryTypes] = useState([""]);
   const [categoryVals, setCategoryVals] = useState([""]);
-  // const [error, setError] = useState(null);
   const [groupingType, setGroupingType] = useState("");
   const [groupSize, setGroupSize] = useState(2);
   const [showPopUp, setShowPopUp] = useState(true);
@@ -194,68 +187,25 @@ export const MakeGroupsPage = (props) => {
     history.push("/groups-made");
   };
 
-  // this totally needs a refactor
-  let categories = [];
+  let categoriesFields = [];
   for (let catIndex = 0; catIndex < categoriesLength; catIndex++) {
-    categories.push(
-      <fieldset
-        className="make-groups-page__form--fieldset"
+    categoriesFields.push(
+      <CategoryField
         key={`category-index${catIndex}`}
-      >
-        <legend>{`Category ${catIndex + 1}:`}</legend>
-        <div className="make-groups-page__form--before-textarea">
-          <RadioInputSection
-            checkedStatuses={[
-              categoryTypes[catIndex] === "quantitative",
-              categoryTypes[catIndex] === "qualitative",
-            ]}
-            explanation="Values corresponding to a category."
-            labels={["Quantitative (numbers)", "Qualitative (words)"]}
-            inputGroupName={`cat${catIndex}-type`}
-            inputIds={[`cat${catIndex}-quantitative`, `cat${catIndex}-qualitative`]}
-            onChangeFunc={(event) => {
-              updateCategoryArr(event, catIndex, categoryTypes, setCategoryTypes);
-            }}
-            required
-            values={["quantitative", "qualitative"]}
-          />
-          <TextInputSection
-            className="make-groups-page__form--category-name"
-            label="Category name:"
-            name={`cat${catIndex}-name`}
-            onChange={(event) => updateCategoryArr(event, catIndex, categoryNames, setCategoryNames)}
-            required
-            value={categoryNames[catIndex]}
-          />
-        </div>
-        <TextAreaInputSection
-          label="Values:"
-          name={`cat${catIndex}-vals`}
-          onChange={(event) => updateCategoryArr(event, catIndex, categoryVals, setCategoryVals)}
-          placeholderText="Enter values here, one on each line."
-          value={categoryVals[catIndex]}
-        />
-        <div className="make-groups-page__form--after-textarea">
-          {catIndex === 0 ? (
-            ""
-          ) : (
-            <ButtonTextIcon
-              buttonText="Increase Priority"
-              buttonIcon={<FontAwesomeIcon icon="plus" />}
-              handleClick={() => shiftCategory(catIndex, 'left')}
-            />
-          )}
-          {catIndex === categoriesLength - 1 ? (
-            ""
-          ) : (
-            <ButtonTextIcon
-              buttonText="Decrease Priority"
-              buttonIcon={<FontAwesomeIcon icon="minus" />}
-              handleClick={() => shiftCategory(catIndex, 'right')}
-            />
-          )}
-        </div>
-      </fieldset>
+        className="make-groups-page__form--fieldset"
+        fieldName={`Category ${catIndex + 1}:`}
+        isQuantitative={categoryTypes[catIndex] === "quantitative"}
+        categoryNumber={catIndex}
+        arrUpdateFunc={updateCategoryArr}
+        categoryTypes={categoryTypes}
+        categoryNames={categoryNames}
+        categoryVals={categoryVals}
+        categoryTypesUpdateFunc={setCategoryTypes}
+        categoryNamesUpdateFunc={setCategoryNames}
+        categoryValsUpdateFunc={setCategoryVals}
+        categoriesLength={categoriesLength}
+        shiftCategoryFunc={shiftCategory}
+      />
     );
   }
 
@@ -263,61 +213,25 @@ export const MakeGroupsPage = (props) => {
     <main className="make-groups-page">
       <div className="make-groups-page__body-container">
         <h1>Group Generator</h1>
-        {/* create a separate form component, pass in classname and onSubmit as props */}
         <form className="make-groups-page__form" onSubmit={handleSubmit}>
-          <FieldsetContainer
-            className="make-groups-page__form--grouping-characteristics"
-            legendText="Grouping characteristics:"
-          >
-            <NumberInputSection
-              explanation="Choose minimum group size (slightly larger groups will be made as needed)."
-              label="Group size:"
-              max={20}
-              min={2}
-              name="group-size"
-              onChange={updateGroupSize}
-              value={groupSize}
-            />
-            <RadioInputSection
-              checkedStatuses={[
-                groupingType === "similar",
-                groupingType === "mixed",
-              ]}
-              explanation="Choose whether members within a group should have similar 
-              traits or differing traits."
-              labels={[
-                "Group members are similar",
-                "Group members are diverse",
-              ]}
-              inputGroupName="grouping-type"
-              inputIds={["grouping-similar", "grouping-mixed"]}
-              onChangeFunc={(e) => setGroupingType(e.target.value)}
-              required
-              values={["similar", "mixed"]}
-            />
-          </FieldsetContainer>
-          {/* break out student data */}
+          <GroupingCharacteristicsField
+            updateGroupSizeFunc={updateGroupSize}
+            groupSize={groupSize}
+            groupingType={groupingType}
+            updateGroupingTypeFunc={setGroupingType}
+          />
           <div className="make-groups-page__form--student-data">
-            <fieldset className="make-groups-page__form--fieldset">
-              <legend>Aliases:</legend>
-              <div className="make-groups-page__form--before-textarea">
-                <div className="make-groups-page__form--explanation">
-                  List of names or other identifier.
-                </div>
-                <ValidationError message={validateAliases(aliases)} />
-                <ValidationError message={validateAliasUniqueness(aliases)} />
-                <ValidationError message={validateDataSize(aliases, groupSize)} />
-              </div>
-              <TextAreaInputSection
-                  label="Values:"
-                  name="aliases"
-                  onChange={(e) => setAliases(e.target.value)}
-                  placeholderText="Enter aliases here, one on each line."
-                  value={aliases}
-              />
-              <div className="make-groups-page__form--after-textarea"></div>
-            </fieldset>
-            {categories}
+            <AliasesField
+              className="make-groups-page__form--fieldset"
+              fieldName="Aliases:"
+              aliasesUpdateFunc={setAliases}
+              aliases={aliases}
+              groupSize={groupSize}
+              aliasNumberValidationFunc={validateAliases}
+              aliasUniquenessValidationFunc={validateAliasUniqueness}
+              aliasGroupSizeValidationFunc={validateDataSize}
+            />
+            {categoriesFields}
           </div>
           <div>
             <ValidationError message={validateTextareaLines(aliases, categoryVals)} />
@@ -341,7 +255,6 @@ export const MakeGroupsPage = (props) => {
     </main>
   );
 };
-
 
 MakeGroupsPage.propTypes = {
   history: propTypes.shape({
