@@ -2,7 +2,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import SavedGroupsPage from './SavedGroupsPage';
-import { BrowserRouter } from 'react-router-dom';import { library } from '@fortawesome/fontawesome-svg-core';
+import { BrowserRouter } from 'react-router-dom';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faTrashAlt,
   faEdit,
@@ -14,7 +15,10 @@ import {
   faArrowLeft,
   faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
-import { faSave as faSaveRegular, faEye as faEyeRegular } from '@fortawesome/free-regular-svg-icons';
+import {
+  faSave as faSaveRegular,
+  faEye as faEyeRegular,
+} from '@fortawesome/free-regular-svg-icons';
 
 library.add(
   faTrashAlt,
@@ -30,10 +34,13 @@ library.add(
   faArrowRight
 );
 
-
-
 it('renders without crashing', () => {
   const main = document.createElement('main');
-  ReactDOM.render(<BrowserRouter><SavedGroupsPage /></BrowserRouter>, main);
+  ReactDOM.render(
+    <BrowserRouter>
+      <SavedGroupsPage />
+    </BrowserRouter>,
+    main
+  );
   ReactDOM.unmountComponentAtNode(main);
 });

@@ -1,5 +1,5 @@
 .saved-groups-page {
-  background-color: #E2E4F3;
+  background-color: #e2e4f3;
   padding: 10px 10px;
   display: flex;
   flex-direction: column;
@@ -41,11 +41,11 @@
 }
 
 .saved-groups-page__class-tab--selected {
-  background-color: #FF9A5C;
+  background-color: #ff9a5c;
 }
 
 .saved-groups-page__class-tab:hover {
-  background-color: #FBE8A6;
+  background-color: #fbe8a6;
   transition: 0.2s ease-in;
 }
 
@@ -55,12 +55,12 @@
 
 .saved-groups-page__class-groupings {
   background-color: whitesmoke;
-  -webkit-box-shadow: 1px 1px 3px 0px rgba(211,211,211,1);
-  -moz-box-shadow: 1px 1px 3px 0px rgba(211,211,211,1);
-  box-shadow: 1px 1px 3px 0px rgba(211,211,211,1);
+  -webkit-box-shadow: 1px 1px 3px 0px rgba(211, 211, 211, 1);
+  -moz-box-shadow: 1px 1px 3px 0px rgba(211, 211, 211, 1);
+  box-shadow: 1px 1px 3px 0px rgba(211, 211, 211, 1);
   margin-bottom: 20px;
   border-radius: 0px 0px 10px 10px;
-  border-top: 3px solid #FF9A5C;
+  border-top: 3px solid #ff9a5c;
   display: flex;
   flex-direction: column;
 }
@@ -101,7 +101,7 @@
 }
 
 .saved-groups-page__groupings-list--ul > li:hover {
-  background-color: #FBE8A6;
+  background-color: #fbe8a6;
   transition: 0.2s ease-in;
 }
 
@@ -114,7 +114,7 @@
 }
 
 .saved-groups-page__groupings-list--selected {
-  background-color: #FF9A5C;
+  background-color: #ff9a5c;
   border: 2px solid lightgray;
 }
 
@@ -211,7 +211,7 @@
   font-family: inherit;
   line-height: 100%;
   font-size: 11px;
-  color: #3F4F8D;
+  color: #3f4f8d;
   background-color: transparent;
   border: none;
   width: 100px;
@@ -225,7 +225,7 @@
 
 .saved-groups-page__main--buttons > p {
   font-size: 1.2 em;
-  color: #3F4F8D;
+  color: #3f4f8d;
   font-weight: bold;
 }
 
@@ -233,7 +233,7 @@
   font-family: inherit;
   line-height: 100%;
   font-size: 11px;
-  color: #3F4F8D;
+  color: #3f4f8d;
   background-color: transparent;
   border: none;
   width: 90px;
@@ -280,13 +280,13 @@
     justify-content: flex-end;
     margin: 0px 30px;
   }
-  
+
   .saved-groups-page__class-tab {
     border-radius: 10px 10px 0px 0px;
     margin: 0px 5px;
     width: 125px;
   }
-  
+
   .saved-groups-page__group {
     width: 20%;
   }
@@ -295,16 +295,16 @@
     flex-direction: row;
     margin: 0px 30px 20px 30px;
   }
-  
+
   .saved-groups-page__groupings-list {
     flex-grow: 1;
   }
-  
+
   .saved-groups-page__groups {
     flex-grow: 5;
     font-size: 1em;
   }
-  
+
   .saved-groups-page__groupings-list--ul {
     flex-direction: column;
   }

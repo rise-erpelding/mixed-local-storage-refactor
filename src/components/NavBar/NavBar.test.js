@@ -5,6 +5,11 @@ import NavBar from './NavBar';
 
 it('renders without crashing', () => {
   const nav = document.createElement('nav');
-  ReactDOM.render(<BrowserRouter><NavBar /></BrowserRouter>, nav);
+  ReactDOM.render(
+    <BrowserRouter>
+      <NavBar />
+    </BrowserRouter>,
+    nav
+  );
   ReactDOM.unmountComponentAtNode(nav);
 });

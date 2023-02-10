@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@900&display=swap');
 
 .landing {
-  background: #3F4F8D;
-  background: -webkit-linear-gradient(to top, #4A00E0, #3F4F8D);
-  background: linear-gradient(to top, #4A00E0, #3F4F8D);
+  background: #3f4f8d;
+  background: -webkit-linear-gradient(to top, #4a00e0, #3f4f8d);
+  background: linear-gradient(to top, #4a00e0, #3f4f8d);
   height: calc(100vh - 65px);
 }
 
@@ -41,32 +41,31 @@
 
 .landing__buttons--outline {
   background-color: transparent;
-  color: #FF9A5C;
-  border: 2px solid #FF9A5C;
+  color: #ff9a5c;
+  border: 2px solid #ff9a5c;
 }
 
 .landing__buttons--fill {
-  background-color: #FF9A5C;
-  color: #2C3763;
-  border: 2px solid #2C3763;
+  background-color: #ff9a5c;
+  color: #2c3763;
+  border: 2px solid #2c3763;
 }
 
 .landing__buttons > button:hover {
-  background-color: #FBE8A6;
-  color: #2C3763;
+  background-color: #fbe8a6;
+  color: #2c3763;
   transition: 0.2s ease-in;
 }
 
 .landing__yellow {
-  color: #FBE8A6;
+  color: #fbe8a6;
 }
 
 .landing__orange {
-  color: #FF9A5C;
+  color: #ff9a5c;
 }
 
 @media screen and (min-width: 800px) {
-
   .landing > h1 {
     font-size: 6em;
   }
@@ -76,5 +75,4 @@
   .landing__buttons {
     top: 20vh;
   }
-
 }

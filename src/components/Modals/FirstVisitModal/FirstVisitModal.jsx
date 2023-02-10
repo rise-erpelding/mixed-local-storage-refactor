@@ -5,7 +5,6 @@ import 'simple-modal/dist/index.css';
 import propTypes from 'prop-types';
 import '../Modals.css';
 
-
 const FirstVisitModal = (props) => {
   return (
     <SimpleModal show={props.show}>
@@ -18,14 +17,14 @@ const FirstVisitModal = (props) => {
         <div className="modal__text">
           <h1>Welcome to the Group Generator</h1>
           <p>
-            This is where you can enter data for grouping your students.
-            At a minimum, you will need to provide your students&apos; names
-            (or some alias to help you identify them).
-            You can add any categories you want for grouping, one value on each line.
+            This is where you can enter data for grouping your students. At a
+            minimum, you will need to provide your students&apos; names (or some
+            alias to help you identify them). You can add any categories you
+            want for grouping, one value on each line.
           </p>
           <p>
-            Still confused? Check out the sample datasets at the bottom of this page
-            to see what you can do.
+            Still confused? Check out the sample datasets at the bottom of this
+            page to see what you can do.
           </p>
         </div>
       </main>

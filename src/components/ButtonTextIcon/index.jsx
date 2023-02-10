@@ -1,19 +1,28 @@
 import React from 'react';
 import propTypes from 'prop-types';
 
-export const ButtonTextIcon = ({buttonText, buttonIcon, customContainerClass, handleClick, type}) => {
+export const ButtonTextIcon = ({
+  buttonText,
+  buttonIcon,
+  customContainerClass,
+  handleClick,
+  type,
+}) => {
   const defaultClassName = 'make-groups-page__button--container';
-  const containerClassNames = customContainerClass ? `${defaultClassName} ${customContainerClass}` : defaultClassName;
+  const containerClassNames = customContainerClass
+    ? `${defaultClassName} ${customContainerClass}`
+    : defaultClassName;
   return (
     <button type={type ? type : 'button'} onClick={handleClick}>
       <div className={containerClassNames}>
         <div>{buttonText}</div>
-        <div className="make-groups-page__button--icon-container">{buttonIcon}</div>
+        <div className="make-groups-page__button--icon-container">
+          {buttonIcon}
+        </div>
       </div>
     </button>
   );
 };
-
 
 ButtonTextIcon.propTypes = {
   handleClick: propTypes.func,

@@ -1,9 +1,12 @@
-import { createTrimmedArr, numberizeArr } from "../../services/helpers/helperFunctions";
+import {
+  createTrimmedArr,
+  numberizeArr,
+} from '../../services/helpers/helperFunctions';
 
 export const validateAliases = (aliases) => {
   const aliasesArray = createTrimmedArr(aliases);
   if (aliasesArray.length < 3) {
-    return "At least 4 aliases are required in order to generate groups.";
+    return 'At least 4 aliases are required in order to generate groups.';
   }
 };
 
@@ -12,7 +15,7 @@ export const validateAliasUniqueness = (aliases) => {
   const uniqueAliasesSet = new Set(aliasesArray);
   const uniqueAliasesArray = [...uniqueAliasesSet];
   if (uniqueAliasesArray.length !== aliasesArray.length) {
-    return "No duplicate aliases allowed.";
+    return 'No duplicate aliases allowed.';
   }
 };
 
@@ -37,17 +40,15 @@ export const validateTextareaLines = (aliases, categoryVals) => {
 export const validateCatNumbers = (categoryTypes, categoryVals) => {
   const quantitativeIndexes = [];
   categoryTypes.forEach((type, index) => {
-    if (type === "quantitative") {
+    if (type === 'quantitative') {
       quantitativeIndexes.push(index);
     }
   });
   for (let i = 0; i < quantitativeIndexes.length; i++) {
-    const categoryArr = createTrimmedArr(
-      categoryVals[quantitativeIndexes[i]]
-    );
+    const categoryArr = createTrimmedArr(categoryVals[quantitativeIndexes[i]]);
     const numbersArr = numberizeArr(categoryArr);
     if (numbersArr.includes(NaN)) {
-      return "Quantitative data can only consist of numbers.";
+      return 'Quantitative data can only consist of numbers.';
     }
   }
 };

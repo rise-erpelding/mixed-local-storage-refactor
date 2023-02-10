@@ -1,4 +1,5 @@
-export const createTrimmedArr = (vals) => vals.split(`\n`).filter((val) => !!val.trim().length);
+export const createTrimmedArr = (vals) =>
+  vals.split(`\n`).filter((val) => !!val.trim().length);
 
 export const numberizeArr = (arr) => arr.map((val) => Number(val));
 

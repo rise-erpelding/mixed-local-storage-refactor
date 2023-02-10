@@ -15,7 +15,7 @@ class AddUpdateClass extends Component {
 
   updateClass = (e) => {
     this.setState({ className: e.target.value });
-  }
+  };
 
   handleSubmit = (e) => {
     const { className } = this.state;
@@ -24,7 +24,7 @@ class AddUpdateClass extends Component {
     handleUpdate(className);
     handleClose();
     this.setState({ className: '' });
-  }
+  };
 
   render() {
     const { className } = this.state;
@@ -35,14 +35,16 @@ class AddUpdateClass extends Component {
         <main className="modal__main">
           <h1>{title}</h1>
           <form onSubmit={this.handleSubmit}>
-              <label htmlFor="name-of-class">Name:</label><br />
-              <input
-                name="name-of-class"
-                id="class-name"
-                type="text"
-                value={className}
-                onChange={this.updateClass}
-                /><br />
+            <label htmlFor="name-of-class">Name:</label>
+            <br />
+            <input
+              name="name-of-class"
+              id="class-name"
+              type="text"
+              value={className}
+              onChange={this.updateClass}
+            />
+            <br />
             <div className="modal__buttons">
               <button
                 type="button"
@@ -51,10 +53,7 @@ class AddUpdateClass extends Component {
               >
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="modal__buttons--fill"
-              >
+              <button type="submit" className="modal__buttons--fill">
                 Save
               </button>
             </div>

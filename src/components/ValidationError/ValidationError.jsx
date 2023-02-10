@@ -5,11 +5,7 @@ import './ValidationError.css';
 const ValidationError = (props) => {
   const { message } = props;
   if (message) {
-    return (
-      <div className="validation-error">
-        {props.message}
-      </div>
-    );
+    return <div className="validation-error">{props.message}</div>;
   }
   return <></>;
 };

@@ -1,7 +1,13 @@
 import React from 'react';
 import propTypes from 'prop-types';
 
-export const TextAreaInputSection = ({ label, name, onChange, placeholderText, value }) => {
+export const TextAreaInputSection = ({
+  label,
+  name,
+  onChange,
+  placeholderText,
+  value,
+}) => {
   return (
     <section>
       <div>
@@ -20,7 +26,6 @@ export const TextAreaInputSection = ({ label, name, onChange, placeholderText, v
     </section>
   );
 };
-
 
 TextAreaInputSection.propTypes = {
   label: propTypes.string,

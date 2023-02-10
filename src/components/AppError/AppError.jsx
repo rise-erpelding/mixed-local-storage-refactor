@@ -17,7 +17,8 @@ class AppError extends Component {
     if (hasError) {
       return (
         <h2 className="AppError">
-          Oops! Something went wrong. Please refresh the page or try again later.
+          Oops! Something went wrong. Please refresh the page or try again
+          later.
         </h2>
       );
     }

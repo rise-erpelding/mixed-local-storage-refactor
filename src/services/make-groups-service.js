@@ -13,7 +13,7 @@ const MakeGroupsService = {
     const studentScoreLevel = [];
     let cutoff = cutoffIndex;
     let groupNum = 1;
-    while ((cutoff * groupNum) < sortedArr.length) {
+    while (cutoff * groupNum < sortedArr.length) {
       cutoffScores.push(sortedArr[cutoff * groupNum]);
       groupNum++;
     }
@@ -41,4 +41,3 @@ const MakeGroupsService = {
 };
 
 export default MakeGroupsService;
-

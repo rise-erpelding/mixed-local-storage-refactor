@@ -1,5 +1,5 @@
 .groups-made-page {
-  background-color: #E2E4F3;
+  background-color: #e2e4f3;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -8,13 +8,13 @@
 
 .groups-made-page__body-container {
   background-color: whitesmoke;
-  -webkit-box-shadow: 1px 1px 3px 0px rgba(211,211,211,1);
-  -moz-box-shadow: 1px 1px 3px 0px rgba(211,211,211,1);
-  box-shadow: 1px 1px 3px 0px rgba(211,211,211,1);
+  -webkit-box-shadow: 1px 1px 3px 0px rgba(211, 211, 211, 1);
+  -moz-box-shadow: 1px 1px 3px 0px rgba(211, 211, 211, 1);
+  box-shadow: 1px 1px 3px 0px rgba(211, 211, 211, 1);
   margin: 20px;
   padding: 20px;
   border-radius: 10px;
-  border: 3px solid #FF9A5C;
+  border: 3px solid #ff9a5c;
 }
 
 .groups-made-page__body-container {
@@ -70,7 +70,7 @@
   font-family: inherit;
   line-height: 100%;
   font-size: 11px;
-  color: #3F4F8D;
+  color: #3f4f8d;
   background-color: transparent;
   border: none;
   width: 70px;

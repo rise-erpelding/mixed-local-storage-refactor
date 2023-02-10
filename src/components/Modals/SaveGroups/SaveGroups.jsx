@@ -15,11 +15,11 @@ class SaveGroups extends Component {
 
   updateName = (e) => {
     this.setState({ groupingName: e.target.value });
-  }
+  };
 
   updateClass = (e) => {
     this.setState({ className: e.target.value });
-  }
+  };
 
   handleSubmit = (e) => {
     const { groupingName, className } = this.state;
@@ -27,15 +27,12 @@ class SaveGroups extends Component {
     e.preventDefault();
     handleSave(groupingName, className);
     handleClose();
-  }
+  };
 
   render() {
     const { handleClose, show, classes } = this.props;
     const classOptions = classes.map((classObj) => (
-      <option
-        key={classObj.id}
-        value={classObj.class_name}
-      >
+      <option key={classObj.id} value={classObj.class_name}>
         {classObj.class_name}
       </option>
     ));
@@ -45,45 +42,51 @@ class SaveGroups extends Component {
         <main className="modal__main">
           <h1>Save Grouping</h1>
           <form onSubmit={this.handleSubmit}>
-            <label htmlFor="grouping-name">Grouping name:</label><br />
+            <label htmlFor="grouping-name">Grouping name:</label>
+            <br />
             <input
               name="grouping-name"
               id="grouping-name"
               type="text"
               onChange={this.updateName}
               required
-            /><br />
-            <label htmlFor="grouping-class">Class:</label><br />
-            <select name="grouping-class" id="grouping-class" onChange={this.updateClass}>
+            />
+            <br />
+            <label htmlFor="grouping-class">Class:</label>
+            <br />
+            <select
+              name="grouping-class"
+              id="grouping-class"
+              onChange={this.updateClass}
+            >
               <option value=""></option>
               {classOptions}
             </select>
             <br />
-            <label htmlFor="grouping-new-class">Or create new class:</label><br />
+            <label htmlFor="grouping-new-class">Or create new class:</label>
+            <br />
             <input
               name="grouping-new-class"
               id="grouping-new-class"
               type="text"
               onChange={this.updateClass}
-            /><br />
+            />
+            <br />
             <div className="modal__buttons">
-              <button 
+              <button
                 type="button"
                 onClick={handleClose}
                 className="modal__buttons--outline"
               >
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="modal__buttons--fill"
-              >
+              <button type="submit" className="modal__buttons--fill">
                 Save
               </button>
             </div>
           </form>
         </main>
-        </SimpleModal>
+      </SimpleModal>
     );
   }
 }
@@ -93,8 +96,8 @@ export default SaveGroups;
 SaveGroups.defaultProps = {
   show: false,
   classes: [],
-  handleClose: () => { },
-  handleSave: () => { },
+  handleClose: () => {},
+  handleSave: () => {},
 };
 
 SaveGroups.propTypes = {

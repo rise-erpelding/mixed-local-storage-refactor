@@ -1,5 +1,5 @@
 .nav-bar {
-  background: #3F4F8D;
+  background: #3f4f8d;
   padding: 10px 10px;
   font-weight: bold;
   font-size: 0.85em;
@@ -12,13 +12,12 @@
 
 .nav-bar > a {
   padding: 10px;
-  
 }
 
 .nav-bar > a:hover,
 .nav-bar__selected {
   text-decoration: underline;
-  color: #FBE8A6;
+  color: #fbe8a6;
   transition: 0.2s ease-in;
 }
 
