@@ -17,7 +17,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^5.0.1",
     "simple-modal": "git+https://github.com/rise-erpelding/simple-modal.git"
   },
   "scripts": {
@@ -47,6 +46,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
+    "react-scripts": "^5.0.1",
     "prettier": "2.8.4"
   }
 }
